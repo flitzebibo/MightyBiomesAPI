@@ -1,0 +1,8 @@
+name: ${project.name}
+version: ${project.version}
+description: ${project.description}
+author: ${author}
+
+main: ${mainclass}
+softdepend: [${depends}]
+load: startup
