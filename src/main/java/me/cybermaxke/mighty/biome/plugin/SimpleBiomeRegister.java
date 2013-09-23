@@ -29,15 +29,15 @@ import java.util.Map;
 
 import org.bukkit.World;
 
-import org.bukkit.craftbukkit.v1_6_R2.CraftWorld;
-import org.bukkit.craftbukkit.v1_6_R2.block.CraftBlock;
+import org.bukkit.craftbukkit.v1_6_R3.CraftWorld;
+import org.bukkit.craftbukkit.v1_6_R3.block.CraftBlock;
 
-import net.minecraft.server.v1_6_R2.BiomeBase;
-import net.minecraft.server.v1_6_R2.Chunk;
-import net.minecraft.server.v1_6_R2.GenLayer;
-import net.minecraft.server.v1_6_R2.GenLayerRiverMix;
-import net.minecraft.server.v1_6_R2.WorldChunkManager;
-import net.minecraft.server.v1_6_R2.WorldGenVillage;
+import net.minecraft.server.v1_6_R3.BiomeBase;
+import net.minecraft.server.v1_6_R3.Chunk;
+import net.minecraft.server.v1_6_R3.GenLayer;
+import net.minecraft.server.v1_6_R3.GenLayerRiverMix;
+import net.minecraft.server.v1_6_R3.WorldChunkManager;
+import net.minecraft.server.v1_6_R3.WorldGenVillage;
 
 import me.cybermaxke.mighty.biome.api.Biome;
 import me.cybermaxke.mighty.biome.api.BiomeAPI;

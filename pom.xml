@@ -5,7 +5,7 @@
 	<groupId>cybermaxke</groupId>
 	<artifactId>mightybiomesapi</artifactId>
 	<version>dev-SNAPSHOT</version>
-	<name>MightyBiomes</name>
+	<name>MightyBiomesAPI</name>
 	<description>API to create custom biomes.</description>
 
 	<!-- Build properties -->
@@ -47,7 +47,7 @@
 		<dependency>
 			<groupId>org.bukkit</groupId>
 			<artifactId>craftbukkit</artifactId>
-			<version>1.6.2-R0.1-SNAPSHOT</version>
+			<version>1.6.4-R0.1-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
 

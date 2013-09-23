@@ -24,9 +24,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import net.minecraft.server.v1_6_R2.BiomeBase;
-import net.minecraft.server.v1_6_R2.GenLayer;
-import net.minecraft.server.v1_6_R2.IntCache;
+import net.minecraft.server.v1_6_R3.BiomeBase;
+import net.minecraft.server.v1_6_R3.GenLayer;
+import net.minecraft.server.v1_6_R3.IntCache;
 
 public class SimpleGenLayerBiome extends GenLayer {
 	private List<BiomeBase> biomes;

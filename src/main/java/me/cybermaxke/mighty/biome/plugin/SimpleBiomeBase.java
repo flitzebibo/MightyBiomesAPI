@@ -27,11 +27,11 @@ import java.util.Random;
 import me.cybermaxke.mighty.biome.api.gen.WorldGen;
 import me.cybermaxke.mighty.biome.plugin.gen.SimpleWorldGen;
 
-import net.minecraft.server.v1_6_R2.BiomeBase;
-import net.minecraft.server.v1_6_R2.BiomeDecorator;
-import net.minecraft.server.v1_6_R2.BiomeMeta;
-import net.minecraft.server.v1_6_R2.EnumCreatureType;
-import net.minecraft.server.v1_6_R2.WorldGenerator;
+import net.minecraft.server.v1_6_R3.BiomeBase;
+import net.minecraft.server.v1_6_R3.BiomeDecorator;
+import net.minecraft.server.v1_6_R3.BiomeMeta;
+import net.minecraft.server.v1_6_R3.EnumCreatureType;
+import net.minecraft.server.v1_6_R3.WorldGenerator;
 
 public class SimpleBiomeBase extends BiomeBase {
 	private final me.cybermaxke.mighty.biome.api.BiomeBase biome;

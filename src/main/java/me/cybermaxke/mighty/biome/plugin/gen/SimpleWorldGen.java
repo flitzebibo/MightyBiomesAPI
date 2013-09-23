@@ -24,8 +24,8 @@ import java.util.Random;
 
 import me.cybermaxke.mighty.biome.api.gen.WorldGen;
 
-import net.minecraft.server.v1_6_R2.World;
-import net.minecraft.server.v1_6_R2.WorldGenerator;
+import net.minecraft.server.v1_6_R3.World;
+import net.minecraft.server.v1_6_R3.WorldGenerator;
 
 public class SimpleWorldGen extends WorldGenerator {
 	private final WorldGen generator;

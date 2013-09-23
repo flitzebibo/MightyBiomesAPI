@@ -20,7 +20,7 @@
  */
 package me.cybermaxke.mighty.biome.plugin.gen.layer;
 
-import net.minecraft.server.v1_6_R2.GenLayer;
+import net.minecraft.server.v1_6_R3.GenLayer;
 
 public class SimpleGenLayerData extends GenLayer {
 	private int size;

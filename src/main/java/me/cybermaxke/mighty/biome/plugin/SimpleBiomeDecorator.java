@@ -22,10 +22,10 @@ package me.cybermaxke.mighty.biome.plugin;
 
 import me.cybermaxke.mighty.biome.api.BiomeDecorator.Setting;
 
-import net.minecraft.server.v1_6_R2.BiomeBase;
-import net.minecraft.server.v1_6_R2.BiomeDecorator;
-import net.minecraft.server.v1_6_R2.Block;
-import net.minecraft.server.v1_6_R2.WorldGenLakes;
+import net.minecraft.server.v1_6_R3.BiomeBase;
+import net.minecraft.server.v1_6_R3.BiomeDecorator;
+import net.minecraft.server.v1_6_R3.Block;
+import net.minecraft.server.v1_6_R3.WorldGenLakes;
 
 public class SimpleBiomeDecorator extends BiomeDecorator {
 	private final me.cybermaxke.mighty.biome.api.BiomeDecorator decorator;

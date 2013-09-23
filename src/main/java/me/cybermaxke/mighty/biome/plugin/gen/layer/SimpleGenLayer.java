@@ -22,20 +22,20 @@ package me.cybermaxke.mighty.biome.plugin.gen.layer;
 
 import java.util.List;
 
-import net.minecraft.server.v1_6_R2.BiomeBase;
-import net.minecraft.server.v1_6_R2.GenLayer;
-import net.minecraft.server.v1_6_R2.GenLayerIsland;
-import net.minecraft.server.v1_6_R2.GenLayerMushroomIsland;
-import net.minecraft.server.v1_6_R2.GenLayerMushroomShore;
-import net.minecraft.server.v1_6_R2.GenLayerRiver;
-import net.minecraft.server.v1_6_R2.GenLayerRiverInit;
-import net.minecraft.server.v1_6_R2.GenLayerRiverMix;
-import net.minecraft.server.v1_6_R2.GenLayerSmooth;
-import net.minecraft.server.v1_6_R2.GenLayerSwampRivers;
-import net.minecraft.server.v1_6_R2.GenLayerZoom;
-import net.minecraft.server.v1_6_R2.GenLayerZoomFuzzy;
-import net.minecraft.server.v1_6_R2.GenLayerZoomVoronoi;
-import net.minecraft.server.v1_6_R2.LayerIsland;
+import net.minecraft.server.v1_6_R3.BiomeBase;
+import net.minecraft.server.v1_6_R3.GenLayer;
+import net.minecraft.server.v1_6_R3.GenLayerIsland;
+import net.minecraft.server.v1_6_R3.GenLayerMushroomIsland;
+import net.minecraft.server.v1_6_R3.GenLayerMushroomShore;
+import net.minecraft.server.v1_6_R3.GenLayerRiver;
+import net.minecraft.server.v1_6_R3.GenLayerRiverInit;
+import net.minecraft.server.v1_6_R3.GenLayerRiverMix;
+import net.minecraft.server.v1_6_R3.GenLayerSmooth;
+import net.minecraft.server.v1_6_R3.GenLayerSwampRivers;
+import net.minecraft.server.v1_6_R3.GenLayerZoom;
+import net.minecraft.server.v1_6_R3.GenLayerZoomFuzzy;
+import net.minecraft.server.v1_6_R3.GenLayerZoomVoronoi;
+import net.minecraft.server.v1_6_R3.LayerIsland;
 
 public class SimpleGenLayer {
 

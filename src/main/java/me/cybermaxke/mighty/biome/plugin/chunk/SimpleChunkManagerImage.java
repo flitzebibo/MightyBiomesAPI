@@ -30,11 +30,11 @@ import java.util.Random;
 
 import org.bukkit.Color;
 
-import net.minecraft.server.v1_6_R2.BiomeBase;
-import net.minecraft.server.v1_6_R2.BiomeCache;
-import net.minecraft.server.v1_6_R2.ChunkPosition;
-import net.minecraft.server.v1_6_R2.IntCache;
-import net.minecraft.server.v1_6_R2.WorldChunkManager;
+import net.minecraft.server.v1_6_R3.BiomeBase;
+import net.minecraft.server.v1_6_R3.BiomeCache;
+import net.minecraft.server.v1_6_R3.ChunkPosition;
+import net.minecraft.server.v1_6_R3.IntCache;
+import net.minecraft.server.v1_6_R3.WorldChunkManager;
 
 public class SimpleChunkManagerImage extends WorldChunkManager {
 	private Map<Color, BiomeBase> biomes = new HashMap<Color, BiomeBase>();

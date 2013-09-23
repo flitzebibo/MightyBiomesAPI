@@ -24,9 +24,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.minecraft.server.v1_6_R2.BiomeBase;
-import net.minecraft.server.v1_6_R2.GenLayer;
-import net.minecraft.server.v1_6_R2.IntCache;
+import net.minecraft.server.v1_6_R3.BiomeBase;
+import net.minecraft.server.v1_6_R3.GenLayer;
+import net.minecraft.server.v1_6_R3.IntCache;
 
 public class SimpleGenLayerHills extends GenLayer {
 	private Map<Integer, Integer> hillBiomes = new HashMap<Integer, Integer>();
