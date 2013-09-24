@@ -84,7 +84,7 @@ public class SimpleBiomeMeta extends me.cybermaxke.mighty.biome.api.BiomeMeta {
 
 		SimpleBiomeMeta other = (SimpleBiomeMeta) o;
 		return new EqualsBuilder()
-				.append(this.getClass(), other.getClass())
+				.append(this.getEntity(), other.getEntity())
 				.append(this.getWeight(), other.getWeight())
 				.append(this.getMinGroupCount(), other.getMinGroupCount())
 				.append(this.getMaxGroupCount(), other.getMaxGroupCount())
@@ -94,7 +94,7 @@ public class SimpleBiomeMeta extends me.cybermaxke.mighty.biome.api.BiomeMeta {
 	@Override
 	public int hashCode() {
 		return new HashCodeBuilder()
-				.appendSuper(this.getClass().hashCode())
+				.appendSuper(this.getEntity().hashCode())
 				.append(this.getWeight())
 				.append(this.getMinGroupCount())
 				.append(this.getMaxGroupCount())

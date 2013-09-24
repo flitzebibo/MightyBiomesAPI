@@ -162,6 +162,9 @@ public class SimpleBiome implements Biome {
 		return null;
 	}
 
+	/**
+	 * Make the meta list depending on the list added by the biome wrapper.
+	 */
 	public class MetaList implements List<BiomeMeta> {
 		private final List<me.cybermaxke.mighty.biome.api.BiomeMeta> meta;
 
@@ -213,13 +216,7 @@ public class SimpleBiome implements Biome {
 				return false;
 			}
 
-			for (me.cybermaxke.mighty.biome.api.BiomeMeta meta : this.meta) {
-				if (meta instanceof SimpleBiomeMeta && ((SimpleBiomeMeta) meta).getHandle() == o) {
-					return true;
-				}
-			}
-
-			return false;
+			return this.meta.contains(new SimpleBiomeMeta((BiomeMeta) o));
 		}
 
 		@Override
@@ -240,14 +237,20 @@ public class SimpleBiome implements Biome {
 
 		@Override
 		public int indexOf(Object o) {
-			// TODO Auto-generated method stub
-			return 0;
+			if (!(o instanceof BiomeMeta)) {
+				return -1;
+			}
+
+			return this.meta.indexOf(new SimpleBiomeMeta((BiomeMeta) o));
 		}
 
 		@Override
 		public int lastIndexOf(Object o) {
-			// TODO Auto-generated method stub
-			return 0;
+			if (!(o instanceof BiomeMeta)) {
+				return -1;
+			}
+
+			return this.meta.lastIndexOf(new SimpleBiomeMeta((BiomeMeta) o));
 		}
 
 		@Override
@@ -340,8 +343,11 @@ public class SimpleBiome implements Biome {
 
 		@Override
 		public boolean remove(Object o) {
-			// TODO Auto-generated method stub
-			return false;
+			if (!(o instanceof BiomeMeta)) {
+				return false;
+			}
+
+			return this.meta.remove(new SimpleBiomeMeta((BiomeMeta) o));
 		}
 
 		@Override
@@ -351,14 +357,32 @@ public class SimpleBiome implements Biome {
 
 		@Override
 		public boolean removeAll(Collection<?> c) {
-			// TODO Auto-generated method stub
-			return false;
+			Object[] array = c.toArray(new Object[] {});
+
+			boolean succes = false;
+			for (int i = 0; i < array.length; i++) {
+				if (this.remove(array[i]) && !succes) {
+					succes = true;
+				}
+			}
+
+			return succes;
 		}
 
 		@Override
 		public boolean retainAll(Collection<?> c) {
-			// TODO Auto-generated method stub
-			return false;
+			boolean succes = false;
+			for (int i = 0; i < this.size(); i++) {
+				if (!c.contains(this.get(i))) {
+					this.remove(i);
+
+					if (!succes) {
+						succes = true;
+					}
+				}
+			}
+
+			return succes;
 		}
 
 		@Override

@@ -20,6 +20,11 @@
  */
 package me.cybermaxke.mighty.biome.api;
 
+import me.cybermaxke.mighty.biome.plugin.SimpleBiomeMeta;
+
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
 import org.bukkit.entity.LivingEntity;
 
 public class BiomeMeta {
@@ -66,5 +71,30 @@ public class BiomeMeta {
 	 */
 	public int getMaxGroupCount() {
 		return this.maxGroupCount;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (!(o instanceof SimpleBiomeMeta)) {
+			return false;
+		}
+
+		BiomeMeta other = (BiomeMeta) o;
+		return new EqualsBuilder()
+				.append(this.entity, other.entity)
+				.append(this.weight, other.weight)
+				.append(this.minGroupCount, other.minGroupCount)
+				.append(this.maxGroupCount, other.maxGroupCount)
+				.isEquals();
+	}
+
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder()
+				.appendSuper(this.entity.hashCode())
+				.append(this.weight)
+				.append(this.minGroupCount)
+				.append(this.maxGroupCount)
+				.toHashCode();
 	}
 }
