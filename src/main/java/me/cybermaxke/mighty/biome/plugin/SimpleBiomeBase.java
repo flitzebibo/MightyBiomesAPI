@@ -20,7 +20,6 @@
  */
 package me.cybermaxke.mighty.biome.plugin;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -84,20 +83,7 @@ public class SimpleBiomeBase extends BiomeBase {
 				break;
 		}
 
-		List<BiomeMeta> mobs = new ArrayList<BiomeMeta>();
-		if (meta != null) {
-			for (me.cybermaxke.mighty.biome.api.BiomeMeta value : meta) {
-				Class<?> clazz = SimpleBiomePlugin.get().getEntityRegister()
-						.getMcEntity(value.getEntity());
-
-				if (clazz != null) {
-					mobs.add(new BiomeMeta(clazz, value.getWeight(), value.getMinGroupCount(),
-							value.getMaxGroupCount()));
-				}
-			}
-		}
-
-		return mobs;
+		return new SimpleBiomeMetaList(meta);
 	}
 
 	@Override

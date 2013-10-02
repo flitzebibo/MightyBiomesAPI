@@ -36,7 +36,7 @@ public class WeightedRandom {
 	 * @param collection
 	 * @return weight
 	 */
-	public <T extends WeightedRandomItem> int getTotalWeight(Collection<T> collection) {
+	public static <T extends WeightedRandomItem> int getTotalWeight(Collection<T> collection) {
 		int weight = 0;
 
 		Iterator<T> iter = collection.iterator();
@@ -52,8 +52,8 @@ public class WeightedRandom {
 	 * @param array
 	 * @return weight
 	 */
-	public <T extends WeightedRandomItem> int getTotalWeight(T... array) {
-		return this.getTotalWeight(Arrays.asList(array));
+	public static <T extends WeightedRandomItem> int getTotalWeight(T... array) {
+		return getTotalWeight(Arrays.asList(array));
 	}
 
 	/**
@@ -64,7 +64,7 @@ public class WeightedRandom {
 	 * @param totalWeight
 	 * @return item
 	 */
-	public <T extends WeightedRandomItem> T getRandomItem(Random random, Collection<T> collection,
+	public static <T extends WeightedRandomItem> T getRandomItem(Random random, Collection<T> collection,
 			int totalWeight) {
 		if (totalWeight <= 0) {
 			throw new IllegalArgumentException("The total weight has to be greater then zero!");
@@ -93,9 +93,9 @@ public class WeightedRandom {
 	 * @param totalWeight
 	 * @return item
 	 */
-	public <T extends WeightedRandomItem> T getRandomItem(Random random, int totalWeight,
+	public static <T extends WeightedRandomItem> T getRandomItem(Random random, int totalWeight,
 			T... array) {
-		return this.getRandomItem(random, Arrays.asList(array), totalWeight);
+		return getRandomItem(random, Arrays.asList(array), totalWeight);
 	}
 
 	/**
@@ -104,9 +104,9 @@ public class WeightedRandom {
 	 * @param collection
 	 * @return item
 	 */
-	public <T extends WeightedRandomItem> T getRandomItem(Random random,
+	public static <T extends WeightedRandomItem> T getRandomItem(Random random,
 			Collection<T> collection) {
-		return this.getRandomItem(random, collection, this.getTotalWeight(collection));
+		return getRandomItem(random, collection, getTotalWeight(collection));
 	}
 
 	/**
@@ -115,7 +115,7 @@ public class WeightedRandom {
 	 * @param array
 	 * @return item
 	 */
-	public <T extends WeightedRandomItem> T getRandomItem(Random random, T... array) {
-		return this.getRandomItem(random, Arrays.asList(array));
+	public static <T extends WeightedRandomItem> T getRandomItem(Random random, T... array) {
+		return getRandomItem(random, Arrays.asList(array));
 	}
 }
