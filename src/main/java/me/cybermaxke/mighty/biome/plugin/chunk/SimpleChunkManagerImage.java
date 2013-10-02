@@ -41,16 +41,18 @@ public class SimpleChunkManagerImage extends WorldChunkManager {
 	private Map<Long, BiomeBase> biomeSections = new HashMap<Long, BiomeBase>();
 
 	private BufferedImage image;
-	private BiomeBase fillingBiome = BiomeBase.OCEAN;
+	private BiomeBase fillingBiome;
 
 	private int height;
 	private int width;
 
-	public SimpleChunkManagerImage(BufferedImage image, Map<Color, BiomeBase> biomes) {
+	public SimpleChunkManagerImage(BufferedImage image, Map<Color, BiomeBase> biomes,
+			BiomeBase fillingBiome) {
 		this.biomes = biomes;
 		this.image = image;
 		this.height = image.getHeight();
 		this.width = image.getWidth();
+		this.fillingBiome = fillingBiome == null ? BiomeBase.OCEAN : fillingBiome;
 		this.load();
 	}
 
@@ -73,7 +75,7 @@ public class SimpleChunkManagerImage extends WorldChunkManager {
 	}
 
 	public BiomeBase getBiome(int x, int z) {
-		if ((this.width / 2) > x || (this.height / 2) > z) {
+		if (this.width / 2 > x || this.height / 2 > z) {
 			return this.fillingBiome;
 		}
 

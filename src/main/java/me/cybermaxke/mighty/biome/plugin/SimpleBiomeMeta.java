@@ -53,12 +53,14 @@ public class SimpleBiomeMeta extends me.cybermaxke.mighty.biome.api.BiomeMeta {
 	}
 
 	@Override
+	public void setEntity(Class<? extends LivingEntity> entity) {
+		this.meta.b = SimpleBiomePlugin.get().getEntityRegister().getMcEntity(entity);
+	}
+
+	@Override
 	public int getWeight() {
 		try {
-			Field field = WeightedRandomChoice.class.getDeclaredField("a");
-			field.setAccessible(true);
-
-			return field.getInt(this.meta);
+			return this.getWeightField().getInt(this.meta);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -67,13 +69,32 @@ public class SimpleBiomeMeta extends me.cybermaxke.mighty.biome.api.BiomeMeta {
 	}
 
 	@Override
+	public void setWeight(int weight) {
+		try {
+			this.getWeightField().set(this.meta, weight);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
 	public int getMinGroupCount() {
 		return this.meta.c;
 	}
 
 	@Override
+	public void setMinGroupCount(int count) {
+		this.meta.c = count;
+	}
+
+	@Override
 	public int getMaxGroupCount() {
 		return this.meta.d;
+	}
+
+	@Override
+	public void setMaxGroupCount(int count) {
+		this.meta.d = count;
 	}
 
 	@Override
@@ -99,6 +120,19 @@ public class SimpleBiomeMeta extends me.cybermaxke.mighty.biome.api.BiomeMeta {
 				.append(this.getMinGroupCount())
 				.append(this.getMaxGroupCount())
 				.toHashCode();
+	}
+
+	public Field getWeightField() {
+		try {
+			Field field = WeightedRandomChoice.class.getDeclaredField("a");
+			field.setAccessible(true);
+
+			return field;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 
 	public BiomeMeta getHandle() {

@@ -20,15 +20,16 @@
  */
 package me.cybermaxke.mighty.biome.api;
 
-import me.cybermaxke.mighty.biome.plugin.SimpleBiomeMeta;
+import me.cybermaxke.mighty.biome.api.utils.WeightedRandomItem;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import org.bukkit.entity.LivingEntity;
 
-public class BiomeMeta {
+public class BiomeMeta implements WeightedRandomItem {
 	private Class<? extends LivingEntity> entity;
+
 	private int weight;
 	private int minGroupCount;
 	private int maxGroupCount;
@@ -50,7 +51,16 @@ public class BiomeMeta {
 	}
 
 	/**
-	 * Gets the weight.
+	 * Sets the entity that should spawn.
+	 * @param entity
+	 */
+	public void setEntity(Class<? extends LivingEntity> entity) {
+		this.entity = entity;
+	}
+
+	/**
+	 * Gets the weight. The bigger this value, the bigger the chance
+	 * that the entity will spawn.
 	 * @return weight
 	 */
 	public int getWeight() {
@@ -58,7 +68,16 @@ public class BiomeMeta {
 	}
 
 	/**
-	 * Gets the minimal group count.
+	 * Sets the weight. The bigger this value, the bigger the chance
+	 * that the entity will spawn.
+	 * @param weight
+	 */
+	public void setWeight(int weight) {
+		this.weight = weight;
+	}
+
+	/**
+	 * Gets the minimum group count.
 	 * @return count
 	 */
 	public int getMinGroupCount() {
@@ -66,16 +85,32 @@ public class BiomeMeta {
 	}
 
 	/**
-	 * Gets the maximal group count.
+	 * Sets the minimum group count.
+	 * @param count
+	 */
+	public void setMinGroupCount(int count) {
+		this.minGroupCount = count;
+	}
+
+	/**
+	 * Gets the maximum group count.
 	 * @return count
 	 */
 	public int getMaxGroupCount() {
 		return this.maxGroupCount;
 	}
 
+	/**
+	 * Sets the maximum group count.
+	 * @param count
+	 */
+	public void setMaxGroupCount(int count) {
+		this.maxGroupCount = count;
+	}
+
 	@Override
 	public boolean equals(Object o) {
-		if (!(o instanceof SimpleBiomeMeta)) {
+		if (!(o instanceof BiomeMeta)) {
 			return false;
 		}
 
