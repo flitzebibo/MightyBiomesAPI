@@ -43,8 +43,8 @@ public class SimpleBiomeBase extends BiomeBase {
 
 	public void load() {
 		this.I = this.a();
-		this.A = (byte) this.biome.getTopBlock();
-		this.B = (byte) this.biome.getFillingBlock();
+		this.A = (byte) this.biome.getTopBlock().getId();
+		this.B = (byte) this.biome.getFillingBlock().getId();
 		this.D = this.biome.getMinHeight();
 		this.E = this.biome.getMaxHeight();
 		this.temperature = this.biome.getTemperature();

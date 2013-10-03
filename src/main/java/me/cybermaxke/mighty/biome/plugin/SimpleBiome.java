@@ -26,6 +26,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.bukkit.Material;
+
 import me.cybermaxke.mighty.biome.api.Biome;
 import me.cybermaxke.mighty.biome.api.data.EnumCreatureType;
 
@@ -105,13 +107,13 @@ public class SimpleBiome implements Biome {
 	}
 
 	@Override
-	public int getTopBlock() {
-		return this.biome.A;
+	public Material getTopBlock() {
+		return Material.getMaterial(this.biome.A);
 	}
 
 	@Override
-	public int getFillingBlock() {
-		return this.biome.B;
+	public Material getFillingBlock() {
+		return Material.getMaterial(this.biome.B);
 	}
 
 	@Override

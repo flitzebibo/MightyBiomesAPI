@@ -48,8 +48,9 @@ public class BiomeBase implements Biome {
 
 	private final int id;
 
-	private int topBlock = Material.GRASS.getId();
-	private int fillingBlock = Material.DIRT.getId();
+	private Material topBlock = Material.GRASS;
+	private Material fillingBlock = Material.DIRT;
+
 	private int color = 4;
 
 	private float minHeight = 0.1F;
@@ -121,12 +122,12 @@ public class BiomeBase implements Biome {
 	}
 
 	@Override
-	public int getTopBlock() {
+	public Material getTopBlock() {
 		return this.topBlock;
 	}
 
 	@Override
-	public int getFillingBlock() {
+	public Material getFillingBlock() {
 		return this.fillingBlock;
 	}
 
@@ -171,19 +172,19 @@ public class BiomeBase implements Biome {
 	}
 
 	/**
-	 * Sets the id of the top block.
-	 * @param id
+	 * Sets the material of the top block.
+	 * @param material
 	 */
-	public void setTopBlock(int id) {
-		this.topBlock = id;
+	public void setTopBlock(Material material) {
+		this.topBlock = material;
 	}
 
 	/**
-	 * Sets the id of the filling block.
-	 * @param id
+	 * Sets the material of the filling block.
+	 * @param material
 	 */
-	public void setFillingBlock(int id) {
-		this.fillingBlock = id;
+	public void setFillingBlock(Material material) {
+		this.fillingBlock = material;
 	}
 
 	/**

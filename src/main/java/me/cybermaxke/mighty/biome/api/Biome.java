@@ -22,6 +22,8 @@ package me.cybermaxke.mighty.biome.api;
 
 import java.util.List;
 
+import org.bukkit.Material;
+
 import me.cybermaxke.mighty.biome.api.data.EnumCreatureType;
 
 public interface Biome {
@@ -99,16 +101,16 @@ public interface Biome {
 	public float getMaxHeight();
 
 	/**
-	 * Gets the id of the top block.
-	 * @return id
+	 * Gets the material of the top block.
+	 * @return material
 	 */
-	public int getTopBlock();
+	public Material getTopBlock();
 
 	/**
-	 * Gets the id of the filling block.
-	 * @return id
+	 * Gets the material of the filling block.
+	 * @return material
 	 */
-	public int getFillingBlock();
+	public Material getFillingBlock();
 
 	/**
 	 * Gets if there can villages spawn in the biome.

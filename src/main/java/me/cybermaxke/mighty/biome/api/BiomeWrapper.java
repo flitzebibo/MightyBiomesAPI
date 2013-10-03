@@ -22,6 +22,8 @@ package me.cybermaxke.mighty.biome.api;
 
 import java.util.List;
 
+import org.bukkit.Material;
+
 import me.cybermaxke.mighty.biome.api.data.EnumCreatureType;
 
 public class BiomeWrapper implements Biome {
@@ -72,12 +74,12 @@ public class BiomeWrapper implements Biome {
 	}
 
 	@Override
-	public int getTopBlock() {
+	public Material getTopBlock() {
 		return Biomes.get().get(this.id).getTopBlock();
 	}
 
 	@Override
-	public int getFillingBlock() {
+	public Material getFillingBlock() {
 		return Biomes.get().get(this.id).getFillingBlock();
 	}
 
