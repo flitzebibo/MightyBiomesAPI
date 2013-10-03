@@ -20,87 +20,200 @@
  */
 package me.cybermaxke.mighty.biome.plugin;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Random;
+import java.util.Map;
 
-import me.cybermaxke.mighty.biome.api.gen.WorldGen;
-import me.cybermaxke.mighty.biome.plugin.gen.SimpleWorldGen;
+import org.bukkit.Material;
+
+import me.cybermaxke.mighty.biome.api.data.EnumCreatureType;
 
 import net.minecraft.server.v1_6_R3.BiomeBase;
 import net.minecraft.server.v1_6_R3.BiomeDecorator;
 import net.minecraft.server.v1_6_R3.BiomeMeta;
-import net.minecraft.server.v1_6_R3.EnumCreatureType;
-import net.minecraft.server.v1_6_R3.WorldGenerator;
+import net.minecraft.server.v1_6_R3.WorldGenVillage;
 
-public class SimpleBiomeBase extends BiomeBase {
-	private final me.cybermaxke.mighty.biome.api.BiomeBase biome;
+public class SimpleBiomeBase implements me.cybermaxke.mighty.biome.api.BiomeBase {
+	private final Map<EnumCreatureType, List<me.cybermaxke.mighty.biome.api.BiomeMeta>> meta =
+			new HashMap<EnumCreatureType, List<me.cybermaxke.mighty.biome.api.BiomeMeta>>();
+	private final BiomeBase biome;
+	private final BiomeDecorator defaultDecorator;
 
-	public SimpleBiomeBase(me.cybermaxke.mighty.biome.api.BiomeBase biome) {
-		super(biome.getId());
+	private boolean spawnable = false;
+
+	@SuppressWarnings("unchecked")
+	public SimpleBiomeBase(BiomeBase biome) {
 		this.biome = biome;
-		this.load();
-	}
+		this.defaultDecorator = biome.I;
 
-	public void load() {
-		this.I = this.a();
-		this.A = (byte) this.biome.getTopBlock().getId();
-		this.B = (byte) this.biome.getFillingBlock().getId();
-		this.D = this.biome.getMinHeight();
-		this.E = this.biome.getMaxHeight();
-		this.temperature = this.biome.getTemperature();
-		this.J.clear();
-		this.K.clear();
-		this.L.clear();
-		this.M.clear();
-	}
+		for (EnumCreatureType type : EnumCreatureType.values()) {
+			List<me.cybermaxke.mighty.biome.api.BiomeMeta> list =
+					new ArrayList<me.cybermaxke.mighty.biome.api.BiomeMeta>();
 
-	public me.cybermaxke.mighty.biome.api.BiomeBase getBiome() {
-		return this.biome;
+			this.meta.put(type, list);
+
+			try {
+				Field field = this.getField(type);
+				field.setAccessible(true);
+
+				List<BiomeMeta> list1 = (List<BiomeMeta>) this.getField(type).get(biome);
+				List<BiomeMeta> list2 = new SimpleBiomeMetaList(list, list1);
+
+				field.set(biome, list2);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	@Override
-	public List<BiomeMeta> getMobs(EnumCreatureType type) {
-		List<me.cybermaxke.mighty.biome.api.BiomeMeta> meta = null;
+	public int getId() {
+		return this.biome.id;
+	}
+
+	@Override
+	public int getBiomeColor() {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public void setBiomeColor(int color) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public float getTemperature() {
+		return this.biome.temperature;
+	}
+
+	@Override
+	public void setTemperature(float temperature) {
+		this.biome.temperature = temperature;
+	}
+
+	@Override
+	public void clearSpawns() {
+		for (EnumCreatureType type : EnumCreatureType.values()) {
+			this.clearSpawns(type);
+		}
+	}
+
+	@Override
+	public void clearSpawns(EnumCreatureType type) {
+		this.meta.get(type).clear();
+	}
+
+	@Override
+	public List<me.cybermaxke.mighty.biome.api.BiomeMeta> getSpawns(EnumCreatureType type) {
+		return this.meta.get(type);
+	}
+
+	@Override
+	public void addSpawn(EnumCreatureType type, me.cybermaxke.mighty.biome.api.BiomeMeta meta) {
+		this.meta.get(type).add(meta);
+	}
+
+	@Override
+	public float getMinHeight() {
+		return this.biome.D;
+	}
+
+	@Override
+	public void setMinHeight(float height) {
+		this.biome.D = height;
+	}
+
+	@Override
+	public float getMaxHeight() {
+		return this.biome.E;
+	}
+
+	@Override
+	public void setMaxHeight(float height) {
+		this.biome.E = height;
+	}
+
+	@Override
+	public Material getTopBlock() {
+		return Material.getMaterial(this.biome.A);
+	}
+
+	@Override
+	public void setTopBlock(Material material) {
+		this.biome.A = (byte) material.getId();
+	}
+
+	@Override
+	public Material getFillingBlock() {
+		return Material.getMaterial(this.biome.B);
+	}
+
+	@Override
+	public void setFillingBlock(Material material) {
+		this.biome.B = (byte) material.getId();
+	}
+
+	@Override
+	public boolean getGenerateVillages() {
+		return WorldGenVillage.e.contains(this.biome);
+	}
+
+	@Override
+	public void setGenerateVillages(boolean generate) {
+		if (!this.getGenerateVillages()) {
+			WorldGenVillage.e.add(this.biome);
+		}
+	}
+
+	@Override
+	public boolean getSpawnable() {
+		return this.spawnable;
+	}
+
+	@Override
+	public void setSpawnable(boolean spawnable) {
+		this.spawnable = spawnable;
+	}
+
+	@Override
+	public me.cybermaxke.mighty.biome.api.BiomeDecorator getDecorator() {
+		return this.biome.I instanceof SimpleBiomeDecorator ?
+				((SimpleBiomeDecorator) this.biome.I).getHandle() : null;
+	}
+
+	@Override
+	public void setDecorator(me.cybermaxke.mighty.biome.api.BiomeDecorator decorator) {
+		this.biome.I = decorator == null ? this.defaultDecorator :
+			new SimpleBiomeDecorator(this.biome, decorator);
+	}
+
+	public Field getField(EnumCreatureType type) {
+		String fieldName = null;
 
 		switch (type) {
 			case AMBIENT:
-				meta = this.biome.getSpawns(
-						me.cybermaxke.mighty.biome.api.data.EnumCreatureType.AMBIENT);
-				break;
-			case CREATURE:
-				meta = this.biome.getSpawns(
-						me.cybermaxke.mighty.biome.api.data.EnumCreatureType.CREATURE);
+				fieldName = "M";
 				break;
 			case MONSTER:
-				meta = this.biome.getSpawns(
-						me.cybermaxke.mighty.biome.api.data.EnumCreatureType.MONSTER);
+				fieldName = "J";
 				break;
 			case WATER_CREATURE:
-				meta = this.biome.getSpawns(
-						me.cybermaxke.mighty.biome.api.data.EnumCreatureType.WATER_CREATURE);
+				fieldName = "L";
 				break;
+			case CREATURE:
 			default:
+				fieldName = "K";
 				break;
 		}
 
-		return new SimpleBiomeMetaList(meta);
-	}
+		try {
+			return BiomeBase.class.getDeclaredField(fieldName);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
-	@Override
-	public BiomeDecorator a() {
-		return this.biome == null ? null :
-			new SimpleBiomeDecorator(this, this.biome.getNewDecorator());
-	}
-
-	@Override
-	public WorldGenerator a(Random random) {
-		WorldGen gen = this.biome.getWorldGenTrees(random);
-		return gen == null ? super.a(random) : new SimpleWorldGen(gen);
-	}
-
-	@Override
-	public WorldGenerator b(Random random) {
-		WorldGen gen = this.biome.getWorldGenGrass(random);
-		return gen == null ? super.b(random) : new SimpleWorldGen(gen);
+		return null;
 	}
 }

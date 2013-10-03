@@ -26,7 +26,7 @@ import org.bukkit.Material;
 
 import me.cybermaxke.mighty.biome.api.data.EnumCreatureType;
 
-public class BiomeWrapper implements Biome {
+public class BiomeWrapper implements BiomeBase {
 	private final int id;
 
 	public BiomeWrapper(int id) {
@@ -39,8 +39,23 @@ public class BiomeWrapper implements Biome {
 	}
 
 	@Override
+	public int getBiomeColor() {
+		return Biomes.get().get(this.id).getBiomeColor();
+	}
+
+	@Override
+	public void setBiomeColor(int color) {
+		Biomes.get().get(this.id).setBiomeColor(color);
+	}
+
+	@Override
 	public float getTemperature() {
 		return Biomes.get().get(this.id).getTemperature();
+	}
+
+	@Override
+	public void setTemperature(float temperature) {
+		Biomes.get().get(this.id).setTemperature(temperature);
 	}
 
 	@Override
@@ -69,8 +84,18 @@ public class BiomeWrapper implements Biome {
 	}
 
 	@Override
+	public void setMinHeight(float height) {
+		Biomes.get().get(this.id).setMinHeight(height);
+	}
+
+	@Override
 	public float getMaxHeight() {
 		return Biomes.get().get(this.id).getMaxHeight();
+	}
+
+	@Override
+	public void setMaxHeight(float height) {
+		Biomes.get().get(this.id).setMaxHeight(height);
 	}
 
 	@Override
@@ -79,12 +104,47 @@ public class BiomeWrapper implements Biome {
 	}
 
 	@Override
+	public void setTopBlock(Material material) {
+		Biomes.get().get(this.id).setTopBlock(material);
+	}
+
+	@Override
 	public Material getFillingBlock() {
 		return Biomes.get().get(this.id).getFillingBlock();
 	}
 
 	@Override
-	public boolean canGenerateVillages() {
-		return Biomes.get().get(this.id).canGenerateVillages();
+	public void setFillingBlock(Material material) {
+		Biomes.get().get(this.id).setFillingBlock(material);
+	}
+
+	@Override
+	public boolean getGenerateVillages() {
+		return Biomes.get().get(this.id).getGenerateVillages();
+	}
+
+	@Override
+	public void setGenerateVillages(boolean generate) {
+		Biomes.get().get(this.id).setGenerateVillages(generate);
+	}
+
+	@Override
+	public boolean getSpawnable() {
+		return Biomes.get().get(this.id).getSpawnable();
+	}
+
+	@Override
+	public void setSpawnable(boolean spawnable) {
+		Biomes.get().get(this.id).setSpawnable(spawnable);
+	}
+
+	@Override
+	public BiomeDecorator getDecorator() {
+		return Biomes.get().get(this.id).getDecorator();
+	}
+
+	@Override
+	public void setDecorator(BiomeDecorator decorator) {
+		Biomes.get().get(this.id).setDecorator(decorator);
 	}
 }

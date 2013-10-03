@@ -20,198 +20,173 @@
  */
 package me.cybermaxke.mighty.biome.api;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Random;
-
-import me.cybermaxke.mighty.biome.api.data.EnumCreatureType;
-import me.cybermaxke.mighty.biome.api.gen.WorldGen;
 
 import org.bukkit.Material;
-import org.bukkit.entity.Bat;
-import org.bukkit.entity.Chicken;
-import org.bukkit.entity.Cow;
-import org.bukkit.entity.Creeper;
-import org.bukkit.entity.Enderman;
-import org.bukkit.entity.Pig;
-import org.bukkit.entity.Sheep;
-import org.bukkit.entity.Skeleton;
-import org.bukkit.entity.Spider;
-import org.bukkit.entity.Squid;
-import org.bukkit.entity.Zombie;
 
-public class BiomeBase implements Biome {
-	private final Map<EnumCreatureType, List<BiomeMeta>> meta =
-			new HashMap<EnumCreatureType, List<BiomeMeta>>();
+import me.cybermaxke.mighty.biome.api.data.EnumCreatureType;
 
-	private final int id;
-
-	private Material topBlock = Material.GRASS;
-	private Material fillingBlock = Material.DIRT;
-
-	private int color = 4;
-
-	private float minHeight = 0.1F;
-	private float maxHeight = 0.3F;
-	private float temperature = 0.5F;
-
-	public BiomeBase(int id) {
-		this.id = id;
-
-		this.clearSpawns();
-		this.addSpawn(EnumCreatureType.CREATURE, new BiomeMeta(Sheep.class, 12, 4, 4));
-		this.addSpawn(EnumCreatureType.CREATURE, new BiomeMeta(Pig.class, 10, 4, 4));
-		this.addSpawn(EnumCreatureType.CREATURE, new BiomeMeta(Chicken.class, 10, 4, 4));
-		this.addSpawn(EnumCreatureType.CREATURE, new BiomeMeta(Cow.class, 8, 4, 4));
-		this.addSpawn(EnumCreatureType.MONSTER, new BiomeMeta(Spider.class, 10, 4, 4));
-		this.addSpawn(EnumCreatureType.MONSTER, new BiomeMeta(Zombie.class, 10, 4, 4));
-		this.addSpawn(EnumCreatureType.MONSTER, new BiomeMeta(Skeleton.class, 10, 4, 4));
-		this.addSpawn(EnumCreatureType.MONSTER, new BiomeMeta(Creeper.class, 10, 4, 4));
-		this.addSpawn(EnumCreatureType.MONSTER, new BiomeMeta(Enderman.class, 1, 1, 4));
-		this.addSpawn(EnumCreatureType.WATER_CREATURE, new BiomeMeta(Squid.class, 10, 4, 4));
-		this.addSpawn(EnumCreatureType.AMBIENT, new BiomeMeta(Bat.class, 10, 8, 8));
-	}
-
-	@Override
-	public int getId() {
-		return this.id;
-	}
-
-	@Override
-	public boolean canGenerateVillages() {
-		return false;
-	}
-
-	@Override
-	public void clearSpawns() {
-		for (EnumCreatureType type : EnumCreatureType.values()) {
-			this.clearSpawns(type);
-		}
-	}
-
-	@Override
-	public void clearSpawns(EnumCreatureType type) {
-		this.meta.put(type, new ArrayList<BiomeMeta>());
-	}
-
-	@Override
-	public List<BiomeMeta> getSpawns(EnumCreatureType type) {
-		return this.meta.get(type);
-	}
-
-	@Override
-	public void addSpawn(EnumCreatureType type, BiomeMeta meta) {
-		this.meta.get(type).add(meta);
-	}
-
-	@Override
-	public float getMinHeight() {
-		return this.minHeight;
-	}
-
-	@Override
-	public float getMaxHeight() {
-		return this.maxHeight;
-	}
-
-	@Override
-	public float getTemperature() {
-		return this.temperature;
-	}
-
-	@Override
-	public Material getTopBlock() {
-		return this.topBlock;
-	}
-
-	@Override
-	public Material getFillingBlock() {
-		return this.fillingBlock;
-	}
+public interface BiomeBase {
+	public static final BiomeBase OCEAN = new BiomeWrapper(0);
+	public static final BiomeBase PLAINS = new BiomeWrapper(1);
+	public static final BiomeBase DESERT = new BiomeWrapper(2);
+	public static final BiomeBase EXTREME_HILLS = new BiomeWrapper(3);
+	public static final BiomeBase FOREST = new BiomeWrapper(4);
+	public static final BiomeBase TAIGA = new BiomeWrapper(5);
+	public static final BiomeBase SWAMPLAND = new BiomeWrapper(6);
+	public static final BiomeBase RIVER = new BiomeWrapper(7);
+	public static final BiomeBase NETHER = new BiomeWrapper(8);
+	public static final BiomeBase THE_END = new BiomeWrapper(9);
+	public static final BiomeBase FROZEN_OCEAN = new BiomeWrapper(10);
+	public static final BiomeBase FROZEN_RIVER = new BiomeWrapper(11);
+	public static final BiomeBase ICE_PLAINS = new BiomeWrapper(12);
+	public static final BiomeBase ICE_MOUNTAINS = new BiomeWrapper(13);
+	public static final BiomeBase MUSHROOM_ISLAND = new BiomeWrapper(14);
+	public static final BiomeBase MUSHROOM_SHORE = new BiomeWrapper(15);
+	public static final BiomeBase BEACH = new BiomeWrapper(16);
+	public static final BiomeBase DESERT_HILLS = new BiomeWrapper(17);
+	public static final BiomeBase FOREST_HILLS = new BiomeWrapper(18);
+	public static final BiomeBase TAIGA_HILLS = new BiomeWrapper(19);
+	public static final BiomeBase SMALL_MOUNTAINS = new BiomeWrapper(20);
+	public static final BiomeBase JUNGLE = new BiomeWrapper(21);
+	public static final BiomeBase JUNGLE_HILLS = new BiomeWrapper(22);
 
 	/**
-	 * Gets the color from the mc biome.
-	 * @return color
+	 * Gets the id.
+	 * @return id
 	 */
-	public int getBiomeColor() {
-		return this.color;
-	}
+	public int getId();
 
 	/**
-	 * Sets the color of the mc biome.
-	 * @param color
+	 * Gets the temperature.
+	 * @return temperature
 	 */
-	public void setBiomeColor(int color) {
-		this.color = color;
-	}
-
-	/**
-	 * Sets the minimal height.
-	 * @param height
-	 */
-	public void setMinHeight(float height) {
-		this.minHeight = height;
-	}
-
-	/**
-	 * Sets the maximal height.
-	 * @param height
-	 */
-	public void setMaxHeight(float height) {
-		this.maxHeight = height;
-	}
+	public float getTemperature();
 
 	/**
 	 * Sets the temperature.
 	 * @param temperature
 	 */
-	public void setTemperature(float temperature) {
-		this.temperature = temperature;
-	}
+	public void setTemperature(float temperature);
+
+	/**
+	 * Clears all the spawns for the biome.
+	 */
+	public void clearSpawns();
+
+	/**
+	 * Clears all the spawns for the type.
+	 * @param type
+	 */
+	public void clearSpawns(EnumCreatureType type);
+
+	/**
+	 * Gets the spawn metas for the type.
+	 * @param type
+	 * @return metas
+	 */
+	public List<BiomeMeta> getSpawns(EnumCreatureType type);
+
+	/**
+	 * Adds a new spawn meta.
+	 * @param type
+	 * @param meta
+	 */
+	public void addSpawn(EnumCreatureType type, BiomeMeta meta);
+
+	/**
+	 * Gets the color from the mc biome.
+	 * @return color
+	 */
+	public int getBiomeColor();
+
+	/**
+	 * Sets the color of the mc biome.
+	 * @param color
+	 */
+	public void setBiomeColor(int color);
+
+	/**
+	 * Gets the minimal height.
+	 * @return height
+	 */
+	public float getMinHeight();
+
+	/**
+	 * Sets the minimal height.
+	 * @param height
+	 */
+	public void setMinHeight(float height);
+
+	/**
+	 * Gets the maximal height.
+	 * @return height
+	 */
+	public float getMaxHeight();
+
+	/**
+	 * Sets the maximal height.
+	 * @param height
+	 */
+	public void setMaxHeight(float height);
+
+	/**
+	 * Gets the material of the top block.
+	 * @return material
+	 */
+	public Material getTopBlock();
 
 	/**
 	 * Sets the material of the top block.
 	 * @param material
 	 */
-	public void setTopBlock(Material material) {
-		this.topBlock = material;
-	}
+	public void setTopBlock(Material material);
+
+	/**
+	 * Gets the material of the filling block.
+	 * @return material
+	 */
+	public Material getFillingBlock();
 
 	/**
 	 * Sets the material of the filling block.
 	 * @param material
 	 */
-	public void setFillingBlock(Material material) {
-		this.fillingBlock = material;
-	}
+	public void setFillingBlock(Material material);
+
+	/**
+	 * Gets if there can villages spawn in the biome.
+	 * @return villager
+	 */
+	public boolean getGenerateVillages();
+
+	/**
+	 * Sets if there can villages spawn in the biome.
+	 * @param villager
+	 */
+	public void setGenerateVillages(boolean generate);
+
+	/**
+	 * Gets if players are allowed to spawn in this biome.
+	 * @return spawnable
+	 */
+	public boolean getSpawnable();
+
+	/**
+	 * Sets if players are allowed to spawn in this biome.
+	 * @param spawnable
+	 */
+	public void setSpawnable(boolean spawnable);
 
 	/**
 	 * Gets the biome decorator.
 	 * @return decorator
 	 */
-	public BiomeDecorator getNewDecorator() {
-		return new BiomeDecorator(this);
-	}
+	public BiomeDecorator getDecorator();
 
 	/**
-	 * Gets the world gen for trees,
-	 * if its 'null' then the default will be used.
-	 * @param random
-	 * @return worldGen
+	 * Sets the biome decorator.
+	 * @param decorator
 	 */
-	public WorldGen getWorldGenTrees(Random random) {
-		return null;
-	}
-
-	/**
-	 * Gets the world gen for grass,
-	 * if its 'null' then the default will be used.
-	 * @param random
-	 * @return worldGen
-	 */
-	public WorldGen getWorldGenGrass(Random random) {
-		return null;
-	}
+	public void setDecorator(BiomeDecorator decorator);
 }

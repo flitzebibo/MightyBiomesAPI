@@ -27,11 +27,10 @@ import org.bukkit.World;
 public interface BiomeAPI {
 
 	/**
-	 * Registers a new biome.
-	 * @param biome
+	 * Gets a new biome.
 	 * @return biome
 	 */
-	public <T extends BiomeBase> T register(T biome);
+	public BiomeBase getNew(int id);
 
 	/**
 	 * Removes a biome.
@@ -45,21 +44,21 @@ public interface BiomeAPI {
 	 * @param world
 	 * @param biome
 	 */
-	public void add(World world, Biome biome);
+	public void add(World world, BiomeBase biome);
 
 	/**
 	 * Adds biomes to the worlds generator.
 	 * @param world
 	 * @param biomes
 	 */
-	public void addAll(World world, List<Biome> biomes);
+	public void addAll(World world, List<BiomeBase> biomes);
 
 	/**
 	 * Removes a biome from the worlds generator.
 	 * @param world
 	 * @param biome
 	 */
-	public void remove(World world, Biome biome);
+	public void remove(World world, BiomeBase biome);
 
 	/**
 	 * Clears the biomes of the worlds generator.
@@ -73,14 +72,14 @@ public interface BiomeAPI {
 	 * @param world
 	 * @return biomes
 	 */
-	public List<Biome> getAll(World world);
+	public List<BiomeBase> getAll(World world);
 
 	/**
 	 * Gets a biome using its id.
 	 * @param id
 	 * @return biome
 	 */
-	public Biome get(int id);
+	public BiomeBase get(int id);
 
 	/**
 	 * Gets the biome id at the location.
@@ -98,7 +97,7 @@ public interface BiomeAPI {
 	 * @param z
 	 * @return biome
 	 */
-	public Biome get(World world, int x, int z);
+	public BiomeBase get(World world, int x, int z);
 
 	/**
 	 * Sets the biome at the location.
@@ -107,5 +106,5 @@ public interface BiomeAPI {
 	 * @param z
 	 * @param biome
 	 */
-	public void set(World world, Biome biome, int x, int z);
+	public void set(World world, BiomeBase biome, int x, int z);
 }

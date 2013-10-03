@@ -23,6 +23,7 @@ package me.cybermaxke.mighty.biome.plugin;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,22 +38,20 @@ import net.minecraft.server.v1_6_R3.Chunk;
 import net.minecraft.server.v1_6_R3.GenLayer;
 import net.minecraft.server.v1_6_R3.GenLayerRiverMix;
 import net.minecraft.server.v1_6_R3.WorldChunkManager;
-import net.minecraft.server.v1_6_R3.WorldGenVillage;
 
-import me.cybermaxke.mighty.biome.api.Biome;
 import me.cybermaxke.mighty.biome.api.BiomeAPI;
-import me.cybermaxke.mighty.biome.api.BiomeWrapper;
+import me.cybermaxke.mighty.biome.api.BiomeDefault;
 import me.cybermaxke.mighty.biome.plugin.gen.layer.SimpleGenLayer;
 import me.cybermaxke.mighty.biome.plugin.gen.layer.SimpleGenLayerBiome;
 import me.cybermaxke.mighty.biome.plugin.gen.layer.SimpleGenLayerData;
 
 public class SimpleBiomeRegister implements BiomeAPI {
-	private final Map<Integer, Biome> biomes = new HashMap<Integer, Biome>();
+	private final Map<Integer, SimpleBiomeBase> biomes = new HashMap<Integer, SimpleBiomeBase>();
 
 	public void load() {
 		for (BiomeBase biome : BiomeBase.biomes) {
-			if (biome != null && !(biome instanceof SimpleBiomeBase)) {
-				this.biomes.put(biome.id, new SimpleBiome(biome));
+			if (biome != null) {
+				this.biomes.put(biome.id, new SimpleBiomeBaseDefault(biome));
 			}
 		}
 
@@ -72,7 +71,7 @@ public class SimpleBiomeRegister implements BiomeAPI {
 			mfield.set(field1, field1.getModifiers() & ~Modifier.FINAL);
 
 			BiomeBase[] array1 = ((BiomeBase[]) field1.get(null));
-			BiomeBase[] array2 = new BiomeBase[256];
+			BiomeBase[] array2 = new BiomeBase[BiomeBase.biomes.length];
 
 			for (int i = 0; i < array1.length; i++) {
 				array2[i] = array1[i];
@@ -85,19 +84,28 @@ public class SimpleBiomeRegister implements BiomeAPI {
 	}
 
 	public void clean() {
-		List<Biome> biomes = new ArrayList<Biome>(this.biomes.values());
-		for (Biome biome : biomes) {
-			if (biome instanceof me.cybermaxke.mighty.biome.api.BiomeBase) {
+		List<SimpleBiomeBase> biomes = new ArrayList<SimpleBiomeBase>(this.biomes.values());
+
+		for (SimpleBiomeBase biome : biomes) {
+			if (biome instanceof SimpleBiomeBase) {
 				this.remove(biome.getId());
 			}
 		}
 	}
 
 	@Override
-	public <T extends me.cybermaxke.mighty.biome.api.BiomeBase> T register(T biome) {
-		if (BiomeBase.biomes[biome.getId()] != null) {
+	public SimpleBiomeBase getNew(int id) {
+		if (id >= BiomeBase.biomes.length) {
+			throw new IllegalArgumentException("The biome id has to be smaller then " +
+					BiomeBase.biomes.length + "");
+		}
+
+		if (BiomeBase.biomes[id] != null) {
 			throw new IllegalArgumentException("Duplicate id!");
 		}
+
+		BiomeBase biome1 = new BiomeBase(id) {};
+		SimpleBiomeBase biome2 = new SimpleBiomeBase(biome1);
 
 		try {
 			Field field = CraftBlock.class.getDeclaredField("BIOME_MAPPING");
@@ -109,34 +117,26 @@ public class SimpleBiomeRegister implements BiomeAPI {
 			Object[] array = ((Object[]) field.get(null));
 			BiomeBase[] array1 = ((BiomeBase[]) field1.get(null));
 
-			if (array1[biome.getId()] != null) {
-				throw new IllegalArgumentException("Duplicate Id!");
-			}
+			array[id] = CraftBlock.biomeBaseToBiome(BiomeBase.BEACH);
+			array1[id] = biome1;
 
-			array[biome.getId()] = CraftBlock
-					.biomeBaseToBiome(BiomeBase.biomes[biome.getBiomeColor()]);
-			array1[biome.getId()] = BiomeBase.BEACH;
-
-			SimpleBiomeBase biome1 = new SimpleBiomeBase(biome);
-			array1[biome.getId()] = biome1;
-
-			this.biomes.put(biome.getId(), biome);
+			this.biomes.put(id, biome2);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		return biome;
+		return biome2;
 	}
 
 	@Override
-	public me.cybermaxke.mighty.biome.api.BiomeBase remove(int id) {
-		Biome biome = this.get(id);
+	public SimpleBiomeBase remove(int id) {
+		SimpleBiomeBase biome = this.get(id);
 
 		if (biome == null) {
 			return null;
 		}
 
-		if (biome instanceof SimpleBiome || biome instanceof BiomeWrapper) {
+		if (biome instanceof BiomeDefault) {
 			throw new IllegalArgumentException("You can't remove a default biome!");
 		}
 
@@ -153,45 +153,21 @@ public class SimpleBiomeRegister implements BiomeAPI {
 		}
 
 		this.biomes.remove(id);
-		return (me.cybermaxke.mighty.biome.api.BiomeBase) biome;
+		return (SimpleBiomeBase) biome;
 	}
 
 	@Override
-	public Biome get(int id) {
+	public SimpleBiomeBase get(int id) {
 		return this.biomes.get(id);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public void add(World world, Biome biome) {
-		BiomeBase biome1 = BiomeBase.biomes[biome.getId()];
-		if (biome1 == null) {
-			throw new IllegalArgumentException("Biome isn't registered!");
-		}
-
-		SimpleGenLayerBiome layer = this.getBiomeLayer(world);
-
-		List<BiomeBase> biomes1 = layer.getBiomes();
-		List<BiomeBase> biomes = new ArrayList<BiomeBase>();
-		if (biomes1 != null) {
-			biomes.addAll(biomes1);
-		}
-
-		biomes.add(biome1);
-		this.setBiomes(world, biomes);
-		if (biome instanceof BiomeWrapper) {
-			this.getSpawnBiomeList(world).add(biome1);
-		}
-
-		if (biome.canGenerateVillages()) {
-			if (!WorldGenVillage.e.contains(biome1)) {
-				WorldGenVillage.e.add(biome1);
-			}
-		}
+	public void add(World world, me.cybermaxke.mighty.biome.api.BiomeBase biome) {
+		this.addAll(world, Arrays.asList(biome));
 	}
 
 	@Override
-	public void addAll(World world, List<Biome> biomes) {
+	public void addAll(World world, List<me.cybermaxke.mighty.biome.api.BiomeBase> biomes) {
 		SimpleGenLayerBiome layer = this.getBiomeLayer(world);
 
 		List<BiomeBase> biomes1 = layer.getBiomes();
@@ -199,17 +175,20 @@ public class SimpleBiomeRegister implements BiomeAPI {
 		if (biomes1 != null) {
 			biomes2.addAll(biomes1);
 		}
-		
-		for (Biome biome : biomes) {
+
+		for (me.cybermaxke.mighty.biome.api.BiomeBase biome : biomes) {
 			BiomeBase biome1 = BiomeBase.biomes[biome.getId()];
 			if (biome1 == null) {
 				throw new IllegalArgumentException("Biome " + biome.getId() +
 						" isn't registered!");
 			}
 
-			biomes2.add(biome1);
-			if (biome instanceof BiomeWrapper) {
-				this.getSpawnBiomeList(world).add(biome1);
+			if (biome.getSpawnable()) {
+				List<BiomeBase> biomes3 = this.getSpawnBiomeList(world);
+
+				if (!biomes3.contains(biome1)) {
+					biomes3.add(biome1);
+				}
 			}
 		}
 
@@ -217,7 +196,7 @@ public class SimpleBiomeRegister implements BiomeAPI {
 	}
 
 	@Override
-	public void remove(World world, Biome biome) {
+	public void remove(World world, me.cybermaxke.mighty.biome.api.BiomeBase biome) {
 		BiomeBase biome1 = BiomeBase.biomes[biome.getId()];
 		if (biome1 == null) {
 			throw new IllegalArgumentException("Biome isn't registered!");
@@ -240,12 +219,14 @@ public class SimpleBiomeRegister implements BiomeAPI {
 	}
 
 	@Override
-	public List<Biome> getAll(World world) {
-		List<Biome> biomes = new ArrayList<Biome>();
+	public List<me.cybermaxke.mighty.biome.api.BiomeBase> getAll(World world) {
+		List<me.cybermaxke.mighty.biome.api.BiomeBase> biomes =
+				new ArrayList<me.cybermaxke.mighty.biome.api.BiomeBase>();
 
 		SimpleGenLayerBiome layer = this.getBiomeLayer(world);
 		for (BiomeBase biome : layer.getBiomes()) {
-			Biome biome1 = this.get(biome.id);
+			SimpleBiomeBase biome1 = this.get(biome.id);
+
 			if (biome1 != null) {
 				biomes.add(biome1);
 			}
@@ -261,13 +242,13 @@ public class SimpleBiomeRegister implements BiomeAPI {
 	}
 
 	@Override
-	public Biome get(World world, int x, int z) {
+	public me.cybermaxke.mighty.biome.api.BiomeBase get(World world, int x, int z) {
 		int id = this.getId(world, x, z);
 		return id == -1 ? null : this.biomes.get(id);
 	}
 
 	@Override
-	public void set(World world, Biome biome, int x, int z) {
+	public void set(World world, me.cybermaxke.mighty.biome.api.BiomeBase biome, int x, int z) {
 		Chunk chunk = ((CraftWorld) world).getHandle().getChunkAtWorldCoords(x, z);
 
 		if (chunk != null) {
@@ -398,11 +379,12 @@ public class SimpleBiomeRegister implements BiomeAPI {
 		return null;
 	}
 
-	public List<BiomeBase> getBiomes(List<Biome> biomes) {
+	public List<BiomeBase> getBiomes(List<SimpleBiomeBase> biomes) {
 		List<BiomeBase> biomes1 = new ArrayList<BiomeBase>();
 
-		for (Biome biome : biomes) {
+		for (me.cybermaxke.mighty.biome.api.BiomeBase biome : biomes) {
 			BiomeBase biome1 = BiomeBase.biomes[biome.getId()];
+
 			if (biome1 != null) {
 				biomes1.add(biome1);
 			}

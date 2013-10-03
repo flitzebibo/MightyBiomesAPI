@@ -24,56 +24,20 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
+import me.cybermaxke.mighty.biome.api.gen.WorldGen;
+
 import org.bukkit.World;
 
 public class BiomeDecorator {
-	private final Map<Setting, Object> settings = new HashMap<Setting, Object>();
-	private final BiomeBase biome;
-
-	public BiomeDecorator(BiomeBase biome) {
-		this.biome = biome;
-
-		this.set(Setting.CACTI, -999);
-		this.set(Setting.DEATH_BUSH, -999);
-		this.set(Setting.REEDS, -999);
-		this.set(Setting.MUSHROOMS, -999);
-		this.set(Setting.WATERLILY, -999);
-		this.set(Setting.BIG_MUSHROOMS, -999);
-		this.set(Setting.TREES, -999);
-		this.set(Setting.SAND_2, 3);
-		this.set(Setting.FLOWERS, 2);
-		this.set(Setting.GRASS, 1);
-		this.set(Setting.SAND, 1);
-		this.set(Setting.CLAY, 1);
-		this.set(Setting.WATER_LAKES, 1);
-		this.set(Setting.LAVA_LAKES, 1);
-	}
-
-	/**
-	 * Gets the biome.
-	 * @return biome
-	 */
-	public BiomeBase getBiome() {
-		return this.biome;
-	}
+	private final Map<Setting, Integer> settings = new HashMap<Setting, Integer>();
 
 	/**
 	 * Gets the setting for the world decorator.
 	 * @param setting
 	 * @return value
 	 */
-	public Object get(Setting setting) {
+	public int get(Setting setting) {
 		return this.settings.get(setting);
-	}
-
-	/**
-	 * Gets the setting for the world decorator.
-	 * @param setting
-	 * @param type
-	 * @return value
-	 */
-	public <T> T get(Setting setting, Class<T> type) {
-		return type.cast(this.get(setting));
 	}
 
 	/**
@@ -81,8 +45,20 @@ public class BiomeDecorator {
 	 * @param setting
 	 * @param value
 	 */
-	public void set(Setting setting, Object value) {
+	public void set(Setting setting, int value) {
 		this.settings.put(setting, value);
+	}
+
+	/**
+	 * Called by the world generator to decorate the biome. Before any other grass, trees, flowers,
+	 * etc are generated.
+	 * @param world
+	 * @param random
+	 * @param chunkX
+	 * @param chunkZ
+	 */
+	public void onPreDecorate(World world, Random random, int chunkX, int chunkZ) {
+
 	}
 
 	/**
@@ -97,15 +73,37 @@ public class BiomeDecorator {
 	}
 
 	/**
+	 * Gets the world gen for trees,
+	 * if its 'null' then the default will be used.
+	 * @param random
+	 * @return worldGen
+	 */
+	public WorldGen getWorldGenTrees(Random random) {
+		return null;
+	}
+
+	/**
+	 * Gets the world gen for grass,
+	 * if its 'null' then the default will be used.
+	 * @param random
+	 * @return worldGen
+	 */
+	public WorldGen getWorldGenGrass(Random random) {
+		return null;
+	}
+
+	/**
 	 * Settings that are available in the default world decorator.
 	 */
 	public enum Setting {
 		WATERLILY,
 		TREES,
-		FLOWERS,
+		YELLOW_FLOWERS,
+		RED_FLOWERS,
 		GRASS,
 		DEATH_BUSH,
-		MUSHROOMS,
+		BROWN_MUSHROOMS,
+		RED_MUSHROOMS,
 		REEDS,
 		CACTI,
 		SAND,
@@ -113,6 +111,9 @@ public class BiomeDecorator {
 		CLAY,
 		BIG_MUSHROOMS,
 		WATER_LAKES,
-		LAVA_LAKES
+		LAVA_LAKES,
+		PUMPKINS,
+		WATER_LIQUIDS,
+		LAVA_LIQUIDS
 	}
 }
