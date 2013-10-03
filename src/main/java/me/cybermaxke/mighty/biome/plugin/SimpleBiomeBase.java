@@ -162,8 +162,10 @@ public class SimpleBiomeBase implements me.cybermaxke.mighty.biome.api.BiomeBase
 
 	@Override
 	public void setGenerateVillages(boolean generate) {
-		if (!this.getGenerateVillages()) {
+		if (!this.getGenerateVillages() && generate) {
 			WorldGenVillage.e.add(this.biome);
+		} else if (this.getGenerateVillages() && !generate) {
+			WorldGenVillage.e.remove(this.biome);
 		}
 	}
 
