@@ -28,11 +28,30 @@ import java.util.Random;
 
 import me.cybermaxke.mighty.biome.api.gen.WorldGen;
 
+import org.bukkit.Material;
 import org.bukkit.World;
 
 public class BiomeDecorator {
 	private final Map<Setting, Integer> settings = new HashMap<Setting, Integer>();
 	private final List<BiomeMinableMeta> minables = new ArrayList<BiomeMinableMeta>();
+
+	public BiomeDecorator() {
+		this.set(Setting.RED_FLOWERS, 1);
+		this.set(Setting.YELLOW_FLOWERS, 2);
+		this.set(Setting.GRASS, 1);
+		this.set(Setting.SAND, 1);
+		this.set(Setting.SAND_2, 3);
+		this.set(Setting.CLAY, 1);
+
+		this.addMinable(new BiomeMinableMeta(Material.DIRT, 32, 20, 0, 128));
+		this.addMinable(new BiomeMinableMeta(Material.GRAVEL, 32, 10, 0, 128));
+		this.addMinable(new BiomeMinableMeta(Material.COAL_ORE, 16, 20, 0, 128));
+		this.addMinable(new BiomeMinableMeta(Material.IRON_ORE, 8, 20, 0, 64));
+		this.addMinable(new BiomeMinableMeta(Material.GOLD_ORE, 8, 2, 0, 32));
+		this.addMinable(new BiomeMinableMeta(Material.REDSTONE_ORE, 7, 8, 0, 16));
+		this.addMinable(new BiomeMinableMeta(Material.DIAMOND_ORE, 7, 1, 0, 16));
+		this.addMinable(new BiomeMinableMeta(Material.LAPIS_ORE, 6, 1, 16, 32));
+	}
 
 	/**
 	 * Adds a new minable block to the world gen.
@@ -65,7 +84,7 @@ public class BiomeDecorator {
 	 * @return value
 	 */
 	public int get(Setting setting) {
-		return this.settings.get(setting);
+		return this.settings.containsKey(setting) ? this.settings.get(setting) : 0;
 	}
 
 	/**

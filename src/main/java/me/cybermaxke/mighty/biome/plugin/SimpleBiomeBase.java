@@ -31,7 +31,6 @@ import org.bukkit.Material;
 import me.cybermaxke.mighty.biome.api.data.EnumCreatureType;
 
 import net.minecraft.server.v1_6_R3.BiomeBase;
-import net.minecraft.server.v1_6_R3.BiomeDecorator;
 import net.minecraft.server.v1_6_R3.BiomeMeta;
 import net.minecraft.server.v1_6_R3.WorldGenVillage;
 
@@ -57,7 +56,7 @@ public class SimpleBiomeBase implements me.cybermaxke.mighty.biome.api.BiomeBase
 				Field field = this.getField(type);
 				field.setAccessible(true);
 
-				List<BiomeMeta> list1 = (List<BiomeMeta>) this.getField(type).get(biome);
+				List<BiomeMeta> list1 = (List<BiomeMeta>) field.get(biome);
 				List<BiomeMeta> list2 = new SimpleBiomeMetaList(list, list1);
 
 				field.set(biome, list2);

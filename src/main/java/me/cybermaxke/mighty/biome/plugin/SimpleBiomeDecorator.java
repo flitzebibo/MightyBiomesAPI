@@ -22,8 +22,6 @@ package me.cybermaxke.mighty.biome.plugin;
 
 import java.lang.reflect.Field;
 
-import org.bukkit.Material;
-
 import me.cybermaxke.mighty.biome.api.BiomeDecorator.Setting;
 import me.cybermaxke.mighty.biome.api.BiomeMinableMeta;
 import me.cybermaxke.mighty.biome.api.gen.WorldGen;
@@ -267,41 +265,10 @@ public class SimpleBiomeDecorator extends BiomeDecorator {
 	}
 
 	/**
-	 * Loads all the default values.
-	 */
-	public void init() {
-		this.decorator.set(Setting.RED_FLOWERS, 1);
-		this.decorator.set(Setting.YELLOW_FLOWERS, 2);
-		this.decorator.set(Setting.GRASS, 1);
-		this.decorator.set(Setting.SAND, 1);
-		this.decorator.set(Setting.SAND_2, 3);
-		this.decorator.set(Setting.CLAY, 1);
-
-		this.decorator.addMinable(new BiomeMinableMeta(Material.DIRT,
-				32, 20, 0, 128));
-		this.decorator.addMinable(new BiomeMinableMeta(Material.GRAVEL,
-				32, 10, 0, 128));
-		this.decorator.addMinable(new BiomeMinableMeta(Material.COAL_ORE,
-				16, 20, 0, 128));
-		this.decorator.addMinable(new BiomeMinableMeta(Material.IRON_ORE,
-				8, 20, 0, 64));
-		this.decorator.addMinable(new BiomeMinableMeta(Material.GOLD_ORE,
-				8, 2, 0, 32));
-		this.decorator.addMinable(new BiomeMinableMeta(Material.REDSTONE_ORE,
-				7, 8, 0, 16));
-		this.decorator.addMinable(new BiomeMinableMeta(Material.DIAMOND_ORE,
-				7, 1, 0, 16));
-		this.decorator.addMinable(new BiomeMinableMeta(Material.LAPIS_ORE,
-				6, 1, 16, 32));
-	}
-
-	/**
 	 * Loads all the fields of the old decorator to this one.
 	 * @param old
 	 */
 	public void init(BiomeDecorator old) {
-		this.init();
-
 		this.decorator.set(Setting.BIG_MUSHROOMS, this.getInt("J", old));
 		this.decorator.set(Setting.CACTI, this.getInt("F", old));
 		this.decorator.set(Setting.CLAY, this.getInt("I", old));
