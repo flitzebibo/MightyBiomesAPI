@@ -326,7 +326,7 @@ public class SimpleBiomeDecorator extends BiomeDecorator {
 
 		this.decorator.set(Setting.RED_MUSHROOMS, mushroomsRed == 0 && mushrooms > 0 ? 1 :
 			mushroomsRed);
-		this.decorator.set(Setting.RED_MUSHROOMS, mushroomsBrown == 0 && mushrooms > 0 ? 1 :
+		this.decorator.set(Setting.BROWN_MUSHROOMS, mushroomsBrown == 0 && mushrooms > 0 ? 1 :
 			mushroomsBrown);
 	}
 
