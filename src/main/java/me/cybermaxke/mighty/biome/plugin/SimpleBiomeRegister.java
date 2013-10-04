@@ -106,6 +106,7 @@ public class SimpleBiomeRegister implements BiomeAPI {
 
 		BiomeBase biome1 = new BiomeBase(id) {};
 		SimpleBiomeBase biome2 = new SimpleBiomeBase(biome1);
+		biome2.getDecor().init();
 
 		try {
 			Field field = CraftBlock.class.getDeclaredField("BIOME_MAPPING");

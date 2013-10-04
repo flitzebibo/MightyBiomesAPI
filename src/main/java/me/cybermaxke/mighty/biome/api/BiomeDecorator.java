@@ -32,31 +32,31 @@ import org.bukkit.World;
 
 public class BiomeDecorator {
 	private final Map<Setting, Integer> settings = new HashMap<Setting, Integer>();
-	private final List<BiomeOreMeta> oreMeta = new ArrayList<BiomeOreMeta>();
+	private final List<BiomeMinableMeta> minables = new ArrayList<BiomeMinableMeta>();
 
 	/**
-	 * Adds a new ore meta to the world gen.
-	 * @param oreMeta
+	 * Adds a new minable block to the world gen.
+	 * @param minable
 	 */
-	public void addOreMeta(BiomeOreMeta oreMeta) {
-		this.oreMeta.add(oreMeta);
+	public void addMinable(BiomeMinableMeta minable) {
+		this.minables.add(minable);
 	}
 
 	/**
-	 * Removes a ore meta, gets if it was succes.
-	 * @param oreMeta
+	 * Removes a minable block, gets if it was succes.
+	 * @param minable
 	 * @return succes
 	 */
-	public boolean removeOreMeta(BiomeOreMeta oreMeta) {
-		return this.oreMeta.remove(oreMeta);
+	public boolean removeMinable(BiomeMinableMeta minable) {
+		return this.minables.remove(minable);
 	}
 
 	/**
-	 * Gets all the ore meta values.
+	 * Gets all the minable blocks.
 	 * @return values
 	 */
-	public List<BiomeOreMeta> getOreMeta() {
-		return this.oreMeta;
+	public List<BiomeMinableMeta> getMinables() {
+		return this.minables;
 	}
 
 	/**
@@ -134,7 +134,13 @@ public class BiomeDecorator {
 		RED_MUSHROOMS,
 		REEDS,
 		CACTI,
+		/**
+		 * The sand that will be generated before the clay.
+		 */
 		SAND,
+		/**
+		 * The sand that will be generated after the clay.
+		 */
 		SAND_2,
 		CLAY,
 		BIG_MUSHROOMS,

@@ -25,7 +25,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import org.bukkit.Material;
 
-public class BiomeOreMeta {
+public class BiomeMinableMeta {
 	private Material material;
 
 	private int groupSize;
@@ -33,11 +33,11 @@ public class BiomeOreMeta {
 	private int minHeight;
 	private int maxHeight;
 
-	public BiomeOreMeta(Material material) {
+	public BiomeMinableMeta(Material material) {
 		this(material, 8, 20, 0, 128);
 	}
 
-	public BiomeOreMeta(Material material, int groupSize, int groupCount, int minHeight,
+	public BiomeMinableMeta(Material material, int groupSize, int groupCount, int minHeight,
 			int maxHeight) {
 		this.material = material;
 		this.groupSize = groupSize;
@@ -128,11 +128,11 @@ public class BiomeOreMeta {
 
 	@Override
 	public boolean equals(Object o) {
-		if (!(o instanceof BiomeOreMeta)) {
+		if (!(o instanceof BiomeMinableMeta)) {
 			return false;
 		}
 
-		BiomeOreMeta other = (BiomeOreMeta) o;
+		BiomeMinableMeta other = (BiomeMinableMeta) o;
 		return new EqualsBuilder()
 				.append(this.material, other.material)
 				.append(this.groupSize, other.groupSize)
