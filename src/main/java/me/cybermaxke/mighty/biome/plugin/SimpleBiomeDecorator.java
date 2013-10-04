@@ -21,6 +21,7 @@
 package me.cybermaxke.mighty.biome.plugin;
 
 import me.cybermaxke.mighty.biome.api.BiomeDecorator.Setting;
+import me.cybermaxke.mighty.biome.api.BiomeOreMeta;
 import me.cybermaxke.mighty.biome.api.gen.WorldGen;
 import me.cybermaxke.mighty.biome.plugin.gen.SimpleWorldGen;
 
@@ -30,6 +31,7 @@ import net.minecraft.server.v1_6_R3.Block;
 import net.minecraft.server.v1_6_R3.WorldGenDeadBush;
 import net.minecraft.server.v1_6_R3.WorldGenLakes;
 import net.minecraft.server.v1_6_R3.WorldGenLiquids;
+import net.minecraft.server.v1_6_R3.WorldGenMinable;
 import net.minecraft.server.v1_6_R3.WorldGenPumpkin;
 import net.minecraft.server.v1_6_R3.WorldGenerator;
 
@@ -53,6 +55,27 @@ public class SimpleBiomeDecorator extends BiomeDecorator {
 	public void a() {
 		this.decorator.onPreDecorate(this.a.getWorld(), this.b, this.c, this.d);
 
+		/**
+		 * Generating ores.
+		 */
+		for (BiomeOreMeta meta : this.decorator.getOreMeta()) {
+			for (int i = 0; i < meta.getGroupCount(); i++) {
+				int min = meta.getMinHeight();
+				int max = meta.getMaxHeight();
+				int size = meta.getGroupCount();
+
+				int x = this.c + this.b.nextInt(16);
+				int y = this.b.nextInt(max - min) + min;
+				int z = this.d + this.b.nextInt(16);
+
+				WorldGenMinable gen = new WorldGenMinable(meta.getMaterial().getId(), size);
+				gen.a(this.a, this.b, x, y, z);
+			}
+		}
+
+		/**
+		 * Generating flowers, sand, lakes, etc.
+		 */
 		for (int i = 0; i < this.decorator.get(Setting.WATER_LAKES); ++i) {
 			int x = this.c + this.b.nextInt(16) + 8;
 			int z = this.d + this.b.nextInt(16) + 8;
@@ -114,19 +137,19 @@ public class SimpleBiomeDecorator extends BiomeDecorator {
 		}
 
 		for (int i = 0; i < this.decorator.get(Setting.YELLOW_FLOWERS); i++) {
-		      int x = this.c + this.b.nextInt(16) + 8;
-		      int y = this.b.nextInt(128);
-		      int z = this.d + this.b.nextInt(16) + 8;
-		 
-		      this.q.a(this.a, this.b, x, y, z);
+			int x = this.c + this.b.nextInt(16) + 8;
+			int y = this.b.nextInt(128);
+			int z = this.d + this.b.nextInt(16) + 8;
+
+			this.q.a(this.a, this.b, x, y, z);
 		}
 
 		for (int i = 0; i < this.decorator.get(Setting.RED_FLOWERS); i++) {
-		      int x = this.c + this.b.nextInt(16) + 8;
-		      int y = this.b.nextInt(128);
-		      int z = this.d + this.b.nextInt(16) + 8;
-		 
-		      this.r.a(this.a, this.b, x, y, z);
+			int x = this.c + this.b.nextInt(16) + 8;
+			int y = this.b.nextInt(128);
+			int z = this.d + this.b.nextInt(16) + 8;
+
+			this.r.a(this.a, this.b, x, y, z);
 		}
 
 		for (int i = 0; i < this.decorator.get(Setting.GRASS); i++) {

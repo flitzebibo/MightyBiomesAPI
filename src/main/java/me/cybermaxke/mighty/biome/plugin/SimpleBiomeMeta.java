@@ -99,11 +99,13 @@ public class SimpleBiomeMeta extends me.cybermaxke.mighty.biome.api.BiomeMeta {
 
 	@Override
 	public boolean equals(Object o) {
-		if (!(o instanceof SimpleBiomeMeta)) {
+		if (!(o instanceof me.cybermaxke.mighty.biome.api.BiomeMeta)) {
 			return false;
 		}
 
-		SimpleBiomeMeta other = (SimpleBiomeMeta) o;
+		me.cybermaxke.mighty.biome.api.BiomeMeta other =
+				(me.cybermaxke.mighty.biome.api.BiomeMeta) o;
+
 		return new EqualsBuilder()
 				.append(this.getEntity(), other.getEntity())
 				.append(this.getWeight(), other.getWeight())
@@ -115,7 +117,7 @@ public class SimpleBiomeMeta extends me.cybermaxke.mighty.biome.api.BiomeMeta {
 	@Override
 	public int hashCode() {
 		return new HashCodeBuilder()
-				.appendSuper(this.getEntity().hashCode())
+				.append(this.getEntity())
 				.append(this.getWeight())
 				.append(this.getMinGroupCount())
 				.append(this.getMaxGroupCount())

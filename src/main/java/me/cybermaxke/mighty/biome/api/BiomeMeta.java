@@ -126,7 +126,7 @@ public class BiomeMeta implements WeightedRandomItem {
 	@Override
 	public int hashCode() {
 		return new HashCodeBuilder()
-				.appendSuper(this.entity.hashCode())
+				.append(this.entity)
 				.append(this.weight)
 				.append(this.minGroupCount)
 				.append(this.maxGroupCount)

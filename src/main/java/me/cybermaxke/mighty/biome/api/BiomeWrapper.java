@@ -59,6 +59,16 @@ public class BiomeWrapper implements BiomeBase {
 	}
 
 	@Override
+	public float getHumitidy() {
+		return Biomes.get().get(this.id).getHumitidy();
+	}
+
+	@Override
+	public void setHumitidy(float humidity) {
+		Biomes.get().get(this.id).setHumitidy(humidity);
+	}
+
+	@Override
 	public void clearSpawns() {
 		Biomes.get().get(this.id).clearSpawns();
 	}

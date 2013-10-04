@@ -94,6 +94,16 @@ public class SimpleBiomeBase implements me.cybermaxke.mighty.biome.api.BiomeBase
 	}
 
 	@Override
+	public float getHumitidy() {
+		return this.biome.humidity;
+	}
+
+	@Override
+	public void setHumitidy(float humidity) {
+		this.biome.humidity = humidity;
+	}
+
+	@Override
 	public void clearSpawns() {
 		for (EnumCreatureType type : EnumCreatureType.values()) {
 			this.clearSpawns(type);

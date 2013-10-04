@@ -70,6 +70,18 @@ public interface BiomeBase {
 	public void setTemperature(float temperature);
 
 	/**
+	 * Gets the humidity
+	 * @return humidity
+	 */
+	public float getHumitidy();
+
+	/**
+	 * Sets the humidity
+	 * @param humidity
+	 */
+	public void setHumitidy(float humidity);
+
+	/**
 	 * Clears all the spawns for the biome.
 	 */
 	public void clearSpawns();

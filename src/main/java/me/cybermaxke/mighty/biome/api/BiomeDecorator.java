@@ -20,7 +20,9 @@
  */
 package me.cybermaxke.mighty.biome.api;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -30,6 +32,32 @@ import org.bukkit.World;
 
 public class BiomeDecorator {
 	private final Map<Setting, Integer> settings = new HashMap<Setting, Integer>();
+	private final List<BiomeOreMeta> oreMeta = new ArrayList<BiomeOreMeta>();
+
+	/**
+	 * Adds a new ore meta to the world gen.
+	 * @param oreMeta
+	 */
+	public void addOreMeta(BiomeOreMeta oreMeta) {
+		this.oreMeta.add(oreMeta);
+	}
+
+	/**
+	 * Removes a ore meta, gets if it was succes.
+	 * @param oreMeta
+	 * @return succes
+	 */
+	public boolean removeOreMeta(BiomeOreMeta oreMeta) {
+		return this.oreMeta.remove(oreMeta);
+	}
+
+	/**
+	 * Gets all the ore meta values.
+	 * @return values
+	 */
+	public List<BiomeOreMeta> getOreMeta() {
+		return this.oreMeta;
+	}
 
 	/**
 	 * Gets the setting for the world decorator.
