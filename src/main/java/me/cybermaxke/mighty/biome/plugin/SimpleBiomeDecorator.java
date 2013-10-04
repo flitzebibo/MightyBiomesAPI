@@ -20,6 +20,8 @@
  */
 package me.cybermaxke.mighty.biome.plugin;
 
+import java.lang.reflect.Field;
+
 import me.cybermaxke.mighty.biome.api.BiomeDecorator.Setting;
 import me.cybermaxke.mighty.biome.api.BiomeOreMeta;
 import me.cybermaxke.mighty.biome.api.gen.WorldGen;
@@ -36,14 +38,14 @@ import net.minecraft.server.v1_6_R3.WorldGenPumpkin;
 import net.minecraft.server.v1_6_R3.WorldGenerator;
 
 public class SimpleBiomeDecorator extends BiomeDecorator {
-	private final me.cybermaxke.mighty.biome.api.BiomeDecorator decorator;
-
 	private final WorldGenDeadBush deathBush = new WorldGenDeadBush(Block.DEAD_BUSH.id);
 	private final WorldGenLiquids waterLiquids = new WorldGenLiquids(Block.WATER.id);
 	private final WorldGenLiquids lavaLiquids = new WorldGenLiquids(Block.LAVA.id);
 	private final WorldGenLakes waterLakes = new WorldGenLakes(Block.WATER.id);
 	private final WorldGenLakes lavaLakes = new WorldGenLakes(Block.LAVA.id);
 	private final WorldGenPumpkin pumpkin = new WorldGenPumpkin();
+
+	private me.cybermaxke.mighty.biome.api.BiomeDecorator decorator;
 
 	public SimpleBiomeDecorator(BiomeBase biome, 
 			me.cybermaxke.mighty.biome.api.BiomeDecorator decorator) {
@@ -53,6 +55,10 @@ public class SimpleBiomeDecorator extends BiomeDecorator {
 
 	@Override
 	public void a() {
+		if (this.decorator == null) {
+			return;
+		}
+
 		this.decorator.onPreDecorate(this.a.getWorld(), this.b, this.c, this.d);
 
 		/**
@@ -252,5 +258,52 @@ public class SimpleBiomeDecorator extends BiomeDecorator {
 
 	public me.cybermaxke.mighty.biome.api.BiomeDecorator getHandle() {
 		return this.decorator;
+	}
+
+	public void setHandle(me.cybermaxke.mighty.biome.api.BiomeDecorator decorator) {
+		this.decorator = decorator;
+	}
+
+	/**
+	 * Loads all the fields of the old decorator to this one.
+	 * @param old
+	 */
+	public void init(BiomeDecorator old) {
+		this.decorator.set(Setting.BIG_MUSHROOMS, this.getInt("J", old));
+		this.decorator.set(Setting.CACTI, this.getInt("F", old));
+		this.decorator.set(Setting.CLAY, this.getInt("I", old));
+		this.decorator.set(Setting.DEATH_BUSH, this.getInt("C", old));
+		this.decorator.set(Setting.GRASS, this.getInt("B", old));
+		this.decorator.set(Setting.REEDS, this.getInt("E", old));
+		this.decorator.set(Setting.SAND, this.getInt("G", old));
+		this.decorator.set(Setting.SAND_2, this.getInt("H", old));
+		this.decorator.set(Setting.TREES, this.getInt("z", old));
+		this.decorator.set(Setting.WATERLILY, this.getInt("y", old));
+
+		int flowers = this.getInt("A", old);
+		int flowersRed = flowers / 4;
+		
+		this.decorator.set(Setting.RED_FLOWERS, flowersRed);
+		this.decorator.set(Setting.YELLOW_FLOWERS, flowers);
+
+		int mushrooms = this.getInt("D", old);
+		int mushroomsBrown = mushrooms / 4;
+		int mushroomsRed = mushrooms / 8;
+
+		this.decorator.set(Setting.RED_MUSHROOMS, mushroomsRed);
+		this.decorator.set(Setting.RED_MUSHROOMS, mushroomsBrown);
+	}
+
+	public int getInt(String fieldName, BiomeDecorator old) {
+		try {
+			Field field = BiomeDecorator.class.getDeclaredField(fieldName);
+			field.setAccessible(true);
+
+			return field.getInt(old);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return 0;
 	}
 }

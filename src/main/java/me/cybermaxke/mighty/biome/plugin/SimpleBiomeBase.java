@@ -39,14 +39,13 @@ public class SimpleBiomeBase implements me.cybermaxke.mighty.biome.api.BiomeBase
 	private final Map<EnumCreatureType, List<me.cybermaxke.mighty.biome.api.BiomeMeta>> meta =
 			new HashMap<EnumCreatureType, List<me.cybermaxke.mighty.biome.api.BiomeMeta>>();
 	private final BiomeBase biome;
-	private final BiomeDecorator defaultDecorator;
 
 	private boolean spawnable = false;
 
 	@SuppressWarnings("unchecked")
 	public SimpleBiomeBase(BiomeBase biome) {
 		this.biome = biome;
-		this.defaultDecorator = biome.I;
+		this.getDecor();
 
 		for (EnumCreatureType type : EnumCreatureType.values()) {
 			List<me.cybermaxke.mighty.biome.api.BiomeMeta> list =
@@ -66,6 +65,21 @@ public class SimpleBiomeBase implements me.cybermaxke.mighty.biome.api.BiomeBase
 				e.printStackTrace();
 			}
 		}
+	}
+
+	public SimpleBiomeDecorator getDecor() {
+		if (this.biome.I instanceof SimpleBiomeDecorator) {
+			return (SimpleBiomeDecorator) this.biome.I;
+		}
+
+		me.cybermaxke.mighty.biome.api.BiomeDecorator decorator1 =
+				new me.cybermaxke.mighty.biome.api.BiomeDecorator();
+		SimpleBiomeDecorator decorator2 = new SimpleBiomeDecorator(this.biome, decorator1);
+		decorator2.init(this.biome.I);
+
+		this.biome.I = decorator2;
+
+		return decorator2;
 	}
 
 	@Override
@@ -191,14 +205,12 @@ public class SimpleBiomeBase implements me.cybermaxke.mighty.biome.api.BiomeBase
 
 	@Override
 	public me.cybermaxke.mighty.biome.api.BiomeDecorator getDecorator() {
-		return this.biome.I instanceof SimpleBiomeDecorator ?
-				((SimpleBiomeDecorator) this.biome.I).getHandle() : null;
+		return this.getDecor().getHandle();
 	}
 
 	@Override
 	public void setDecorator(me.cybermaxke.mighty.biome.api.BiomeDecorator decorator) {
-		this.biome.I = decorator == null ? this.defaultDecorator :
-			new SimpleBiomeDecorator(this.biome, decorator);
+		this.getDecor().setHandle(decorator);
 	}
 
 	public Field getField(EnumCreatureType type) {

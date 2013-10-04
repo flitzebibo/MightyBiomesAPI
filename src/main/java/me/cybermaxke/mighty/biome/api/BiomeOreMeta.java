@@ -22,6 +22,7 @@ package me.cybermaxke.mighty.biome.api;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+
 import org.bukkit.Material;
 
 public class BiomeOreMeta {
