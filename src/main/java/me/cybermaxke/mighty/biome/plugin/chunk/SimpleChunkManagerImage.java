@@ -259,7 +259,7 @@ public class SimpleChunkManagerImage extends WorldChunkManager {
 			int i7 = i + i6 % n << 2;
 			int i8 = j + i6 / n << 2;
 
-			if ((!list.contains(biomes[i6])) || (chunkPosition != null &&
+			if (!list.contains(biomes[i6]) || (chunkPosition != null &&
 					random.nextInt(i5 + 1) != 0)) {
 				continue;
 			}

@@ -276,36 +276,6 @@ public class SimpleBiomeDecorator extends BiomeDecorator {
 		this.decorator.set(Setting.SAND, 1);
 		this.decorator.set(Setting.SAND_2, 3);
 		this.decorator.set(Setting.CLAY, 1);
-	}
-
-	/**
-	 * Loads all the fields of the old decorator to this one.
-	 * @param old
-	 */
-	public void init(BiomeDecorator old) {
-		this.decorator.set(Setting.BIG_MUSHROOMS, this.getInt("J", old));
-		this.decorator.set(Setting.CACTI, this.getInt("F", old));
-		this.decorator.set(Setting.CLAY, this.getInt("I", old));
-		this.decorator.set(Setting.DEATH_BUSH, this.getInt("C", old));
-		this.decorator.set(Setting.GRASS, this.getInt("B", old));
-		this.decorator.set(Setting.REEDS, this.getInt("E", old));
-		this.decorator.set(Setting.SAND, this.getInt("G", old));
-		this.decorator.set(Setting.SAND_2, this.getInt("H", old));
-		this.decorator.set(Setting.TREES, this.getInt("z", old));
-		this.decorator.set(Setting.WATERLILY, this.getInt("y", old));
-
-		int flowers = this.getInt("A", old);
-		int flowersRed = flowers / 4;
-		
-		this.decorator.set(Setting.RED_FLOWERS, flowersRed);
-		this.decorator.set(Setting.YELLOW_FLOWERS, flowers);
-
-		int mushrooms = this.getInt("D", old);
-		int mushroomsBrown = mushrooms / 4;
-		int mushroomsRed = mushrooms / 8;
-
-		this.decorator.set(Setting.RED_MUSHROOMS, mushroomsRed);
-		this.decorator.set(Setting.RED_MUSHROOMS, mushroomsBrown);
 
 		this.decorator.addMinable(new BiomeMinableMeta(Material.DIRT,
 				32, 20, 0, 128));
@@ -323,6 +293,41 @@ public class SimpleBiomeDecorator extends BiomeDecorator {
 				7, 1, 0, 16));
 		this.decorator.addMinable(new BiomeMinableMeta(Material.LAPIS_ORE,
 				6, 1, 16, 32));
+	}
+
+	/**
+	 * Loads all the fields of the old decorator to this one.
+	 * @param old
+	 */
+	public void init(BiomeDecorator old) {
+		this.init();
+
+		this.decorator.set(Setting.BIG_MUSHROOMS, this.getInt("J", old));
+		this.decorator.set(Setting.CACTI, this.getInt("F", old));
+		this.decorator.set(Setting.CLAY, this.getInt("I", old));
+		this.decorator.set(Setting.DEATH_BUSH, this.getInt("C", old));
+		this.decorator.set(Setting.GRASS, this.getInt("B", old));
+		this.decorator.set(Setting.REEDS, this.getInt("E", old));
+		this.decorator.set(Setting.SAND, this.getInt("G", old));
+		this.decorator.set(Setting.SAND_2, this.getInt("H", old));
+		this.decorator.set(Setting.TREES, this.getInt("z", old));
+		this.decorator.set(Setting.WATERLILY, this.getInt("y", old));
+
+		int flowers = this.getInt("A", old);
+		int flowersRed = flowers / 4;
+
+		this.decorator.set(Setting.RED_FLOWERS, flowersRed == 0 && flowers > 0 ? 1 :
+			flowersRed);
+		this.decorator.set(Setting.YELLOW_FLOWERS, flowers);
+
+		int mushrooms = this.getInt("D", old);
+		int mushroomsBrown = mushrooms / 4;
+		int mushroomsRed = mushrooms / 8;
+
+		this.decorator.set(Setting.RED_MUSHROOMS, mushroomsRed == 0 && mushrooms > 0 ? 1 :
+			mushroomsRed);
+		this.decorator.set(Setting.RED_MUSHROOMS, mushroomsBrown == 0 && mushrooms > 0 ? 1 :
+			mushroomsBrown);
 	}
 
 	public int getInt(String fieldName, BiomeDecorator old) {
