@@ -24,25 +24,30 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.minecraft.server.v1_6_R3.BiomeBase;
+import me.cybermaxke.mighty.biome.api.BiomeBase;
+import me.cybermaxke.mighty.biome.api.Biomes;
+
 import net.minecraft.server.v1_6_R3.GenLayer;
 import net.minecraft.server.v1_6_R3.IntCache;
 
 public class SimpleGenLayerHills extends GenLayer {
-	private Map<Integer, Integer> hillBiomes = new HashMap<Integer, Integer>();
-	private List<BiomeBase> biomes;
+	public final static Map<Integer, Integer> HILL_BIOMES = new HashMap<Integer, Integer>();
+
+	private final List<BiomeBase> biomes;
+
+	static {
+		HILL_BIOMES.put(BiomeBase.DESERT.getId(), BiomeBase.DESERT_HILLS.getId());
+		HILL_BIOMES.put(BiomeBase.FOREST.getId(), BiomeBase.FOREST_HILLS.getId());
+		HILL_BIOMES.put(BiomeBase.TAIGA.getId(), BiomeBase.TAIGA_HILLS.getId());
+		HILL_BIOMES.put(BiomeBase.PLAINS.getId(), BiomeBase.FOREST.getId());
+		HILL_BIOMES.put(BiomeBase.ICE_PLAINS.getId(), BiomeBase.ICE_MOUNTAINS.getId());
+		HILL_BIOMES.put(BiomeBase.JUNGLE.getId(), BiomeBase.JUNGLE_HILLS.getId());
+	}
 
 	public SimpleGenLayerHills(long baseSeed, GenLayer parent, List<BiomeBase> biomes) {
 		super(baseSeed);
 		this.a = parent;
 		this.biomes = biomes;
-
-		this.hillBiomes.put(BiomeBase.DESERT.id, BiomeBase.DESERT_HILLS.id);
-		this.hillBiomes.put(BiomeBase.FOREST.id, BiomeBase.FOREST_HILLS.id);
-		this.hillBiomes.put(BiomeBase.TAIGA.id, BiomeBase.TAIGA_HILLS.id);
-		this.hillBiomes.put(BiomeBase.PLAINS.id, BiomeBase.FOREST.id);
-		this.hillBiomes.put(BiomeBase.ICE_PLAINS.id, BiomeBase.ICE_MOUNTAINS.id);
-		this.hillBiomes.put(BiomeBase.JUNGLE.id, BiomeBase.JUNGLE_HILLS.id);
 	}
 
 	/**
@@ -62,10 +67,10 @@ public class SimpleGenLayerHills extends GenLayer {
 				if (this.a(3) == 0) {
 					int m = k;
 
-					if (this.hillBiomes.containsKey(k)) {
-						int n = this.hillBiomes.get(k);
+					if (HILL_BIOMES.containsKey(k)) {
+						int n = HILL_BIOMES.get(k);
 
-						if (this.biomes.contains(BiomeBase.biomes[n])) {
+						if (this.biomes.contains(Biomes.get().get(n))) {
 							m = n;
 						}
 					}

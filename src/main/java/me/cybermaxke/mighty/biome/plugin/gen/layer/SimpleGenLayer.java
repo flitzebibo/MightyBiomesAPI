@@ -22,16 +22,14 @@ package me.cybermaxke.mighty.biome.plugin.gen.layer;
 
 import java.util.List;
 
-import net.minecraft.server.v1_6_R3.BiomeBase;
+import me.cybermaxke.mighty.biome.api.BiomeBase;
+
 import net.minecraft.server.v1_6_R3.GenLayer;
 import net.minecraft.server.v1_6_R3.GenLayerIsland;
-import net.minecraft.server.v1_6_R3.GenLayerMushroomIsland;
-import net.minecraft.server.v1_6_R3.GenLayerMushroomShore;
 import net.minecraft.server.v1_6_R3.GenLayerRiver;
 import net.minecraft.server.v1_6_R3.GenLayerRiverInit;
 import net.minecraft.server.v1_6_R3.GenLayerRiverMix;
 import net.minecraft.server.v1_6_R3.GenLayerSmooth;
-import net.minecraft.server.v1_6_R3.GenLayerSwampRivers;
 import net.minecraft.server.v1_6_R3.GenLayerZoom;
 import net.minecraft.server.v1_6_R3.GenLayerZoomFuzzy;
 import net.minecraft.server.v1_6_R3.GenLayerZoomVoronoi;
@@ -56,15 +54,12 @@ public class SimpleGenLayer {
 		layer1 = new GenLayerIsland(3L, layer1);
 		layer1 = new GenLayerZoom(2003L, layer1);
 		layer1 = new GenLayerIsland(4L, layer1);
-
-		if (biomes.contains(BiomeBase.MUSHROOM_ISLAND)) {
-			layer1 = new GenLayerMushroomIsland(5L, layer1);
-		}
+		layer1 = new SimpleGenLayerMushroomIsland(5L, layer1, biomes);
 
 		GenLayer layer2 = layer1;
 		layer2 = GenLayerZoom.a(1000L, layer2, 0);
 		layer2 = new GenLayerRiverInit(100L, layer2);
-		layer2 = GenLayerZoom.a(1000L, layer2, size + 2);
+		layer2 = new SimpleGenLayerZoom1(1000L, layer2, size);
 		layer2 = new GenLayerRiver(1L, layer2);
 		layer2 = new GenLayerSmooth(1000L, layer2);
 
@@ -73,26 +68,9 @@ public class SimpleGenLayer {
 		layer3 = new SimpleGenLayerBiome(200L, layer3, biomes);
 		layer3 = GenLayerZoom.a(1000L, layer3, 2);
 		layer3 = new SimpleGenLayerHills(1000L, layer3, biomes);
-
-		for (int j = 0; j < size; j++) {
-			layer3 = new GenLayerZoom(1000L + j, layer3);
-
-			if (j == 0) {
-				layer3 = new GenLayerIsland(3L, layer3);
-			}
-
-			if (j == 1) {
-				layer3 = new GenLayerMushroomShore(1000L, layer3);
-			}
-
-			if (j == 1) {
-				layer3 = new GenLayerSwampRivers(1000L, layer3);
-			}
-		}
-
+		layer3 = new SimpleGenLayerZoom2(1000L, layer3, size);
 		layer3 = new GenLayerSmooth(1000L, layer3);
 		layer3 = new GenLayerRiverMix(100L, layer3, layer2);
-		layer3 = new SimpleGenLayerData(layer3, size);
 
 		GenLayerZoomVoronoi layerZoomVoronoi = new GenLayerZoomVoronoi(10L, layer3);
 

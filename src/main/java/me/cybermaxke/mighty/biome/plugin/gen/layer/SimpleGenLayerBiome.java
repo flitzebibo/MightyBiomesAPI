@@ -24,27 +24,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import net.minecraft.server.v1_6_R3.BiomeBase;
+import me.cybermaxke.mighty.biome.api.BiomeBase;
 import net.minecraft.server.v1_6_R3.GenLayer;
 import net.minecraft.server.v1_6_R3.IntCache;
 
 public class SimpleGenLayerBiome extends GenLayer {
-	private List<BiomeBase> biomes;
+	private final List<BiomeBase> biomes;
 
 	public SimpleGenLayerBiome(long baseSeed, GenLayer parent, List<BiomeBase> biomes) {
 		super(baseSeed);
 		this.a = parent;
-		this.biomes = new ArrayList<BiomeBase>(biomes);
-
-		/**
-		 * Removing hill biomes, they are already used in 'SimpleGenLayerHills'.
-		 */
-		this.biomes.removeAll(Arrays.asList(
-				BiomeBase.DESERT_HILLS,
-				BiomeBase.FOREST_HILLS,
-				BiomeBase.TAIGA_HILLS,
-				BiomeBase.ICE_MOUNTAINS,
-				BiomeBase.JUNGLE_HILLS));
+		this.biomes = biomes;
 	}
 
 	public List<BiomeBase> getBiomes() {
@@ -53,6 +43,17 @@ public class SimpleGenLayerBiome extends GenLayer {
 
 	@Override
 	public int[] a(int x, int z, int height, int width) {
+		/**
+		 * Removing hill biomes, they are already used in 'SimpleGenLayerHills'.
+		 */
+		List<BiomeBase> biomes = new ArrayList<BiomeBase>(this.biomes);
+		biomes.removeAll(Arrays.asList(
+				BiomeBase.DESERT_HILLS,
+				BiomeBase.FOREST_HILLS,
+				BiomeBase.TAIGA_HILLS,
+				BiomeBase.ICE_MOUNTAINS,
+				BiomeBase.JUNGLE_HILLS));
+
 		int[] array1 = this.a.a(x, z, height, width);
 		int[] array2 = IntCache.a(height * width);
 
@@ -69,13 +70,13 @@ public class SimpleGenLayerBiome extends GenLayer {
 				/**
 				 * Already used a mushroom island biome. See 'GenLayerMushroomIsland'
 				 */
-				} else if (k == BiomeBase.MUSHROOM_ISLAND.id) {
+				} else if (k == BiomeBase.MUSHROOM_ISLAND.getId()) {
 					array2[j + i * height] = k;
 				/**
 				 * Chosing a random biome.
 				 */
 				} else {
-					array2[j + i * height] = this.biomes.get(this.a(this.biomes.size())).id;
+					array2[j + i * height] = biomes.get(this.a(biomes.size())).getId();
 				}
 			}
 		}

@@ -18,36 +18,35 @@
  * along with MightyBiomesAPI. If not, see <http://www.gnu.org/licenses/>.
  * 
  */
-package me.cybermaxke.mighty.biome.api;
+package me.cybermaxke.mighty.biome.plugin.gen.layer;
 
-import org.bukkit.World;
+import net.minecraft.server.v1_6_R3.GenLayer;
+import net.minecraft.server.v1_6_R3.GenLayerZoom;
 
-public interface BiomeAPI {
+public class SimpleGenLayerZoom1 extends GenLayer {
+	private int amount;
 
-	/**
-	 * Gets a new biome.
-	 * @return biome
-	 */
-	public BiomeBase getNew(int id);
+	public SimpleGenLayerZoom1(long baseSeed, GenLayer parent, int amount) {
+		super(baseSeed);
+		this.a = parent;
+	}
 
-	/**
-	 * Removes a biome.
-	 * @param biome
-	 * @return biome
-	 */
-	public BiomeBase remove(int id);
+	public void setAmount(int amount) {
+		this.amount = amount;
+	}
 
-	/**
-	 * Gets a biome using its id.
-	 * @param id
-	 * @return biome
-	 */
-	public BiomeBase get(int id);
+	public int getAmount() {
+		return this.amount;
+	}
 
-	/**
-	 * Gets the biome world for the world.
-	 * @param world
-	 * @return biomeWorld
-	 */
-	public BiomeWorld getWorld(World world);
+	@Override
+	public int[] a(int x, int z, int height, int width) {
+		GenLayer layer = this.a;
+
+		for (int i = 0; i < (this.amount + 2); i++) {
+			layer = new GenLayerZoom(1000L + i, layer);
+		}
+
+		return layer.a(x, z, height, height);
+	}
 }

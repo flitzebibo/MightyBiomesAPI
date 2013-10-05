@@ -20,33 +20,27 @@
  */
 package me.cybermaxke.mighty.biome.plugin.gen.layer;
 
+import java.util.List;
+
+import me.cybermaxke.mighty.biome.api.BiomeBase;
+
 import net.minecraft.server.v1_6_R3.GenLayer;
+import net.minecraft.server.v1_6_R3.GenLayerMushroomIsland;
 
-public class SimpleGenLayerData extends GenLayer {
-	private int size;
+public class SimpleGenLayerMushroomIsland extends GenLayerMushroomIsland {
+	private final List<BiomeBase> biomes;
 
-	public SimpleGenLayerData(GenLayer parent, int size) {
-		super(5L);
-		this.a = parent;
-		this.size = size;
+	public SimpleGenLayerMushroomIsland(long baseSeed, GenLayer layer, List<BiomeBase> biomes) {
+		super(baseSeed, layer);
+		this.biomes = biomes;
 	}
 
 	@Override
-	public int[] a(int ii, int jj, int kk, int ll) {
-		return this.a.a(ii, jj, kk, ll);
-	}
+	public int[] a(int x, int z, int height, int width) {
+		if (this.biomes.contains(BiomeBase.MUSHROOM_ISLAND)) {
+			return super.a(x, z, height, width);
+		}
 
-	@Override
-	public void a(long long1) {
-		this.a.a(long1);
-	}
-
-	@Override
-	public void a(long long1, long long2) {
-		this.a.a(long1, long2);
-	}
-
-	public int getSize() {
-		return this.size;
+		return this.a.a(x, z, height, width);
 	}
 }

@@ -52,6 +52,10 @@ public class SimpleBiomePlugin extends JavaPlugin {
 		Biomes.set(null);
 	}
 
+	public SimpleBiomeRegister getBiomeRegister() {
+		return this.biomeRegister;
+	}
+
 	public SimpleEntityRegister getEntityRegister() {
 		return this.entityRegister;
 	}
