@@ -20,6 +20,9 @@
  */
 package me.cybermaxke.mighty.biome.api.decorator;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
 public class DecoratorSetting {
 	private final DecoratorSettingType type;
 
@@ -76,5 +79,28 @@ public class DecoratorSetting {
 	 */
 	public void setCount(int count) {
 		this.chance = count;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (!(o instanceof DecoratorSetting)) {
+			return false;
+		}
+
+		DecoratorSetting other = (DecoratorSetting) o;
+		return new EqualsBuilder()
+				.append(this.type, other.type)
+				.append(this.chance, other.chance)
+				.append(this.count, other.count)
+				.isEquals();
+	}
+
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder()
+				.append(this.type)
+				.append(this.chance)
+				.append(this.count)
+				.toHashCode();
 	}
 }

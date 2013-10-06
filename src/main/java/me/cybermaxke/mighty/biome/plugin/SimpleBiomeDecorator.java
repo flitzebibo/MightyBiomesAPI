@@ -158,8 +158,8 @@ public class SimpleBiomeDecorator extends BiomeDecorator {
 			}
 		}
 
-		for (int i = 0; i < sand2.getCount(); ++i) {
-			if (this.hasChance(chanceSand2)) {
+		for (int i = 0; i < sand.getCount(); ++i) {
+			if (this.hasChance(chanceSand)) {
 				int x = this.c + this.b.nextInt(16) + 8;
 				int z = this.d + this.b.nextInt(16) + 8;
 
@@ -176,8 +176,8 @@ public class SimpleBiomeDecorator extends BiomeDecorator {
 			}
 		}
 
-		for (int i = 0; i < sand.getCount(); ++i) {
-			if (this.hasChance(chanceSand)) {
+		for (int i = 0; i < sand2.getCount(); ++i) {
+			if (this.hasChance(chanceSand2)) {
 				int x = this.c + this.b.nextInt(16) + 8;
 				int z = this.d + this.b.nextInt(16) + 8;
 
@@ -412,10 +412,10 @@ public class SimpleBiomeDecorator extends BiomeDecorator {
 					this.decorator.getSetting(type).setCount(this.getInt("F", old));
 					break;
 				case SAND:
-					this.decorator.getSetting(type).setCount(this.getInt("G", old));
+					this.decorator.getSetting(type).setCount(this.getInt("H", old));
 					break;
 				case SAND_2:
-					this.decorator.getSetting(type).setCount(this.getInt("H", old));
+					this.decorator.getSetting(type).setCount(this.getInt("G", old));
 					break;
 				case TREES:
 					this.decorator.getSetting(type).setCount(this.getInt("z", old));

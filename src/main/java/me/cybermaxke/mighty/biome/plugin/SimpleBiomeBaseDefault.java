@@ -22,9 +22,7 @@ package me.cybermaxke.mighty.biome.plugin;
 
 import net.minecraft.server.v1_6_R3.BiomeBase;
 
-import me.cybermaxke.mighty.biome.api.BiomeDefault;
-
-public class SimpleBiomeBaseDefault extends SimpleBiomeBase implements BiomeDefault {
+public class SimpleBiomeBaseDefault extends SimpleBiomeBase {
 
 	public SimpleBiomeBaseDefault(BiomeBase biome) {
 		super(biome);

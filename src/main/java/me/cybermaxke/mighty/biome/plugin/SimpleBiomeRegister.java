@@ -46,7 +46,6 @@ import net.minecraft.server.v1_6_R3.WorldProvider;
 import net.minecraft.server.v1_6_R3.WorldServer;
 
 import me.cybermaxke.mighty.biome.api.BiomeAPI;
-import me.cybermaxke.mighty.biome.api.BiomeDefault;
 import me.cybermaxke.mighty.biome.plugin.gen.layer.SimpleGenLayer;
 import me.cybermaxke.mighty.biome.plugin.gen.layer.SimpleGenLayerBiome;
 import me.cybermaxke.mighty.biome.plugin.gen.layer.SimpleGenLayerZoom1;
@@ -161,7 +160,7 @@ public class SimpleBiomeRegister implements BiomeAPI {
 			return null;
 		}
 
-		if (biome instanceof BiomeDefault) {
+		if (biome instanceof SimpleBiomeBaseDefault) {
 			throw new IllegalArgumentException("You can't remove a default biome!");
 		}
 
