@@ -22,10 +22,13 @@ package me.cybermaxke.mighty.biome.plugin;
 
 import java.lang.reflect.Field;
 
-import me.cybermaxke.mighty.biome.api.BiomeDecorator.Setting;
 import me.cybermaxke.mighty.biome.api.BiomeMinableMeta;
+import me.cybermaxke.mighty.biome.api.decorator.Decorator;
+import me.cybermaxke.mighty.biome.api.decorator.DecoratorSetting;
+import me.cybermaxke.mighty.biome.api.decorator.DecoratorSettingType;
 import me.cybermaxke.mighty.biome.api.gen.WorldGen;
 import me.cybermaxke.mighty.biome.plugin.gen.SimpleWorldGen;
+import me.cybermaxke.mighty.biome.plugin.structure.SimpleWorldGenVillage;
 
 import net.minecraft.server.v1_6_R3.BiomeBase;
 import net.minecraft.server.v1_6_R3.BiomeDecorator;
@@ -45,12 +48,15 @@ public class SimpleBiomeDecorator extends BiomeDecorator {
 	private final WorldGenLakes lavaLakes = new WorldGenLakes(Block.LAVA.id);
 	private final WorldGenPumpkin pumpkin = new WorldGenPumpkin();
 
-	private me.cybermaxke.mighty.biome.api.BiomeDecorator decorator;
+	private Decorator decorator;
 
-	public SimpleBiomeDecorator(BiomeBase biome, 
-			me.cybermaxke.mighty.biome.api.BiomeDecorator decorator) {
+	public SimpleBiomeDecorator(BiomeBase biome, Decorator decorator) {
 		super(biome);
 		this.decorator = decorator;
+	}
+
+	public boolean hasChance(double chance) {
+		return Math.min(100.0D, ((double) this.b.nextInt(100)) + this.b.nextDouble()) <= chance;
 	}
 
 	@Override
@@ -82,186 +88,273 @@ public class SimpleBiomeDecorator extends BiomeDecorator {
 		/**
 		 * Generating flowers, sand, lakes, etc.
 		 */
-		for (int i = 0; i < this.decorator.get(Setting.WATER_LAKES); ++i) {
-			int x = this.c + this.b.nextInt(16) + 8;
-			int z = this.d + this.b.nextInt(16) + 8;
-			int y = this.b.nextInt(this.b.nextInt(240) + 8);
+		DecoratorSetting waterLakes = this.decorator.getSetting(DecoratorSettingType.WATER_LAKES);
+		DecoratorSetting lavaLakes = this.decorator.getSetting(DecoratorSettingType.LAVA_LAKES);
+		DecoratorSetting sand = this.decorator.getSetting(DecoratorSettingType.SAND);
+		DecoratorSetting sand2 = this.decorator.getSetting(DecoratorSettingType.SAND_2);
+		DecoratorSetting clay = this.decorator.getSetting(DecoratorSettingType.CLAY);
+		DecoratorSetting trees = this.decorator.getSetting(DecoratorSettingType.TREES);
+		DecoratorSetting bigMushrooms =
+				this.decorator.getSetting(DecoratorSettingType.BIG_MUSHROOMS);
+		DecoratorSetting yellowFlowers =
+				this.decorator.getSetting(DecoratorSettingType.YELLOW_FLOWERS);
+		DecoratorSetting redFlowers = this.decorator.getSetting(DecoratorSettingType.RED_FLOWERS);
+		DecoratorSetting grass = this.decorator.getSetting(DecoratorSettingType.GRASS);
+		DecoratorSetting deathBush = this.decorator.getSetting(DecoratorSettingType.DEATH_BUSH);
+		DecoratorSetting waterlilly = this.decorator.getSetting(DecoratorSettingType.WATERLILY);
+		DecoratorSetting brownMushrooms =
+				this.decorator.getSetting(DecoratorSettingType.BROWN_MUSHROOMS);
+		DecoratorSetting redMushrooms =
+				this.decorator.getSetting(DecoratorSettingType.RED_MUSHROOMS);
+		DecoratorSetting reeds = this.decorator.getSetting(DecoratorSettingType.REEDS);
+		DecoratorSetting pumpkins = this.decorator.getSetting(DecoratorSettingType.PUMPKINS);
+		DecoratorSetting cacti = this.decorator.getSetting(DecoratorSettingType.CACTI);
+		DecoratorSetting waterLiquids =
+				this.decorator.getSetting(DecoratorSettingType.WATER_LIQUIDS);
+		DecoratorSetting lavaLiquids =
+				this.decorator.getSetting(DecoratorSettingType.LAVA_LIQUIDS);
 
-			this.waterLakes.a(this.a, this.b, x, y, z);
-		}
+		double chanceWaterLakes = waterLakes.getChance();
+		double chanceLavaLakes = lavaLakes.getChance();
+		double chanceSand = sand.getChance();
+		double chanceSand2 = sand2.getChance();
+		double chanceClay = clay.getChance();
+		double chanceTrees = trees.getChance();
+		double chanceBigMushrooms = bigMushrooms.getChance();
+		double chanceYellowFlowers = yellowFlowers.getChance();
+		double chanceRedFlowers = redFlowers.getChance();
+		double chanceGrass = grass.getChance();
+		double chanceDeathBush = deathBush.getChance();
+		double chanceWaterlilly = waterlilly.getChance();
+		double chanceBrownMushrooms = brownMushrooms.getChance();
+		double chanceRedMushrooms = redMushrooms.getChance();
+		double chanceReeds = reeds.getChance();
+		double chancePumpkins = pumpkins.getChance();
+		double chanceCacti = cacti.getChance();
+		double chanceWaterLiquids = waterLiquids.getChance();
+		double chanceLavaLiquids = lavaLiquids.getChance();
 
-		for (int i = 0; i < this.decorator.get(Setting.LAVA_LAKES); ++i) {
-			int x = this.c + this.b.nextInt(16) + 8;
-			int z = this.d + this.b.nextInt(16) + 8;
-			int y = this.b.nextInt(this.b.nextInt(this.b.nextInt(112) + 8) + 8);
+		for (int i = 0; i < waterLakes.getCount(); ++i) {
+			if (this.hasChance(chanceWaterLakes)) {
+				int x = this.c + this.b.nextInt(16) + 8;
+				int z = this.d + this.b.nextInt(16) + 8;
+				int y = this.b.nextInt(this.b.nextInt(128));
 
-			this.lavaLakes.a(this.a, this.b, x, y, z);
-		}
-
-		for (int i = 0; i < this.decorator.get(Setting.SAND_2); i++) {
-			int x = this.c + this.b.nextInt(16) + 8;
-			int z = this.d + this.b.nextInt(16) + 8;
-
-			this.g.a(this.a, this.b, x, this.a.i(x, z), z);
-		}
-
-		for (int i = 0; i < this.decorator.get(Setting.CLAY); i++) {
-			int x = this.c + this.b.nextInt(16) + 8;
-			int z = this.d + this.b.nextInt(16) + 8;
-
-			this.f.a(this.a, this.b, x, this.a.i(x, z), z);
-		}
-
-		for (int i = 0; i < this.decorator.get(Setting.SAND); i++) {
-			int x = this.c + this.b.nextInt(16) + 8;
-			int z = this.d + this.b.nextInt(16) + 8;
-
-			this.g.a(this.a, this.b, x, this.a.i(x, z), z);
-		}
-
-		int trees = this.decorator.get(Setting.TREES);
-		if (this.b.nextInt(10) == 0) {
-			trees++;
-		}
-
-		for (int i = 0; i < trees; i++) {
-			int x = this.c + this.b.nextInt(16) + 8;
-			int z = this.d + this.b.nextInt(16) + 8;
-
-			WorldGen gen1 = this.decorator.getWorldGenTrees(this.b);
-
-			WorldGenerator gen2 = gen1 == null ? this.e.a(this.b) : new SimpleWorldGen(gen1);
-			gen2.a(1.0D, 1.0D, 1.0D);
-			gen2.a(this.a, this.b, x, this.a.getHighestBlockYAt(x, z), z);
-		}
-
-		for (int i = 0; i < this.decorator.get(Setting.BIG_MUSHROOMS); i++) {
-			int x = this.c + this.b.nextInt(16) + 8;
-			int z = this.d + this.b.nextInt(16) + 8;
-
-			this.h.a(this.a, this.b, x, this.a.i(x, z), z);
-		}
-
-		for (int i = 0; i < this.decorator.get(Setting.YELLOW_FLOWERS); i++) {
-			int x = this.c + this.b.nextInt(16) + 8;
-			int y = this.b.nextInt(128);
-			int z = this.d + this.b.nextInt(16) + 8;
-
-			this.q.a(this.a, this.b, x, y, z);
-		}
-
-		for (int i = 0; i < this.decorator.get(Setting.RED_FLOWERS); i++) {
-			int x = this.c + this.b.nextInt(16) + 8;
-			int y = this.b.nextInt(128);
-			int z = this.d + this.b.nextInt(16) + 8;
-
-			this.r.a(this.a, this.b, x, y, z);
-		}
-
-		for (int i = 0; i < this.decorator.get(Setting.GRASS); i++) {
-			int x = this.c + this.b.nextInt(16) + 8;
-			int y = this.b.nextInt(128);
-			int z = this.d + this.b.nextInt(16) + 8;
-
-			WorldGen gen1 = this.decorator.getWorldGenGrass(this.b);
-
-			WorldGenerator gen2 = gen1 == null ? this.e.b(this.b) : new SimpleWorldGen(gen1);
-			gen2.a(this.a, this.b, x, y, z);
-		}
-
-		for (int i = 0; i < this.decorator.get(Setting.RED_FLOWERS); i++) {
-			int x = this.c + this.b.nextInt(16) + 8;
-			int y = this.b.nextInt(128);
-			int z = this.d + this.b.nextInt(16) + 8;
-
-			this.r.a(this.a, this.b, x, y, z);
-		}
-
-		for (int i = 0; i < this.decorator.get(Setting.DEATH_BUSH); i++) {
-			int x = this.c + this.b.nextInt(16) + 8;
-			int y = this.b.nextInt(128);
-			int z = this.d + this.b.nextInt(16) + 8;
-
-			this.deathBush.a(this.a, this.b, x, y, z);
-		}
-
-		for (int i = 0; i < this.decorator.get(Setting.WATERLILY); i++) {
-			int x = this.c + this.b.nextInt(16) + 8;
-			int y = this.b.nextInt(128);
-			int z = this.d + this.b.nextInt(16) + 8;
-
-			while (y > 0 && this.a.getTypeId(x, y - 1, z) == 0) {
-				y--;
+				if (this.canPlaceLake(x, z)) {
+					this.waterLakes.a(this.a, this.b, x, y, z);
+				}
 			}
-
-			this.x.a(this.a, this.b, x, y, z);
 		}
 
-		for (int i = 0; i < this.decorator.get(Setting.BROWN_MUSHROOMS); i++) {
-			int x = this.c + this.b.nextInt(16) + 8;
-			int z = this.d + this.b.nextInt(16) + 8;
-			int y = this.a.getHighestBlockYAt(x, z);
+		for (int i = 0; i < lavaLakes.getCount(); ++i) {
+			if (this.hasChance(chanceLavaLakes)) {
+				int x = this.c + this.b.nextInt(16) + 8;
+				int z = this.d + this.b.nextInt(16) + 8;
+				int y = this.b.nextInt(this.b.nextInt(120) + 8);
 
-			this.s.a(this.a, this.b, x, y, z);
+				if (this.canPlaceLake(x, z)) {
+					this.lavaLakes.a(this.a, this.b, x, y, z);
+				}
+			}
 		}
 
-		for (int i = 0; i < this.decorator.get(Setting.RED_MUSHROOMS); i++) {
-			int x = this.c + this.b.nextInt(16) + 8;
-			int z = this.d + this.b.nextInt(16) + 8;
-			int y = this.a.getHighestBlockYAt(x, z);
+		for (int i = 0; i < sand2.getCount(); ++i) {
+			if (this.hasChance(chanceSand2)) {
+				int x = this.c + this.b.nextInt(16) + 8;
+				int z = this.d + this.b.nextInt(16) + 8;
 
-			this.t.a(this.a, this.b, x, y, z);
+				this.g.a(this.a, this.b, x, this.a.i(x, z), z);
+			}
 		}
 
-		for (int i = 0; i < this.decorator.get(Setting.REEDS); i++) {
-			int x = this.c + this.b.nextInt(16) + 8;
-			int y = this.b.nextInt(128);
-			int z = this.d + this.b.nextInt(16) + 8;
+		for (int i = 0; i < clay.getCount(); ++i) {
+			if (this.hasChance(chanceClay)) {
+				int x = this.c + this.b.nextInt(16) + 8;
+				int z = this.d + this.b.nextInt(16) + 8;
 
-			this.v.a(this.a, this.b, x, y, z);
+				this.f.a(this.a, this.b, x, this.a.i(x, z), z);
+			}
 		}
 
-		for (int i = 0; i < this.decorator.get(Setting.PUMPKINS); i++) {
-			int x = this.c + this.b.nextInt(16) + 8;
-			int y = this.b.nextInt(128);
-			int z = this.d + this.b.nextInt(16) + 8;
+		for (int i = 0; i < sand.getCount(); ++i) {
+			if (this.hasChance(chanceSand)) {
+				int x = this.c + this.b.nextInt(16) + 8;
+				int z = this.d + this.b.nextInt(16) + 8;
 
-			this.pumpkin.a(this.a, this.b, x, y, z);
+				this.g.a(this.a, this.b, x, this.a.i(x, z), z);
+			}
 		}
 
-		for (int i = 0; i < this.decorator.get(Setting.CACTI); i++) {
-			int x = this.c + this.b.nextInt(16) + 8;
-			int y = this.b.nextInt(128);
-			int z = this.d + this.b.nextInt(16) + 8;
-
-			this.w.a(this.a, this.b, x, y, z);
+		int treesCount = trees.getCount();
+		if (this.b.nextInt(10) == 0) {
+			treesCount++;
 		}
 
-		for (int i = 0; i < this.decorator.get(Setting.WATER_LIQUIDS); i++) {
-			int x = this.c + this.b.nextInt(16) + 8;
-			int y = this.b.nextInt(this.b.nextInt(120) + 8);
-			int z = this.d + this.b.nextInt(16) + 8;
+		for (int i = 0; i < treesCount; i++) {
+			if (this.hasChance(chanceTrees)) {
+				int x = this.c + this.b.nextInt(16) + 8;
+				int z = this.d + this.b.nextInt(16) + 8;
+	
+				WorldGen gen1 = this.decorator.getWorldGenTrees(this.b);
 
-			this.waterLiquids.a(this.a, this.b, x, y, z);
+				WorldGenerator gen2 = gen1 == null ? this.e.a(this.b) : new SimpleWorldGen(gen1);
+				gen2.a(1.0D, 1.0D, 1.0D);
+				gen2.a(this.a, this.b, x, this.a.getHighestBlockYAt(x, z), z);
+			}
 		}
 
-		for (int i = 0; i < this.decorator.get(Setting.LAVA_LIQUIDS); i++) {
-			int x = this.c + this.b.nextInt(16) + 8;
-			int y = this.b.nextInt(this.b.nextInt(this.b.nextInt(112) + 8) + 8);
-			int z = this.d + this.b.nextInt(16) + 8;
+		for (int i = 0; i < bigMushrooms.getCount(); i++) {
+			if (this.hasChance(chanceBigMushrooms)) {
+				int x = this.c + this.b.nextInt(16) + 8;
+				int z = this.d + this.b.nextInt(16) + 8;
 
-			this.lavaLiquids.a(this.a, this.b, x, y, z);
+				this.h.a(this.a, this.b, x, this.a.i(x, z), z);
+			}
+		}
+
+		for (int i = 0; i < yellowFlowers.getCount(); i++) {
+			if (this.hasChance(chanceYellowFlowers)) {
+				int x = this.c + this.b.nextInt(16) + 8;
+				int y = this.b.nextInt(128);
+				int z = this.d + this.b.nextInt(16) + 8;
+
+				this.q.a(this.a, this.b, x, y, z);
+			}
+		}
+
+		for (int i = 0; i < redFlowers.getCount(); i++) {
+			if (this.hasChance(chanceRedFlowers)) {
+				int x = this.c + this.b.nextInt(16) + 8;
+				int y = this.b.nextInt(128);
+				int z = this.d + this.b.nextInt(16) + 8;
+
+				this.r.a(this.a, this.b, x, y, z);
+			}
+		}
+
+		for (int i = 0; i < grass.getCount(); i++) {
+			if (this.hasChance(chanceGrass)) {
+				int x = this.c + this.b.nextInt(16) + 8;
+				int y = this.b.nextInt(128);
+				int z = this.d + this.b.nextInt(16) + 8;
+
+				WorldGen gen1 = this.decorator.getWorldGenGrass(this.b);
+
+				WorldGenerator gen2 = gen1 == null ? this.e.b(this.b) : new SimpleWorldGen(gen1);
+				gen2.a(this.a, this.b, x, y, z);
+			}
+		}
+
+		for (int i = 0; i < deathBush.getCount(); i++) {
+			if (this.hasChance(chanceDeathBush)) {
+				int x = this.c + this.b.nextInt(16) + 8;
+				int y = this.b.nextInt(128);
+				int z = this.d + this.b.nextInt(16) + 8;
+
+				this.deathBush.a(this.a, this.b, x, y, z);
+			}
+		}
+
+		for (int i = 0; i < waterlilly.getCount(); i++) {
+			if (this.hasChance(chanceWaterlilly)) {
+				int x = this.c + this.b.nextInt(16) + 8;
+				int y = this.b.nextInt(128);
+				int z = this.d + this.b.nextInt(16) + 8;
+
+				while (y > 0 && this.a.getTypeId(x, y - 1, z) == 0) {
+					y--;
+				}
+
+				this.x.a(this.a, this.b, x, y, z);
+			}
+		}
+
+		for (int i = 0; i < brownMushrooms.getCount(); i++) {
+			if (this.hasChance(chanceBrownMushrooms)) {
+				int x = this.c + this.b.nextInt(16) + 8;
+				int z = this.d + this.b.nextInt(16) + 8;
+				int y = this.a.getHighestBlockYAt(x, z);
+
+				this.s.a(this.a, this.b, x, y, z);
+			}
+		}
+
+		for (int i = 0; i < redMushrooms.getCount(); i++) {
+			if (this.hasChance(chanceRedMushrooms)) {
+				int x = this.c + this.b.nextInt(16) + 8;
+				int z = this.d + this.b.nextInt(16) + 8;
+				int y = this.a.getHighestBlockYAt(x, z);
+
+				this.t.a(this.a, this.b, x, y, z);
+			}
+		}
+
+		for (int i = 0; i < reeds.getCount(); i++) {
+			if (this.hasChance(chanceReeds)) {
+				int x = this.c + this.b.nextInt(16) + 8;
+				int y = this.b.nextInt(128);
+				int z = this.d + this.b.nextInt(16) + 8;
+
+				this.v.a(this.a, this.b, x, y, z);
+			}
+		}
+
+		for (int i = 0; i < pumpkins.getCount(); i++) {
+			if (this.hasChance(chancePumpkins)) {
+				int x = this.c + this.b.nextInt(16) + 8;
+				int y = this.b.nextInt(128);
+				int z = this.d + this.b.nextInt(16) + 8;
+
+				this.pumpkin.a(this.a, this.b, x, y, z);
+			}
+		}
+
+		for (int i = 0; i < cacti.getCount(); i++) {
+			if (this.hasChance(chanceCacti)) {
+				int x = this.c + this.b.nextInt(16) + 8;
+				int y = this.b.nextInt(128);
+				int z = this.d + this.b.nextInt(16) + 8;
+
+				this.w.a(this.a, this.b, x, y, z);
+			}
+		}
+
+		for (int i = 0; i < waterLiquids.getCount(); i++) {
+			if (this.hasChance(chanceWaterLiquids)) {
+				int x = this.c + this.b.nextInt(16) + 8;
+				int y = this.b.nextInt(this.b.nextInt(120) + 8);
+				int z = this.d + this.b.nextInt(16) + 8;
+
+				this.waterLiquids.a(this.a, this.b, x, y, z);
+			}
+		}
+
+		for (int i = 0; i < lavaLiquids.getCount(); i++) {
+			if (this.hasChance(chanceLavaLiquids)) {
+				int x = this.c + this.b.nextInt(16) + 8;
+				int y = this.b.nextInt(this.b.nextInt(this.b.nextInt(112) + 8) + 8);
+				int z = this.d + this.b.nextInt(16) + 8;
+
+				this.lavaLiquids.a(this.a, this.b, x, y, z);
+			}
 		}
 
 		this.decorator.onDecorate(this.a.getWorld(), this.b, this.c, this.d);
 	}
 
-	public me.cybermaxke.mighty.biome.api.BiomeDecorator getHandle() {
+	public Decorator getHandle() {
 		return this.decorator;
 	}
 
-	public void setHandle(me.cybermaxke.mighty.biome.api.BiomeDecorator decorator) {
+	public void setHandle(Decorator decorator) {
 		this.decorator = decorator;
+	}
+
+	public boolean canPlaceLake(int x, int z) {
+		SimpleWorldGenVillage gen = SimpleBiomePlugin.get().getBiomeRegister()
+				.getWorldGenVillage(this.a.getWorld());
+
+		return gen.a(this.a, this.b, x, z);
 	}
 
 	/**
@@ -269,32 +362,76 @@ public class SimpleBiomeDecorator extends BiomeDecorator {
 	 * @param old
 	 */
 	public void init(BiomeDecorator old) {
-		this.decorator.set(Setting.BIG_MUSHROOMS, this.getInt("J", old));
-		this.decorator.set(Setting.CACTI, this.getInt("F", old));
-		this.decorator.set(Setting.CLAY, this.getInt("I", old));
-		this.decorator.set(Setting.DEATH_BUSH, this.getInt("C", old));
-		this.decorator.set(Setting.GRASS, this.getInt("B", old));
-		this.decorator.set(Setting.REEDS, this.getInt("E", old));
-		this.decorator.set(Setting.SAND, this.getInt("G", old));
-		this.decorator.set(Setting.SAND_2, this.getInt("H", old));
-		this.decorator.set(Setting.TREES, this.getInt("z", old));
-		this.decorator.set(Setting.WATERLILY, this.getInt("y", old));
+		boolean liquids = false;
 
-		int flowers = this.getInt("A", old);
-		int flowersRed = flowers / 4;
+		try {
+			Field field = BiomeDecorator.class.getDeclaredField("K");
+			field.setAccessible(true);
 
-		this.decorator.set(Setting.RED_FLOWERS, flowersRed == 0 && flowers > 0 ? 1 :
-			flowersRed);
-		this.decorator.set(Setting.YELLOW_FLOWERS, flowers);
+			liquids = field.getBoolean(old);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
-		int mushrooms = this.getInt("D", old);
-		int mushroomsBrown = mushrooms / 4;
-		int mushroomsRed = mushrooms / 8;
-
-		this.decorator.set(Setting.RED_MUSHROOMS, mushroomsRed == 0 && mushrooms > 0 ? 1 :
-			mushroomsRed);
-		this.decorator.set(Setting.BROWN_MUSHROOMS, mushroomsBrown == 0 && mushrooms > 0 ? 1 :
-			mushroomsBrown);
+		for (DecoratorSettingType type : DecoratorSettingType.values()) {
+			switch (type) {
+				case BIG_MUSHROOMS:
+					this.decorator.getSetting(type).setCount(this.getInt("J", old));
+					break;
+				case RED_MUSHROOMS:
+				case BROWN_MUSHROOMS:
+					this.decorator.getSetting(type).setCount(this.getInt("D", old));
+					break;
+				case CACTI:
+					this.decorator.getSetting(type).setCount(this.getInt("F", old));
+					break;
+				case CLAY:
+					this.decorator.getSetting(type).setCount(this.getInt("I", old));
+					break;
+				case DEATH_BUSH:
+					this.decorator.getSetting(type).setCount(this.getInt("C", old));
+					break;
+				case GRASS:
+					this.decorator.getSetting(type).setCount(this.getInt("B", old));
+					break;
+				case WATER_LIQUIDS:
+					if (liquids) {
+						this.decorator.getSetting(type).setCount(50);
+					}
+					break;
+				case LAVA_LIQUIDS:
+					if (liquids) {
+						this.decorator.getSetting(type).setCount(20);
+					}
+					break;
+				case YELLOW_FLOWERS:
+				case RED_FLOWERS:
+					this.decorator.getSetting(type).setCount(this.getInt("A", old));
+					break;
+				case REEDS:
+					this.decorator.getSetting(type).setCount(this.getInt("F", old));
+					break;
+				case SAND:
+					this.decorator.getSetting(type).setCount(this.getInt("G", old));
+					break;
+				case SAND_2:
+					this.decorator.getSetting(type).setCount(this.getInt("H", old));
+					break;
+				case TREES:
+					this.decorator.getSetting(type).setCount(this.getInt("z", old));
+					break;
+				case WATERLILY:
+					this.decorator.getSetting(type).setCount(this.getInt("y", old));
+					break;
+				case PUMPKINS:
+				case WATER_LAKES:
+				case LAVA_LAKES:
+					break;
+				default:
+					throw new IllegalStateException("The old values of '" + type.toString() +
+							"' aren't loaded!");
+			}
+		}
 	}
 
 	public int getInt(String fieldName, BiomeDecorator old) {

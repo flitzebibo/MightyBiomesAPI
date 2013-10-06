@@ -30,15 +30,19 @@ import java.util.List;
 import java.util.Map;
 
 import org.bukkit.World;
+import org.bukkit.WorldType;
 
 import org.bukkit.craftbukkit.v1_6_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_6_R3.block.CraftBlock;
 
 import net.minecraft.server.v1_6_R3.BiomeBase;
 import net.minecraft.server.v1_6_R3.Chunk;
+import net.minecraft.server.v1_6_R3.ChunkProviderGenerate;
 import net.minecraft.server.v1_6_R3.GenLayer;
 import net.minecraft.server.v1_6_R3.GenLayerRiverMix;
 import net.minecraft.server.v1_6_R3.WorldChunkManager;
+import net.minecraft.server.v1_6_R3.WorldGenVillage;
+import net.minecraft.server.v1_6_R3.WorldServer;
 
 import me.cybermaxke.mighty.biome.api.BiomeAPI;
 import me.cybermaxke.mighty.biome.api.BiomeDefault;
@@ -46,6 +50,7 @@ import me.cybermaxke.mighty.biome.plugin.gen.layer.SimpleGenLayer;
 import me.cybermaxke.mighty.biome.plugin.gen.layer.SimpleGenLayerBiome;
 import me.cybermaxke.mighty.biome.plugin.gen.layer.SimpleGenLayerZoom1;
 import me.cybermaxke.mighty.biome.plugin.gen.layer.SimpleGenLayerZoom2;
+import me.cybermaxke.mighty.biome.plugin.structure.SimpleWorldGenVillage;
 
 public class SimpleBiomeRegister implements BiomeAPI {
 	private final Map<Integer, SimpleBiomeBase> biomes = new HashMap<Integer, SimpleBiomeBase>();
@@ -57,6 +62,9 @@ public class SimpleBiomeRegister implements BiomeAPI {
 				this.biomes.put(biome.id, new SimpleBiomeBaseDefault(biome));
 			}
 		}
+
+		this.get(BiomeBase.DESERT.id).setSandstoneVillages(true);
+		this.get(BiomeBase.DESERT_HILLS.id).setSandstoneVillages(true);
 
 		/**
 		 * Increase the maximum mapping size.
@@ -184,7 +192,8 @@ public class SimpleBiomeRegister implements BiomeAPI {
 		/**
 		 * Already updated...
 		 */
-		if (this.getLayer(main, SimpleGenLayerBiome.class) != null) {
+		if (this.getLayer(main, SimpleGenLayerBiome.class) != null ||
+				world.getWorldType().equals(WorldType.FLAT)) {
 			return;
 		}
 
@@ -214,9 +223,11 @@ public class SimpleBiomeRegister implements BiomeAPI {
 				biomes.add(me.cybermaxke.mighty.biome.api.BiomeBase.ICE_MOUNTAINS);
 				biomes.add(me.cybermaxke.mighty.biome.api.BiomeBase.TAIGA);
 				biomes.add(me.cybermaxke.mighty.biome.api.BiomeBase.TAIGA_HILLS);
+				biomes.add(me.cybermaxke.mighty.biome.api.BiomeBase.MUSHROOM_ISLAND);
 		}
 
 		this.setLayers(manager, SimpleGenLayer.getLayers(biomes, seed, size));
+		this.getWorldGenVillage(world);
 	}
 
 	public void add(World world, me.cybermaxke.mighty.biome.api.BiomeBase biome) {
@@ -333,6 +344,46 @@ public class SimpleBiomeRegister implements BiomeAPI {
 	public SimpleGenLayerBiome getBiomeLayer(World world) {
 		GenLayer main = this.getMainLayer(this.getChunkManager(world));
 		return this.getLayer(main, SimpleGenLayerBiome.class);
+	}
+
+	public SimpleWorldGenVillage getWorldGenVillage(World world) {
+		try {
+			ChunkProviderGenerate provider = this.getChunkProviderGenerate(world);
+
+			Field field1 = ChunkProviderGenerate.class.getDeclaredField("v");
+			field1.setAccessible(true);
+
+			WorldGenVillage gen1 = (WorldGenVillage) field1.get(provider);
+			if (gen1 instanceof SimpleWorldGenVillage) {
+				return (SimpleWorldGenVillage) gen1;
+			}
+
+			SimpleWorldGenVillage gen2 = new SimpleWorldGenVillage();
+			if (gen1 != null) {
+				Class<?> clazz = gen1.getClass();
+
+				while (clazz != null) {
+					for (Field field2 : clazz.getDeclaredFields()) {
+						field2.setAccessible(true);
+						field2.set(gen2, field2.get(gen1));
+					}
+
+					clazz = clazz.getSuperclass();
+				}
+			}
+
+			field1.set(provider, gen2);
+			return gen2;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	public ChunkProviderGenerate getChunkProviderGenerate(World world) {
+		WorldServer world1 = ((CraftWorld) world).getHandle();
+		return (ChunkProviderGenerate) world1.chunkProviderServer.chunkProvider;
 	}
 
 	public WorldChunkManager getChunkManager(World world) {

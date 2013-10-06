@@ -18,7 +18,7 @@
  * along with MightyBiomesAPI. If not, see <http://www.gnu.org/licenses/>.
  * 
  */
-package me.cybermaxke.mighty.biome.api;
+package me.cybermaxke.mighty.biome.api.decorator;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,22 +26,27 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import me.cybermaxke.mighty.biome.api.BiomeMinableMeta;
 import me.cybermaxke.mighty.biome.api.gen.WorldGen;
 
 import org.bukkit.Material;
 import org.bukkit.World;
 
-public class BiomeDecorator {
-	private final Map<Setting, Integer> settings = new HashMap<Setting, Integer>();
+public class Decorator {
+	private final Map<DecoratorSettingType, DecoratorSetting> settings =
+			new HashMap<DecoratorSettingType, DecoratorSetting>();
 	private final List<BiomeMinableMeta> minables = new ArrayList<BiomeMinableMeta>();
 
-	public BiomeDecorator() {
-		this.set(Setting.RED_FLOWERS, 1);
-		this.set(Setting.YELLOW_FLOWERS, 2);
-		this.set(Setting.GRASS, 1);
-		this.set(Setting.SAND, 1);
-		this.set(Setting.SAND_2, 3);
-		this.set(Setting.CLAY, 1);
+	public Decorator() {
+		this.setSetting(new DecoratorSetting(DecoratorSettingType.RED_FLOWERS, 25.0D, 2));
+		this.setSetting(new DecoratorSetting(DecoratorSettingType.YELLOW_FLOWERS, 100.0D, 2));
+		this.setSetting(new DecoratorSetting(DecoratorSettingType.GRASS, 100.0D, 1));
+		this.setSetting(new DecoratorSetting(DecoratorSettingType.SAND, 100.0D, 1));
+		this.setSetting(new DecoratorSetting(DecoratorSettingType.SAND_2, 100.0D, 3));
+		this.setSetting(new DecoratorSetting(DecoratorSettingType.CLAY, 100.0D, 1));
+		this.setSetting(new DecoratorSetting(DecoratorSettingType.PUMPKINS, 3.125D, 1));
+		this.setSetting(new DecoratorSetting(DecoratorSettingType.BROWN_MUSHROOMS, 25.0D, 1));
+		this.setSetting(new DecoratorSetting(DecoratorSettingType.RED_MUSHROOMS, 12.5D, 1));
 
 		this.addMinable(new BiomeMinableMeta(Material.DIRT, 32, 20, 0, 128));
 		this.addMinable(new BiomeMinableMeta(Material.GRAVEL, 32, 10, 0, 128));
@@ -83,8 +88,9 @@ public class BiomeDecorator {
 	 * @param setting
 	 * @return value
 	 */
-	public int get(Setting setting) {
-		return this.settings.containsKey(setting) ? this.settings.get(setting) : 0;
+	public DecoratorSetting getSetting(DecoratorSettingType type) {
+		return this.settings.containsKey(type) ? this.settings.get(type) :
+			new DecoratorSetting(type);
 	}
 
 	/**
@@ -92,8 +98,8 @@ public class BiomeDecorator {
 	 * @param setting
 	 * @param value
 	 */
-	public void set(Setting setting, int value) {
-		this.settings.put(setting, value);
+	public void setSetting(DecoratorSetting setting) {
+		this.settings.put(setting.getType(), setting);
 	}
 
 	/**
@@ -137,36 +143,5 @@ public class BiomeDecorator {
 	 */
 	public WorldGen getWorldGenGrass(Random random) {
 		return null;
-	}
-
-	/**
-	 * Settings that are available in the default world decorator.
-	 */
-	public enum Setting {
-		WATERLILY,
-		TREES,
-		YELLOW_FLOWERS,
-		RED_FLOWERS,
-		GRASS,
-		DEATH_BUSH,
-		BROWN_MUSHROOMS,
-		RED_MUSHROOMS,
-		REEDS,
-		CACTI,
-		/**
-		 * The sand that will be generated before the clay.
-		 */
-		SAND,
-		/**
-		 * The sand that will be generated after the clay.
-		 */
-		SAND_2,
-		CLAY,
-		BIG_MUSHROOMS,
-		WATER_LAKES,
-		LAVA_LAKES,
-		PUMPKINS,
-		WATER_LIQUIDS,
-		LAVA_LIQUIDS
 	}
 }

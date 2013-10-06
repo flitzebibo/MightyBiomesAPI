@@ -25,6 +25,7 @@ import java.util.List;
 import org.bukkit.Material;
 
 import me.cybermaxke.mighty.biome.api.data.EnumCreatureType;
+import me.cybermaxke.mighty.biome.api.decorator.Decorator;
 
 public interface BiomeBase {
 	public static final BiomeBase OCEAN = new BiomeWrapper(0);
@@ -179,6 +180,18 @@ public interface BiomeBase {
 	public void setGenerateVillages(boolean generate);
 
 	/**
+	 * Gets if the generated villages are made of sandstone.
+	 * @return sandstoneVillages
+	 */
+	public boolean getSandstoneVillages();
+
+	/**
+	 * Sets if the generated villages are made of sandstone.
+	 * @param sandstoneVillages
+	 */
+	public void setSandstoneVillages(boolean sandstoneVillages);
+
+	/**
 	 * Gets if players are allowed to spawn in this biome.
 	 * @return spawnable
 	 */
@@ -194,11 +207,11 @@ public interface BiomeBase {
 	 * Gets the biome decorator.
 	 * @return decorator
 	 */
-	public BiomeDecorator getDecorator();
+	public Decorator getDecorator();
 
 	/**
 	 * Sets the biome decorator.
 	 * @param decorator
 	 */
-	public void setDecorator(BiomeDecorator decorator);
+	public void setDecorator(Decorator decorator);
 }

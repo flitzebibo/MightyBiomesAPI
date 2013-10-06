@@ -32,6 +32,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.bukkit.Material;
 
 import me.cybermaxke.mighty.biome.api.data.EnumCreatureType;
+import me.cybermaxke.mighty.biome.api.decorator.Decorator;
 
 import net.minecraft.server.v1_6_R3.BiomeBase;
 import net.minecraft.server.v1_6_R3.BiomeMeta;
@@ -43,6 +44,7 @@ public class SimpleBiomeBase implements me.cybermaxke.mighty.biome.api.BiomeBase
 	private final BiomeBase biome;
 
 	private boolean spawnable = false;
+	private boolean sandstoneVillage = false;
 
 	@SuppressWarnings("unchecked")
 	public SimpleBiomeBase(BiomeBase biome) {
@@ -74,8 +76,7 @@ public class SimpleBiomeBase implements me.cybermaxke.mighty.biome.api.BiomeBase
 			return (SimpleBiomeDecorator) this.biome.I;
 		}
 
-		me.cybermaxke.mighty.biome.api.BiomeDecorator decorator1 =
-				new me.cybermaxke.mighty.biome.api.BiomeDecorator();
+		Decorator decorator1 = new Decorator();
 		SimpleBiomeDecorator decorator2 = new SimpleBiomeDecorator(this.biome, decorator1);
 		decorator2.init(this.biome.I);
 
@@ -196,6 +197,16 @@ public class SimpleBiomeBase implements me.cybermaxke.mighty.biome.api.BiomeBase
 	}
 
 	@Override
+	public boolean getSandstoneVillages() {
+		return this.sandstoneVillage;
+	}
+
+	@Override
+	public void setSandstoneVillages(boolean sandstoneVillages) {
+		this.sandstoneVillage = sandstoneVillages;
+	}
+
+	@Override
 	public boolean getSpawnable() {
 		return this.spawnable;
 	}
@@ -206,12 +217,12 @@ public class SimpleBiomeBase implements me.cybermaxke.mighty.biome.api.BiomeBase
 	}
 
 	@Override
-	public me.cybermaxke.mighty.biome.api.BiomeDecorator getDecorator() {
+	public Decorator getDecorator() {
 		return this.getDecor().getHandle();
 	}
 
 	@Override
-	public void setDecorator(me.cybermaxke.mighty.biome.api.BiomeDecorator decorator) {
+	public void setDecorator(Decorator decorator) {
 		this.getDecor().setHandle(decorator);
 	}
 

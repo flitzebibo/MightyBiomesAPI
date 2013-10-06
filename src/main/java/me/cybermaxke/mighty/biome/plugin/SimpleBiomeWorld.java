@@ -24,6 +24,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.bukkit.World;
+import org.bukkit.WorldType;
 import org.bukkit.block.Block;
 
 import me.cybermaxke.mighty.biome.api.BiomeBase;
@@ -45,36 +46,43 @@ public class SimpleBiomeWorld implements BiomeWorld {
 
 	@Override
 	public List<BiomeBase> getAll() {
+		this.checkFlatWorld();
 		return this.register.getAll(this.world);
 	}
 
 	@Override
 	public void add(BiomeBase biome) {
+		this.checkFlatWorld();
 		this.register.add(this.world, biome);
 	}
 
 	@Override
 	public void addAll(Collection<BiomeBase> biomes) {
+		this.checkFlatWorld();
 		this.register.addAll(this.world, biomes);
 	}
 
 	@Override
 	public void remove(BiomeBase biome) {
+		this.checkFlatWorld();
 		this.register.remove(this.world, biome);
 	}
 
 	@Override
 	public void removeAll(Collection<BiomeBase> biomes) {
+		this.checkFlatWorld();
 		this.register.removeAll(this.world, biomes);
 	}
 
 	@Override
 	public int getBiomeSize() {
+		this.checkFlatWorld();
 		return this.register.getBiomeSize(this.world);
 	}
 
 	@Override
 	public void setBiomeSize(int size) {
+		this.checkFlatWorld();
 		this.register.setBiomeSize(this.world, size);
 	}
 
@@ -96,5 +104,11 @@ public class SimpleBiomeWorld implements BiomeWorld {
 	@Override
 	public void set(Block block, BiomeBase biome) {
 		this.set(block.getX(), block.getZ(), biome);
+	}
+
+	public void checkFlatWorld() {
+		if (this.world.getWorldType().equals(WorldType.FLAT)) {
+			throw new IllegalStateException("Flat worlds aren't supported!");
+		}
 	}
 }

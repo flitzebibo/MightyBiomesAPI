@@ -28,6 +28,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.bukkit.Material;
 
 import me.cybermaxke.mighty.biome.api.data.EnumCreatureType;
+import me.cybermaxke.mighty.biome.api.decorator.Decorator;
 
 public class BiomeWrapper implements BiomeBase {
 	private final int id;
@@ -142,6 +143,16 @@ public class BiomeWrapper implements BiomeBase {
 	}
 
 	@Override
+	public boolean getSandstoneVillages() {
+		return Biomes.get().get(this.id).getSandstoneVillages();
+	}
+
+	@Override
+	public void setSandstoneVillages(boolean sandstoneVillages) {
+		Biomes.get().get(this.id).setSandstoneVillages(sandstoneVillages);
+	}
+
+	@Override
 	public boolean getSpawnable() {
 		return Biomes.get().get(this.id).getSpawnable();
 	}
@@ -152,12 +163,12 @@ public class BiomeWrapper implements BiomeBase {
 	}
 
 	@Override
-	public BiomeDecorator getDecorator() {
+	public Decorator getDecorator() {
 		return Biomes.get().get(this.id).getDecorator();
 	}
 
 	@Override
-	public void setDecorator(BiomeDecorator decorator) {
+	public void setDecorator(Decorator decorator) {
 		Biomes.get().get(this.id).setDecorator(decorator);
 	}
 
