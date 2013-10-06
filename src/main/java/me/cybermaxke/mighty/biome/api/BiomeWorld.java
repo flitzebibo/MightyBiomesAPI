@@ -79,6 +79,18 @@ public interface BiomeWorld {
 	public void setBiomeSize(int size);
 
 	/**
+	 * Gets the sea level of the world.
+	 * @return seaLevel
+	 */
+	public int getSeaLevel();
+
+	/**
+	 * Sets the sea level of the world.
+	 * @param seaLevel
+	 */
+	public void setSeaLevel(int seaLevel);
+
+	/**
 	 * Gets the biome at the x and y position.
 	 * @param x
 	 * @param z

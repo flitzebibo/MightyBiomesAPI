@@ -42,6 +42,7 @@ import net.minecraft.server.v1_6_R3.GenLayer;
 import net.minecraft.server.v1_6_R3.GenLayerRiverMix;
 import net.minecraft.server.v1_6_R3.WorldChunkManager;
 import net.minecraft.server.v1_6_R3.WorldGenVillage;
+import net.minecraft.server.v1_6_R3.WorldProvider;
 import net.minecraft.server.v1_6_R3.WorldServer;
 
 import me.cybermaxke.mighty.biome.api.BiomeAPI;
@@ -226,6 +227,7 @@ public class SimpleBiomeRegister implements BiomeAPI {
 				biomes.add(me.cybermaxke.mighty.biome.api.BiomeBase.MUSHROOM_ISLAND);
 		}
 
+		this.getProvider(world);
 		this.setLayers(manager, SimpleGenLayer.getLayers(biomes, seed, size));
 		this.getWorldGenVillage(world);
 	}
@@ -384,6 +386,18 @@ public class SimpleBiomeRegister implements BiomeAPI {
 	public ChunkProviderGenerate getChunkProviderGenerate(World world) {
 		WorldServer world1 = ((CraftWorld) world).getHandle();
 		return (ChunkProviderGenerate) world1.chunkProviderServer.chunkProvider;
+	}
+
+	public SimpleBiomeWorldProvider getProvider(World world) {
+		WorldProvider provider1 = ((CraftWorld) world).getHandle().worldProvider;
+		if (provider1 instanceof SimpleBiomeWorldProvider) {
+			return (SimpleBiomeWorldProvider) provider1;
+		}
+
+		SimpleBiomeWorldProvider provider2 = new SimpleBiomeWorldProvider(provider1);
+		((CraftWorld) world).getHandle().worldProvider = provider2;
+
+		return provider2;
 	}
 
 	public WorldChunkManager getChunkManager(World world) {

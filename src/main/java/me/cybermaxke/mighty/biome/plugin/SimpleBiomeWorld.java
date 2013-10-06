@@ -87,6 +87,18 @@ public class SimpleBiomeWorld implements BiomeWorld {
 	}
 
 	@Override
+	public int getSeaLevel() {
+		this.checkFlatWorld();
+		return this.register.getProvider(this.world).getSeaLevel();
+	}
+
+	@Override
+	public void setSeaLevel(int seaLevel) {
+		this.checkFlatWorld();
+		this.register.getProvider(this.world).setSeaLevel(seaLevel);
+	}
+
+	@Override
 	public BiomeBase get(int x, int z) {
 		return this.register.get(this.world, x, z);
 	}
