@@ -32,11 +32,13 @@ import me.cybermaxke.mighty.biome.api.gen.WorldGen;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.generator.BlockPopulator;
 
 public class Decorator {
 	private final Map<DecoratorSettingType, DecoratorSetting> settings =
 			new HashMap<DecoratorSettingType, DecoratorSetting>();
 	private final List<BiomeMinableMeta> minables = new ArrayList<BiomeMinableMeta>();
+	private final List<BlockPopulator> populators = new ArrayList<BlockPopulator>();
 
 	public Decorator() {
 		this.setSetting(new DecoratorSetting(DecoratorSettingType.RED_FLOWERS, 25.0D, 2));
@@ -57,6 +59,31 @@ public class Decorator {
 		this.addMinable(new BiomeMinableMeta(Material.REDSTONE_ORE, 7, 8, 0, 16));
 		this.addMinable(new BiomeMinableMeta(Material.DIAMOND_ORE, 7, 1, 0, 16));
 		this.addMinable(new BiomeMinableMeta(Material.LAPIS_ORE, 6, 1, 16, 32));
+	}
+
+	/**
+	 * Adds a block populator to the decorator.
+	 * @param populator
+	 */
+	public void addPopulator(BlockPopulator populator) {
+		this.populators.add(populator);
+	}
+
+	/**
+	 * Removes a block populator from the biome.
+	 * @param populator
+	 * @return succes
+	 */
+	public boolean removePopulator(BlockPopulator populator) {
+		return this.populators.remove(populator);
+	}
+
+	/**
+	 * Gets all the block populator of the decorator.
+	 * @param populator
+	 */
+	public List<BlockPopulator> getPopulators() {
+		return this.populators;
 	}
 
 	/**

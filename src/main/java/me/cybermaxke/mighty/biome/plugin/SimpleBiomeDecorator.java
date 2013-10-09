@@ -22,6 +22,8 @@ package me.cybermaxke.mighty.biome.plugin;
 
 import java.lang.reflect.Field;
 
+import org.bukkit.generator.BlockPopulator;
+
 import me.cybermaxke.mighty.biome.api.BiomeMinableMeta;
 import me.cybermaxke.mighty.biome.api.decorator.Decorator;
 import me.cybermaxke.mighty.biome.api.decorator.DecoratorSetting;
@@ -338,6 +340,11 @@ public class SimpleBiomeDecorator extends BiomeDecorator {
 
 				this.lavaLiquids.a(this.a, this.b, x, y, z);
 			}
+		}
+
+		for (BlockPopulator populator : this.decorator.getPopulators()) {
+			populator.populate(this.a.getWorld(), this.b,
+					this.a.getChunkAt(this.c, this.d).bukkitChunk);
 		}
 
 		this.decorator.onDecorate(this.a.getWorld(), this.b,
