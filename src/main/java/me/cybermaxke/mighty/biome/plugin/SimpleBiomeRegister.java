@@ -222,6 +222,7 @@ public class SimpleBiomeRegister implements BiomeAPI {
 				biomes.add(me.cybermaxke.mighty.biome.api.BiomeBase.TAIGA);
 				biomes.add(me.cybermaxke.mighty.biome.api.BiomeBase.TAIGA_HILLS);
 				biomes.add(me.cybermaxke.mighty.biome.api.BiomeBase.MUSHROOM_ISLAND);
+				biomes.add(me.cybermaxke.mighty.biome.api.BiomeBase.RIVER);
 		}
 
 		this.getChunkProviderGenerate(world);
