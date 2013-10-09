@@ -127,6 +127,12 @@ public class BiomeMinableMeta {
 	}
 
 	@Override
+	public BiomeMinableMeta clone() {
+		return new BiomeMinableMeta(this.material, this.groupSize, this.groupCount, this.minHeight,
+				this.maxHeight);
+	}
+
+	@Override
 	public boolean equals(Object o) {
 		if (!(o instanceof BiomeMinableMeta)) {
 			return false;

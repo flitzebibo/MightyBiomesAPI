@@ -133,13 +133,13 @@ public class BiomeWrapper implements BiomeBase {
 	}
 
 	@Override
-	public boolean getGenerateVillages() {
-		return Biomes.get().get(this.id).getGenerateVillages();
+	public boolean isGeneratingVillages() {
+		return Biomes.get().get(this.id).isGeneratingVillages();
 	}
 
 	@Override
-	public void setGenerateVillages(boolean generate) {
-		Biomes.get().get(this.id).setGenerateVillages(generate);
+	public void setGeneratingVillages(boolean generate) {
+		Biomes.get().get(this.id).setGeneratingVillages(generate);
 	}
 
 	@Override
@@ -150,6 +150,26 @@ public class BiomeWrapper implements BiomeBase {
 	@Override
 	public void setSandstoneVillages(boolean sandstoneVillages) {
 		Biomes.get().get(this.id).setSandstoneVillages(sandstoneVillages);
+	}
+
+	@Override
+	public boolean isGeneratingCanyons() {
+		return Biomes.get().get(this.id).isGeneratingCanyons();
+	}
+
+	@Override
+	public void setGeneratingCanyons(boolean canyons) {
+		Biomes.get().get(this.id).setGeneratingCanyons(canyons);
+	}
+
+	@Override
+	public boolean isGeneratingCaves() {
+		return Biomes.get().get(this.id).isGeneratingCaves();
+	}
+
+	@Override
+	public void setGeneratingCaves(boolean caves) {
+		Biomes.get().get(this.id).setGeneratingCaves(caves);
 	}
 
 	@Override
@@ -187,7 +207,7 @@ public class BiomeWrapper implements BiomeBase {
 				.append(this.getFillingBlock(), other.getFillingBlock())
 				.append(this.getTemperature(), other.getTemperature())
 				.append(this.getHumitidy(), other.getHumitidy())
-				.append(this.getGenerateVillages(), other.getGenerateVillages())
+				.append(this.isGeneratingVillages(), other.isGeneratingVillages())
 				.isEquals();
 	}
 
@@ -201,7 +221,7 @@ public class BiomeWrapper implements BiomeBase {
 				.append(this.getFillingBlock())
 				.append(this.getTemperature())
 				.append(this.getHumitidy())
-				.append(this.getGenerateVillages())
+				.append(this.isGeneratingVillages())
 				.toHashCode();
 	}
 }

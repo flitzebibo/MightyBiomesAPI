@@ -109,6 +109,11 @@ public class BiomeMeta implements WeightedRandomItem {
 	}
 
 	@Override
+	public BiomeMeta clone() {
+		return new BiomeMeta(this.entity, this.weight, this.minGroupCount, this.maxGroupCount);
+	}
+
+	@Override
 	public boolean equals(Object o) {
 		if (!(o instanceof BiomeMeta)) {
 			return false;

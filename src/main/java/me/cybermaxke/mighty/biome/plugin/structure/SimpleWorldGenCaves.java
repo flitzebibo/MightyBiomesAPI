@@ -18,27 +18,23 @@
  * along with MightyBiomesAPI. If not, see <http://www.gnu.org/licenses/>.
  * 
  */
-package me.cybermaxke.mighty.biome.plugin;
+package me.cybermaxke.mighty.biome.plugin.structure;
 
-import me.cybermaxke.mighty.biome.plugin.utils.ReflectionUtils;
+import me.cybermaxke.mighty.biome.api.BiomeBase;
+import me.cybermaxke.mighty.biome.api.Biomes;
 
-import net.minecraft.server.v1_6_R3.WorldProvider;
-import net.minecraft.server.v1_6_R3.WorldProviderNormal;
+import net.minecraft.server.v1_6_R3.IChunkProvider;
+import net.minecraft.server.v1_6_R3.World;
+import net.minecraft.server.v1_6_R3.WorldGenCaves;
 
-public class SimpleBiomeWorldProvider extends WorldProviderNormal {
-	private int seaLevel;
-
-	public SimpleBiomeWorldProvider(WorldProvider old) {
-		this.seaLevel = old.getSeaLevel();
-		ReflectionUtils.copyFieldObjects(WorldProvider.class, old, this, true);
-	}
+public class SimpleWorldGenCaves extends WorldGenCaves {
 
 	@Override
-	public int getSeaLevel() {
-		return this.seaLevel;
-	}
+	public void a(IChunkProvider provider, World world, int x, int z, byte[] data) {
+		BiomeBase biome = Biomes.get().get(world.getBiome(x, z).id);
 
-	public void setSeaLevel(int seaLevel) {
-		this.seaLevel = seaLevel;
+		if (biome.isGeneratingCaves()) {
+			super.a(provider, world, x, z, data);
+		}
 	}
 }

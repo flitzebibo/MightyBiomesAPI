@@ -20,14 +20,13 @@
  */
 package me.cybermaxke.mighty.biome.api.utils;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Random;
 
 public class WeightedRandom {
 
-	private WeightedRandom() {
+	public WeightedRandom() {
 
 	}
 
@@ -36,7 +35,7 @@ public class WeightedRandom {
 	 * @param collection
 	 * @return weight
 	 */
-	public static <T extends WeightedRandomItem> int getTotalWeight(Collection<T> collection) {
+	public <T extends WeightedRandomItem> int getTotalWeight(Collection<T> collection) {
 		int weight = 0;
 
 		Iterator<T> iter = collection.iterator();
@@ -48,15 +47,6 @@ public class WeightedRandom {
 	}
 
 	/**
-	 * Gets the total weight of a array weighted items.
-	 * @param array
-	 * @return weight
-	 */
-	public static <T extends WeightedRandomItem> int getTotalWeight(T... array) {
-		return getTotalWeight(Arrays.asList(array));
-	}
-
-	/**
 	 * Gets a random item from the collection that is balanced
 	 * using the weight and the totalWeight.
 	 * @param random
@@ -64,7 +54,7 @@ public class WeightedRandom {
 	 * @param totalWeight
 	 * @return item
 	 */
-	public static <T extends WeightedRandomItem> T getRandomItem(Random random, Collection<T> collection,
+	public <T extends WeightedRandomItem> T getRandomItem(Random random, Collection<T> collection,
 			int totalWeight) {
 		if (totalWeight <= 0) {
 			throw new IllegalArgumentException("The total weight has to be greater then zero!");
@@ -87,35 +77,13 @@ public class WeightedRandom {
 	}
 
 	/**
-	 * Gets a random item from the array that is balanced using the weight and the totalWeight.
-	 * @param random
-	 * @param array
-	 * @param totalWeight
-	 * @return item
-	 */
-	public static <T extends WeightedRandomItem> T getRandomItem(Random random, int totalWeight,
-			T... array) {
-		return getRandomItem(random, Arrays.asList(array), totalWeight);
-	}
-
-	/**
 	 * Gets a random item from the collection that is balanced by the weight.
 	 * @param random
 	 * @param collection
 	 * @return item
 	 */
-	public static <T extends WeightedRandomItem> T getRandomItem(Random random,
+	public <T extends WeightedRandomItem> T getRandomItem(Random random,
 			Collection<T> collection) {
-		return getRandomItem(random, collection, getTotalWeight(collection));
-	}
-
-	/**
-	 * Gets a random item from the array that is balanced by the weight.
-	 * @param random
-	 * @param array
-	 * @return item
-	 */
-	public static <T extends WeightedRandomItem> T getRandomItem(Random random, T... array) {
-		return getRandomItem(random, Arrays.asList(array));
+		return this.getRandomItem(random, collection, this.getTotalWeight(collection));
 	}
 }

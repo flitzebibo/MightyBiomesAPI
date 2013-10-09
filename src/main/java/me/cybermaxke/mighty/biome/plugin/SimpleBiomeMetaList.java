@@ -42,7 +42,10 @@ public class SimpleBiomeMetaList implements List<BiomeMeta> {
 	public SimpleBiomeMetaList(List<me.cybermaxke.mighty.biome.api.BiomeMeta> meta,
 			List<BiomeMeta> defaults) {
 		this.meta = meta;
-		this.addAll(defaults);
+
+		if (defaults != null) {
+			this.addAll(defaults);
+		}
 	}
 
 	@Override

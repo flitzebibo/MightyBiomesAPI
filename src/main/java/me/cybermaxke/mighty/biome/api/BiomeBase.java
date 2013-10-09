@@ -169,15 +169,15 @@ public interface BiomeBase {
 
 	/**
 	 * Gets if there can villages spawn in the biome.
-	 * @return villager
+	 * @return villages
 	 */
-	public boolean getGenerateVillages();
+	public boolean isGeneratingVillages();
 
 	/**
 	 * Sets if there can villages spawn in the biome.
-	 * @param villager
+	 * @param villages
 	 */
-	public void setGenerateVillages(boolean generate);
+	public void setGeneratingVillages(boolean villages);
 
 	/**
 	 * Gets if the generated villages are made of sandstone.
@@ -190,6 +190,30 @@ public interface BiomeBase {
 	 * @param sandstoneVillages
 	 */
 	public void setSandstoneVillages(boolean sandstoneVillages);
+
+	/**
+	 * Gets if there can generate canyons.
+	 * @return canyons
+	 */
+	public boolean isGeneratingCanyons();
+
+	/**
+	 * Sets if there can generate canyons.
+	 * @param canyons
+	 */
+	public void setGeneratingCanyons(boolean canyons);
+
+	/**
+	 * Gets if there can generate caves.
+	 * @return caves
+	 */
+	public boolean isGeneratingCaves();
+
+	/**
+	 * Sets if there can generate caves.
+	 * @param caves
+	 */
+	public void setGeneratingCaves(boolean caves);
 
 	/**
 	 * Gets if players are allowed to spawn in this biome.

@@ -352,7 +352,8 @@ public class SimpleBiomeDecorator extends BiomeDecorator {
 
 	public boolean canPlaceLake(int x, int z) {
 		SimpleWorldGenVillage gen = SimpleBiomePlugin.get().getBiomeRegister()
-				.getWorldGenVillage(this.a.getWorld());
+				.getChunkProviderGenerate(this.a.getWorld())
+				.getVillageGen();
 
 		return gen.a(this.a, this.b, x, z);
 	}

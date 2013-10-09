@@ -45,6 +45,8 @@ public class SimpleBiomeBase implements me.cybermaxke.mighty.biome.api.BiomeBase
 
 	private boolean spawnable = false;
 	private boolean sandstoneVillage = false;
+	private boolean canyons = true;
+	private boolean caves = true;
 
 	@SuppressWarnings("unchecked")
 	public SimpleBiomeBase(BiomeBase biome) {
@@ -183,15 +185,15 @@ public class SimpleBiomeBase implements me.cybermaxke.mighty.biome.api.BiomeBase
 	}
 
 	@Override
-	public boolean getGenerateVillages() {
+	public boolean isGeneratingVillages() {
 		return WorldGenVillage.e.contains(this.biome);
 	}
 
 	@Override
-	public void setGenerateVillages(boolean generate) {
-		if (!this.getGenerateVillages() && generate) {
+	public void setGeneratingVillages(boolean generate) {
+		if (!this.isGeneratingVillages() && generate) {
 			WorldGenVillage.e.add(this.biome);
-		} else if (this.getGenerateVillages() && !generate) {
+		} else if (this.isGeneratingVillages() && !generate) {
 			WorldGenVillage.e.remove(this.biome);
 		}
 	}
@@ -204,6 +206,26 @@ public class SimpleBiomeBase implements me.cybermaxke.mighty.biome.api.BiomeBase
 	@Override
 	public void setSandstoneVillages(boolean sandstoneVillages) {
 		this.sandstoneVillage = sandstoneVillages;
+	}
+
+	@Override
+	public boolean isGeneratingCanyons() {
+		return this.canyons;
+	}
+
+	@Override
+	public void setGeneratingCanyons(boolean canyons) {
+		this.canyons = canyons;
+	}
+
+	@Override
+	public boolean isGeneratingCaves() {
+		return this.caves;
+	}
+
+	@Override
+	public void setGeneratingCaves(boolean caves) {
+		this.caves = caves;
 	}
 
 	@Override
@@ -271,7 +293,7 @@ public class SimpleBiomeBase implements me.cybermaxke.mighty.biome.api.BiomeBase
 				.append(this.getFillingBlock(), other.getFillingBlock())
 				.append(this.getTemperature(), other.getTemperature())
 				.append(this.getHumitidy(), other.getHumitidy())
-				.append(this.getGenerateVillages(), other.getGenerateVillages())
+				.append(this.isGeneratingVillages(), other.isGeneratingVillages())
 				.isEquals();
 	}
 
@@ -285,7 +307,7 @@ public class SimpleBiomeBase implements me.cybermaxke.mighty.biome.api.BiomeBase
 				.append(this.getFillingBlock())
 				.append(this.getTemperature())
 				.append(this.getHumitidy())
-				.append(this.getGenerateVillages())
+				.append(this.isGeneratingVillages())
 				.toHashCode();
 	}
 }

@@ -41,7 +41,6 @@ import net.minecraft.server.v1_6_R3.ChunkProviderGenerate;
 import net.minecraft.server.v1_6_R3.GenLayer;
 import net.minecraft.server.v1_6_R3.GenLayerRiverMix;
 import net.minecraft.server.v1_6_R3.WorldChunkManager;
-import net.minecraft.server.v1_6_R3.WorldGenVillage;
 import net.minecraft.server.v1_6_R3.WorldProvider;
 import net.minecraft.server.v1_6_R3.WorldServer;
 
@@ -50,7 +49,6 @@ import me.cybermaxke.mighty.biome.plugin.gen.layer.SimpleGenLayer;
 import me.cybermaxke.mighty.biome.plugin.gen.layer.SimpleGenLayerBiome;
 import me.cybermaxke.mighty.biome.plugin.gen.layer.SimpleGenLayerZoom1;
 import me.cybermaxke.mighty.biome.plugin.gen.layer.SimpleGenLayerZoom2;
-import me.cybermaxke.mighty.biome.plugin.structure.SimpleWorldGenVillage;
 
 public class SimpleBiomeRegister implements BiomeAPI {
 	private final Map<Integer, SimpleBiomeBase> biomes = new HashMap<Integer, SimpleBiomeBase>();
@@ -226,9 +224,9 @@ public class SimpleBiomeRegister implements BiomeAPI {
 				biomes.add(me.cybermaxke.mighty.biome.api.BiomeBase.MUSHROOM_ISLAND);
 		}
 
+		this.getChunkProviderGenerate(world);
 		this.getProvider(world);
 		this.setLayers(manager, SimpleGenLayer.getLayers(biomes, seed, size));
-		this.getWorldGenVillage(world);
 	}
 
 	public void add(World world, me.cybermaxke.mighty.biome.api.BiomeBase biome) {
@@ -347,44 +345,18 @@ public class SimpleBiomeRegister implements BiomeAPI {
 		return this.getLayer(main, SimpleGenLayerBiome.class);
 	}
 
-	public SimpleWorldGenVillage getWorldGenVillage(World world) {
-		try {
-			ChunkProviderGenerate provider = this.getChunkProviderGenerate(world);
+	public SimpleBiomeChunkProviderGenerate getChunkProviderGenerate(World world) {
+		WorldServer w = ((CraftWorld) world).getHandle();
+		ChunkProviderGenerate gen1 = (ChunkProviderGenerate) w.chunkProviderServer.chunkProvider;
 
-			Field field1 = ChunkProviderGenerate.class.getDeclaredField("v");
-			field1.setAccessible(true);
-
-			WorldGenVillage gen1 = (WorldGenVillage) field1.get(provider);
-			if (gen1 instanceof SimpleWorldGenVillage) {
-				return (SimpleWorldGenVillage) gen1;
-			}
-
-			SimpleWorldGenVillage gen2 = new SimpleWorldGenVillage();
-			if (gen1 != null) {
-				Class<?> clazz = gen1.getClass();
-
-				while (clazz != null) {
-					for (Field field2 : clazz.getDeclaredFields()) {
-						field2.setAccessible(true);
-						field2.set(gen2, field2.get(gen1));
-					}
-
-					clazz = clazz.getSuperclass();
-				}
-			}
-
-			field1.set(provider, gen2);
-			return gen2;
-		} catch (Exception e) {
-			e.printStackTrace();
+		if (gen1 instanceof SimpleBiomeChunkProviderGenerate) {
+			return (SimpleBiomeChunkProviderGenerate) gen1;
 		}
 
-		return null;
-	}
+		SimpleBiomeChunkProviderGenerate gen2 = new SimpleBiomeChunkProviderGenerate(w, gen1);
+		w.chunkProviderServer.chunkProvider = gen2;
 
-	public ChunkProviderGenerate getChunkProviderGenerate(World world) {
-		WorldServer world1 = ((CraftWorld) world).getHandle();
-		return (ChunkProviderGenerate) world1.chunkProviderServer.chunkProvider;
+		return gen2;
 	}
 
 	public SimpleBiomeWorldProvider getProvider(World world) {

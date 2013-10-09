@@ -98,6 +98,12 @@ public class SimpleBiomeMeta extends me.cybermaxke.mighty.biome.api.BiomeMeta {
 	}
 
 	@Override
+	public SimpleBiomeMeta clone() {
+		return new SimpleBiomeMeta(new BiomeMeta(this.meta.b, this.getWeight(),
+				this.getMinGroupCount(), this.getMaxGroupCount()));
+	}
+
+	@Override
 	public boolean equals(Object o) {
 		if (!(o instanceof me.cybermaxke.mighty.biome.api.BiomeMeta)) {
 			return false;
