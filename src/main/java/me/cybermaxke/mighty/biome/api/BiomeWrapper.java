@@ -22,9 +22,6 @@ package me.cybermaxke.mighty.biome.api;
 
 import java.util.List;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-
 import org.bukkit.Material;
 
 import me.cybermaxke.mighty.biome.api.data.EnumCreatureType;
@@ -194,34 +191,11 @@ public class BiomeWrapper implements BiomeBase {
 
 	@Override
 	public boolean equals(Object o) {
-		if (!(o instanceof BiomeBase)) {
-			return false;
-		}
-
-		BiomeBase other = (BiomeBase) o;
-		return new EqualsBuilder()
-				.append(this.getId(), other.getId())
-				.append(this.getMinHeight(), other.getMinHeight())
-				.append(this.getMaxHeight(), other.getMaxHeight())
-				.append(this.getTopBlock(), other.getTopBlock())
-				.append(this.getFillingBlock(), other.getFillingBlock())
-				.append(this.getTemperature(), other.getTemperature())
-				.append(this.getHumitidy(), other.getHumitidy())
-				.append(this.isGeneratingVillages(), other.isGeneratingVillages())
-				.isEquals();
+		return Biomes.get().get(this.id).equals(o);
 	}
 
 	@Override
 	public int hashCode() {
-		return new HashCodeBuilder()
-				.append(this.getId())
-				.append(this.getMinHeight())
-				.append(this.getMaxHeight())
-				.append(this.getTopBlock())
-				.append(this.getFillingBlock())
-				.append(this.getTemperature())
-				.append(this.getHumitidy())
-				.append(this.isGeneratingVillages())
-				.toHashCode();
+		return Biomes.get().get(this.id).hashCode();
 	}
 }
