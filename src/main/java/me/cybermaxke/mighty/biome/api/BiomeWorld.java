@@ -24,6 +24,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.bukkit.World;
+import org.bukkit.World.Environment;
 import org.bukkit.block.Block;
 
 public interface BiomeWorld {
@@ -89,6 +90,18 @@ public interface BiomeWorld {
 	 * @param seaLevel
 	 */
 	public void setSeaLevel(int seaLevel);
+
+	/**
+	 * Gets the environment of the world. (Sky color.)
+	 * @return environment
+	 */
+	public Environment getEnvironment();
+
+	/**
+	 * Sets the environment of the world. (Sky color.)
+	 * @param environment
+	 */
+	public void setEnvironment(Environment environment);
 
 	/**
 	 * Gets the biome at the x and y position.

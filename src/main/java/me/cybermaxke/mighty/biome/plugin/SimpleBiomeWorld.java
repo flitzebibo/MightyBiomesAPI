@@ -24,6 +24,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.bukkit.World;
+import org.bukkit.World.Environment;
 import org.bukkit.WorldType;
 import org.bukkit.block.Block;
 
@@ -46,55 +47,82 @@ public class SimpleBiomeWorld implements BiomeWorld {
 
 	@Override
 	public List<BiomeBase> getAll() {
-		this.checkFlatWorld();
+		if (this.isFlat()) {
+			return null;
+		}
+
 		return this.register.getAll(this.world);
 	}
 
 	@Override
 	public void add(BiomeBase biome) {
-		this.checkFlatWorld();
+		if (this.isFlat()) {
+			return;
+		}
+
 		this.register.add(this.world, biome);
 	}
 
 	@Override
 	public void addAll(Collection<BiomeBase> biomes) {
-		this.checkFlatWorld();
+		if (this.isFlat()) {
+			return;
+		}
+
 		this.register.addAll(this.world, biomes);
 	}
 
 	@Override
 	public void remove(BiomeBase biome) {
-		this.checkFlatWorld();
+		if (this.isFlat()) {
+			return;
+		}
+
 		this.register.remove(this.world, biome);
 	}
 
 	@Override
 	public void removeAll(Collection<BiomeBase> biomes) {
-		this.checkFlatWorld();
+		if (this.isFlat()) {
+			return;
+		}
+
 		this.register.removeAll(this.world, biomes);
 	}
 
 	@Override
 	public int getBiomeSize() {
-		this.checkFlatWorld();
+		if (this.isFlat()) {
+			return 4;
+		}
+
 		return this.register.getBiomeSize(this.world);
 	}
 
 	@Override
 	public void setBiomeSize(int size) {
-		this.checkFlatWorld();
+		if (this.isFlat()) {
+			return;
+		}
+
 		this.register.setBiomeSize(this.world, size);
 	}
 
 	@Override
 	public int getSeaLevel() {
-		this.checkFlatWorld();
+		if (this.isFlat()) {
+			return 4;
+		}
+
 		return this.register.getProvider(this.world).getSeaLevel();
 	}
 
 	@Override
 	public void setSeaLevel(int seaLevel) {
-		this.checkFlatWorld();
+		if (this.isFlat()) {
+			return;
+		}
+
 		this.register.getProvider(this.world).setSeaLevel(seaLevel);
 	}
 
@@ -118,9 +146,17 @@ public class SimpleBiomeWorld implements BiomeWorld {
 		this.set(block.getX(), block.getZ(), biome);
 	}
 
-	public void checkFlatWorld() {
-		if (this.world.getWorldType().equals(WorldType.FLAT)) {
-			throw new IllegalStateException("Flat worlds aren't supported!");
-		}
+	@Override
+	public Environment getEnvironment() {
+		return Environment.getEnvironment(this.register.getProvider(this.world).dimension);
+	}
+
+	@Override
+	public void setEnvironment(Environment environment) {
+		this.register.getProvider(this.world).dimension = environment.getId();
+	}
+
+	public boolean isFlat() {
+		return this.world.getWorldType().equals(WorldType.FLAT);
 	}
 }

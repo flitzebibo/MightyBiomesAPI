@@ -65,7 +65,8 @@ public class SimpleBiomeDecorator extends BiomeDecorator {
 			return;
 		}
 
-		this.decorator.onPreDecorate(this.a.getWorld(), this.b, this.c, this.d);
+		this.decorator.onPreDecorate(this.a.getWorld(), this.b,
+				this.a.getChunkAt(this.c, this.d).bukkitChunk);
 
 		/**
 		 * Generating ores.
@@ -339,7 +340,8 @@ public class SimpleBiomeDecorator extends BiomeDecorator {
 			}
 		}
 
-		this.decorator.onDecorate(this.a.getWorld(), this.b, this.c, this.d);
+		this.decorator.onDecorate(this.a.getWorld(), this.b,
+				this.a.getChunkAt(this.c, this.d).bukkitChunk);
 	}
 
 	public Decorator getHandle() {
