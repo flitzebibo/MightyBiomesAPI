@@ -72,10 +72,10 @@ public class SimpleBiomeChunkProviderGenerate extends ChunkProviderGenerate {
 			ReflectionUtils.copyFieldObjects(WorldGenVillage.class, genVillageOld,
 					this.genVillage, true);
 
-			ReflectionUtils.copyFieldObjects(WorldGenVillage.class, genCavesOld,
+			ReflectionUtils.copyFieldObjects(WorldGenCaves.class, genCavesOld,
 					this.genCaves, true);
 
-			ReflectionUtils.copyFieldObjects(WorldGenVillage.class, genCanyonOld,
+			ReflectionUtils.copyFieldObjects(WorldGenCanyon.class, genCanyonOld,
 					this.genCanyon, true);
 
 			field1.set(this, this.genVillage);

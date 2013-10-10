@@ -29,6 +29,39 @@ public class ReflectionUtils {
 
 	}
 
+	public static void setFieldObject(Class<?> target, Object targetObject, String fieldName,
+			Object object) {
+		try {
+			Field field = target.getDeclaredField(fieldName);
+			field.setAccessible(true);
+
+			int modifiers = field.getModifiers();
+			if (Modifier.isFinal(modifiers)) {
+				Field field1 = Field.class.getDeclaredField("modifiers");
+				field1.setAccessible(true);
+				field1.set(field, modifiers & ~Modifier.FINAL);
+			}
+
+			field.set(targetObject, object);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static <T> T getFieldObject(Class<?> target, Class<T> cast, Object object,
+			String fieldName) {
+		try {
+			Field field = target.getDeclaredField(fieldName);
+			field.setAccessible(true);
+
+			return cast.cast(field.get(object));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
 	public static void copyFieldObjects(Class<?> clazz, Object from, Object to, boolean deep) {
 		try {
 			Field field1 = Field.class.getDeclaredField("modifiers");

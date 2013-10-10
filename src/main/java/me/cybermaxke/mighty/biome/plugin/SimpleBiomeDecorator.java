@@ -31,6 +31,7 @@ import me.cybermaxke.mighty.biome.api.decorator.DecoratorSettingType;
 import me.cybermaxke.mighty.biome.api.gen.WorldGen;
 import me.cybermaxke.mighty.biome.plugin.gen.SimpleWorldGen;
 import me.cybermaxke.mighty.biome.plugin.structure.SimpleWorldGenVillage;
+import me.cybermaxke.mighty.biome.plugin.utils.ReflectionUtils;
 
 import net.minecraft.server.v1_6_R3.BiomeBase;
 import net.minecraft.server.v1_6_R3.BiomeDecorator;
@@ -445,15 +446,6 @@ public class SimpleBiomeDecorator extends BiomeDecorator {
 	}
 
 	public int getInt(String fieldName, BiomeDecorator old) {
-		try {
-			Field field = BiomeDecorator.class.getDeclaredField(fieldName);
-			field.setAccessible(true);
-
-			return field.getInt(old);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return 0;
+		return ReflectionUtils.getFieldObject(BiomeDecorator.class, Integer.class, old, fieldName);
 	}
 }

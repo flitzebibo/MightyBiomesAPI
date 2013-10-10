@@ -20,8 +20,6 @@
  */
 package me.cybermaxke.mighty.biome.plugin;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -49,6 +47,7 @@ import me.cybermaxke.mighty.biome.plugin.gen.layer.SimpleGenLayer;
 import me.cybermaxke.mighty.biome.plugin.gen.layer.SimpleGenLayerBiome;
 import me.cybermaxke.mighty.biome.plugin.gen.layer.SimpleGenLayerZoom1;
 import me.cybermaxke.mighty.biome.plugin.gen.layer.SimpleGenLayerZoom2;
+import me.cybermaxke.mighty.biome.plugin.utils.ReflectionUtils;
 
 public class SimpleBiomeRegister implements BiomeAPI {
 	private final Map<Integer, SimpleBiomeBase> biomes = new HashMap<Integer, SimpleBiomeBase>();
@@ -68,25 +67,15 @@ public class SimpleBiomeRegister implements BiomeAPI {
 		 * Increase the maximum mapping size.
 		 */
 		try {
-			Field field = CraftBlock.class.getDeclaredField("BIOME_MAPPING");
-			field.setAccessible(true);
-
-			Field field1 = CraftBlock.class.getDeclaredField("BIOMEBASE_MAPPING");
-			field1.setAccessible(true);
-
-			Field mfield = Field.class.getDeclaredField("modifiers");
-			mfield.setAccessible(true);
-			mfield.set(field, field.getModifiers() & ~Modifier.FINAL);
-			mfield.set(field1, field1.getModifiers() & ~Modifier.FINAL);
-
-			BiomeBase[] array1 = ((BiomeBase[]) field1.get(null));
+			BiomeBase[] array1 = ReflectionUtils.getFieldObject(CraftBlock.class,
+					BiomeBase[].class, null, "BIOMEBASE_MAPPING");
 			BiomeBase[] array2 = new BiomeBase[BiomeBase.biomes.length];
 
 			for (int i = 0; i < array1.length; i++) {
 				array2[i] = array1[i];
 			}
 
-			field1.set(null, array2);
+			ReflectionUtils.setFieldObject(CraftBlock.class, null, "BIOMEBASE_MAPPING", array2);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -130,14 +119,10 @@ public class SimpleBiomeRegister implements BiomeAPI {
 		SimpleBiomeBase biome2 = new SimpleBiomeBase(biome1);
 
 		try {
-			Field field = CraftBlock.class.getDeclaredField("BIOME_MAPPING");
-			field.setAccessible(true);
-
-			Field field1 = CraftBlock.class.getDeclaredField("BIOMEBASE_MAPPING");
-			field1.setAccessible(true);
-
-			Object[] array = ((Object[]) field.get(null));
-			BiomeBase[] array1 = ((BiomeBase[]) field1.get(null));
+			Object[] array = ReflectionUtils.getFieldObject(CraftBlock.class, Object[].class,
+					null, "BIOME_MAPPING");
+			BiomeBase[] array1 = ReflectionUtils.getFieldObject(CraftBlock.class,
+					BiomeBase[].class, null, "BIOMEBASE_MAPPING");
 
 			array[id] = CraftBlock.biomeBaseToBiome(BiomeBase.BEACH);
 			array1[id] = biome1;
@@ -163,10 +148,8 @@ public class SimpleBiomeRegister implements BiomeAPI {
 		}
 
 		try {
-			Field field = CraftBlock.class.getDeclaredField("BIOME_MAPPING");
-			field.setAccessible(true);
-
-			Object[] array = ((Object[]) field.get(null));
+			Object[] array = ReflectionUtils.getFieldObject(CraftBlock.class, Object[].class,
+					null, "BIOME_MAPPING");
 
 			array[id] = null;
 			BiomeBase.biomes[id] = null;
@@ -378,42 +361,19 @@ public class SimpleBiomeRegister implements BiomeAPI {
 
 	@SuppressWarnings("unchecked")
 	public List<BiomeBase> getSpawnBiomeList(World world) {
-		WorldChunkManager manager = this.getChunkManager(world);
-
-		try {
-			Field field = WorldChunkManager.class.getDeclaredField("g");
-			field.setAccessible(true);
-			return (List<BiomeBase>) field.get(manager);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return null;
+		return ReflectionUtils.getFieldObject(WorldChunkManager.class, List.class,
+				this.getChunkManager(world), "g");
 	}
 
 	public GenLayer getMainLayer(WorldChunkManager manager) {
-		try {
-			Field field = WorldChunkManager.class.getDeclaredField("d");
-			field.setAccessible(true);
-
-			return (GenLayer) field.get(manager);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return null;
+		return ReflectionUtils.getFieldObject(WorldChunkManager.class, GenLayer.class,
+				manager, "d");
 	}
 
 	public void setLayers(WorldChunkManager manager, GenLayer[] layers) {
 		try {
-			Field field1 = WorldChunkManager.class.getDeclaredField("d");
-			field1.setAccessible(true);
-
-			Field field2 = WorldChunkManager.class.getDeclaredField("e");
-			field2.setAccessible(true);
-
-			field1.set(manager, layers[0]);
-			field2.set(manager, layers[1]);
+			ReflectionUtils.setFieldObject(WorldChunkManager.class, manager, "d", layers[0]);
+			ReflectionUtils.setFieldObject(WorldChunkManager.class, manager, "e", layers[1]);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -426,20 +386,16 @@ public class SimpleBiomeRegister implements BiomeAPI {
 		}
 
 		try {
-			Field field = GenLayer.class.getDeclaredField("a");
-			field.setAccessible(true);
-
-			Field field1 = GenLayerRiverMix.class.getDeclaredField("b");
-			field1.setAccessible(true);
-
 			GenLayer layer1 = layer;
 			while (layer1 != null) {
 				if (clazz.isInstance(layer1)) {
 					return (T) layer1;
 				} else if (layer1 instanceof GenLayerRiverMix) {
-					layer1 = (GenLayer) field1.get(layer1);
+					layer1 = ReflectionUtils.getFieldObject(GenLayerRiverMix.class, GenLayer.class,
+							layer1, "b");
 				} else {
-					layer1 = (GenLayer) field.get(layer1);
+					layer1 = ReflectionUtils.getFieldObject(GenLayer.class, GenLayer.class,
+							layer1,"a");
 				}
 			}
 		} catch (Exception e) {
