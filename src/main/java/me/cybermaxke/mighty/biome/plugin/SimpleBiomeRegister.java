@@ -20,6 +20,8 @@
  */
 package me.cybermaxke.mighty.biome.plugin;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -32,6 +34,7 @@ import org.bukkit.WorldType;
 
 import org.bukkit.craftbukkit.v1_6_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_6_R3.block.CraftBlock;
+import org.bukkit.craftbukkit.v1_6_R3.generator.NormalChunkGenerator;
 
 import net.minecraft.server.v1_6_R3.BiomeBase;
 import net.minecraft.server.v1_6_R3.Chunk;
@@ -67,15 +70,25 @@ public class SimpleBiomeRegister implements BiomeAPI {
 		 * Increase the maximum mapping size.
 		 */
 		try {
-			BiomeBase[] array1 = ReflectionUtils.getFieldObject(CraftBlock.class,
-					BiomeBase[].class, null, "BIOMEBASE_MAPPING");
+			Field field = CraftBlock.class.getDeclaredField("BIOME_MAPPING");
+			field.setAccessible(true);
+
+			Field field1 = CraftBlock.class.getDeclaredField("BIOMEBASE_MAPPING");
+			field1.setAccessible(true);
+
+			Field mfield = Field.class.getDeclaredField("modifiers");
+			mfield.setAccessible(true);
+			mfield.set(field, field.getModifiers() & ~Modifier.FINAL);
+			mfield.set(field1, field1.getModifiers() & ~Modifier.FINAL);
+
+			BiomeBase[] array1 = ((BiomeBase[]) field1.get(null));
 			BiomeBase[] array2 = new BiomeBase[BiomeBase.biomes.length];
 
 			for (int i = 0; i < array1.length; i++) {
 				array2[i] = array1[i];
 			}
 
-			ReflectionUtils.setFieldObject(CraftBlock.class, null, "BIOMEBASE_MAPPING", array2);
+			field1.set(null, array2);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -119,10 +132,14 @@ public class SimpleBiomeRegister implements BiomeAPI {
 		SimpleBiomeBase biome2 = new SimpleBiomeBase(biome1);
 
 		try {
-			Object[] array = ReflectionUtils.getFieldObject(CraftBlock.class, Object[].class,
-					null, "BIOME_MAPPING");
-			BiomeBase[] array1 = ReflectionUtils.getFieldObject(CraftBlock.class,
-					BiomeBase[].class, null, "BIOMEBASE_MAPPING");
+			Field field = CraftBlock.class.getDeclaredField("BIOME_MAPPING");
+			field.setAccessible(true);
+
+			Field field1 = CraftBlock.class.getDeclaredField("BIOMEBASE_MAPPING");
+			field1.setAccessible(true);
+
+			Object[] array = ((Object[]) field.get(null));
+			BiomeBase[] array1 = ((BiomeBase[]) field1.get(null));
 
 			array[id] = CraftBlock.biomeBaseToBiome(BiomeBase.BEACH);
 			array1[id] = biome1;
@@ -148,8 +165,10 @@ public class SimpleBiomeRegister implements BiomeAPI {
 		}
 
 		try {
-			Object[] array = ReflectionUtils.getFieldObject(CraftBlock.class, Object[].class,
-					null, "BIOME_MAPPING");
+			Field field = CraftBlock.class.getDeclaredField("BIOME_MAPPING");
+			field.setAccessible(true);
+
+			Object[] array = ((Object[]) field.get(null));
 
 			array[id] = null;
 			BiomeBase.biomes[id] = null;
@@ -331,16 +350,31 @@ public class SimpleBiomeRegister implements BiomeAPI {
 
 	public SimpleBiomeChunkProviderGenerate getChunkProviderGenerate(World world) {
 		WorldServer w = ((CraftWorld) world).getHandle();
-		ChunkProviderGenerate gen1 = (ChunkProviderGenerate) w.chunkProviderServer.chunkProvider;
+		NormalChunkGenerator gen = (NormalChunkGenerator) w.chunkProviderServer.chunkProvider;
 
-		if (gen1 instanceof SimpleBiomeChunkProviderGenerate) {
-			return (SimpleBiomeChunkProviderGenerate) gen1;
+		try {
+			Field field = NormalChunkGenerator.class.getDeclaredField("provider");
+			field.setAccessible(true);
+
+			ChunkProviderGenerate gen1 = (ChunkProviderGenerate) field.get(gen);
+
+			if (gen1 instanceof SimpleBiomeChunkProviderGenerate) {
+				return (SimpleBiomeChunkProviderGenerate) gen1;
+			}
+	
+			Field mfield = Field.class.getDeclaredField("modifiers");
+			mfield.setAccessible(true);
+			mfield.set(field, field.getModifiers() & ~Modifier.FINAL);
+
+			SimpleBiomeChunkProviderGenerate gen2 = new SimpleBiomeChunkProviderGenerate(w, gen1);
+			field.set(gen, gen2);
+
+			return gen2;
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
-		SimpleBiomeChunkProviderGenerate gen2 = new SimpleBiomeChunkProviderGenerate(w, gen1);
-		w.chunkProviderServer.chunkProvider = gen2;
-
-		return gen2;
+		return null;
 	}
 
 	public SimpleBiomeWorldProvider getProvider(World world) {

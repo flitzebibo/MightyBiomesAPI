@@ -29,7 +29,6 @@ import java.util.Random;
 import me.cybermaxke.mighty.biome.api.BiomeMinableMeta;
 import me.cybermaxke.mighty.biome.api.gen.WorldGen;
 
-import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.generator.BlockPopulator;
@@ -138,7 +137,7 @@ public class Decorator {
 	 * @param chunkX
 	 * @param chunkZ
 	 */
-	public void onPreDecorate(World world, Random random, Chunk chunk) {
+	public void onPreDecorate(World world, Random random, int chunkX, int chunkZ) {
 
 	}
 
@@ -149,7 +148,7 @@ public class Decorator {
 	 * @param chunkX
 	 * @param chunkZ
 	 */
-	public void onDecorate(World world, Random random, Chunk chunk) {
+	public void onDecorate(World world, Random random, int chunkX, int chunkZ) {
 
 	}
 

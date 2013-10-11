@@ -35,12 +35,9 @@ public class ReflectionUtils {
 			Field field = target.getDeclaredField(fieldName);
 			field.setAccessible(true);
 
-			int modifiers = field.getModifiers();
-			if (Modifier.isFinal(modifiers)) {
-				Field field1 = Field.class.getDeclaredField("modifiers");
-				field1.setAccessible(true);
-				field1.set(field, modifiers & ~Modifier.FINAL);
-			}
+			Field field1 = Field.class.getDeclaredField("modifiers");
+			field1.setAccessible(true);
+			field1.set(field, field.getModifiers() & ~Modifier.FINAL);
 
 			field.set(targetObject, object);
 		} catch (Exception e) {
@@ -76,12 +73,8 @@ public class ReflectionUtils {
 				for (Field field : clazz.getDeclaredFields()) {
 					field.setAccessible(true);
 
-					int modifiers = field.getModifiers();
-					if (!Modifier.isStatic(modifiers)) {
-						if (Modifier.isFinal(modifiers)) {
-							field1.set(field, modifiers & ~Modifier.FINAL);
-						}
-
+					if (!Modifier.isStatic(field.getModifiers())) {
+						field1.set(field, field.getModifiers() & ~Modifier.FINAL);
 						field.set(to, field.get(from));
 					}
 				}

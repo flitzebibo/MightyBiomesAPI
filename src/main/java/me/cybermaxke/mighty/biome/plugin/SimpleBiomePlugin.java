@@ -31,6 +31,10 @@ public class SimpleBiomePlugin extends JavaPlugin {
 	private SimpleBiomeRegister biomeRegister;
 	private SimpleEntityRegister entityRegister;
 
+	public SimpleBiomePlugin() {
+		SimpleBiomePlugin.instance = this;
+	}
+
 	@Override
 	public void onEnable() {
 		this.biomeRegister = new SimpleBiomeRegister();
@@ -61,6 +65,6 @@ public class SimpleBiomePlugin extends JavaPlugin {
 	}
 
 	public static SimpleBiomePlugin get() {
-		return instance;
+		return SimpleBiomePlugin.instance;
 	}
 }
