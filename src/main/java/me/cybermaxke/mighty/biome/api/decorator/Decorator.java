@@ -49,6 +49,7 @@ public class Decorator {
 		this.setSetting(new DecoratorSetting(DecoratorSettingType.PUMPKINS, 3.125D, 1));
 		this.setSetting(new DecoratorSetting(DecoratorSettingType.BROWN_MUSHROOMS, 25.0D, 1));
 		this.setSetting(new DecoratorSetting(DecoratorSettingType.RED_MUSHROOMS, 12.5D, 1));
+		this.setSetting(new DecoratorSetting(DecoratorSettingType.TREES, 100.0D, 3));
 
 		this.addMinable(new BiomeMinableMeta(Material.DIRT, 32, 20, 0, 128));
 		this.addMinable(new BiomeMinableMeta(Material.GRAVEL, 32, 10, 0, 128));

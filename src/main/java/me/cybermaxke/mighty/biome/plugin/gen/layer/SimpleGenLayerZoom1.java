@@ -29,6 +29,7 @@ public class SimpleGenLayerZoom1 extends GenLayer {
 	public SimpleGenLayerZoom1(long baseSeed, GenLayer parent, int amount) {
 		super(baseSeed);
 		this.a = parent;
+		this.amount = amount;
 	}
 
 	public void setAmount(int amount) {
@@ -47,6 +48,6 @@ public class SimpleGenLayerZoom1 extends GenLayer {
 			layer = new GenLayerZoom(1000L + i, layer);
 		}
 
-		return layer.a(x, z, height, height);
+		return layer.a(x, z, height, width);
 	}
 }

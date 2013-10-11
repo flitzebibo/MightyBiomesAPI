@@ -21,6 +21,7 @@
 package me.cybermaxke.mighty.biome.plugin;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,6 +43,7 @@ import net.minecraft.server.v1_6_R3.ChunkProviderGenerate;
 import net.minecraft.server.v1_6_R3.GenLayer;
 import net.minecraft.server.v1_6_R3.GenLayerRiverMix;
 import net.minecraft.server.v1_6_R3.WorldChunkManager;
+import net.minecraft.server.v1_6_R3.WorldGenFactory;
 import net.minecraft.server.v1_6_R3.WorldProvider;
 import net.minecraft.server.v1_6_R3.WorldServer;
 
@@ -50,6 +52,7 @@ import me.cybermaxke.mighty.biome.plugin.gen.layer.SimpleGenLayer;
 import me.cybermaxke.mighty.biome.plugin.gen.layer.SimpleGenLayerBiome;
 import me.cybermaxke.mighty.biome.plugin.gen.layer.SimpleGenLayerZoom1;
 import me.cybermaxke.mighty.biome.plugin.gen.layer.SimpleGenLayerZoom2;
+import me.cybermaxke.mighty.biome.plugin.structure.SimpleWorldGenVillageStart;
 import me.cybermaxke.mighty.biome.plugin.utils.ReflectionUtils;
 
 public class SimpleBiomeRegister implements BiomeAPI {
@@ -92,13 +95,25 @@ public class SimpleBiomeRegister implements BiomeAPI {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
+		/**
+		 * Registering new structure gen.
+		 */
+		try {
+			Method method = WorldGenFactory.class
+					.getDeclaredMethod("b", Class.class, String.class);
+			method.setAccessible(true);
+			method.invoke(null, SimpleWorldGenVillageStart.class, "Village");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void clean() {
 		List<SimpleBiomeBase> biomes = new ArrayList<SimpleBiomeBase>(this.biomes.values());
 
 		for (SimpleBiomeBase biome : biomes) {
-			if (biome instanceof SimpleBiomeBase) {
+			if (!(biome instanceof SimpleBiomeBaseDefault)) {
 				this.remove(biome.getId());
 			}
 		}

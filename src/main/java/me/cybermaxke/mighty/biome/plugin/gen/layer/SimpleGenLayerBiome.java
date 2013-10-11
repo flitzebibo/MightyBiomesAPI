@@ -51,15 +51,22 @@ public class SimpleGenLayerBiome extends GenLayer {
 				BiomeBase.DESERT_HILLS,
 				BiomeBase.FOREST_HILLS,
 				BiomeBase.TAIGA_HILLS,
+				BiomeBase.TAIGA,
+				BiomeBase.ICE_PLAINS,
 				BiomeBase.ICE_MOUNTAINS,
-				BiomeBase.JUNGLE_HILLS));
+				BiomeBase.JUNGLE_HILLS,
+				BiomeBase.RIVER,
+				BiomeBase.MUSHROOM_ISLAND,
+				BiomeBase.MUSHROOM_SHORE,
+				BiomeBase.BEACH,
+				BiomeBase.OCEAN));
 
 		int[] array1 = this.a.a(x, z, height, width);
 		int[] array2 = IntCache.a(height * width);
 
 		for (int i = 0; i < width; i++) {
 			for (int j = 0; j < height; j++) {
-				this.a(j + x, i + height);
+				this.a(j + x, i + z);
 				int k = array1[j + i * height];
 
 				/**
