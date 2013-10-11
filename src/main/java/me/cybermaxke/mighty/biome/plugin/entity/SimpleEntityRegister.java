@@ -20,6 +20,8 @@
  */
 package me.cybermaxke.mighty.biome.plugin.entity;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -47,6 +49,7 @@ import net.minecraft.server.v1_6_R3.EntitySlime;
 import net.minecraft.server.v1_6_R3.EntitySnowman;
 import net.minecraft.server.v1_6_R3.EntitySpider;
 import net.minecraft.server.v1_6_R3.EntitySquid;
+import net.minecraft.server.v1_6_R3.EntityTypes;
 import net.minecraft.server.v1_6_R3.EntityVillager;
 import net.minecraft.server.v1_6_R3.EntityWitch;
 import net.minecraft.server.v1_6_R3.EntityWither;
@@ -86,6 +89,25 @@ import org.bukkit.entity.Zombie;
 public class SimpleEntityRegister {
 	private final Map<Class<?>, Class<?>> classesByBukkit = new HashMap<Class<?>, Class<?>>();
 	private final Map<Class<?>, Class<?>> classesByMc = new HashMap<Class<?>, Class<?>>();
+
+	public void register(Class<?> entity, String id, int protocolId) {
+		try {
+			Field field = EntityTypes.class.getDeclaredField("d");
+			field.setAccessible(true);
+
+			Method method = EntityTypes.class
+					.getDeclaredMethod("a", Class.class, String.class, int.class);
+			method.setAccessible(true);
+
+			Map<Integer, Class<?>> map = (Map<Integer, Class<?>>) field.get(null);
+
+			Class<?> old = map.get(protocolId);
+			method.invoke(null, entity, id, protocolId);
+			map.put(protocolId, old);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	public void put(Class<?> clazz1, Class<?> clazz2) {
 		this.classesByBukkit.put(clazz1, clazz2);

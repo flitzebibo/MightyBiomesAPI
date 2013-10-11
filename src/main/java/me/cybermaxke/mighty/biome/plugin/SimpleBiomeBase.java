@@ -48,7 +48,6 @@ public class SimpleBiomeBase implements me.cybermaxke.mighty.biome.api.BiomeBase
 	private boolean canyons = true;
 	private boolean caves = true;
 
-	@SuppressWarnings("unchecked")
 	public SimpleBiomeBase(BiomeBase biome) {
 		this.biome = biome;
 		this.getDecor();

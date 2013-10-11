@@ -90,4 +90,37 @@ public class ReflectionUtils {
 			e.printStackTrace();
 		}
 	}
+
+	public static <T> T clone(T object) {
+		try {
+			Class<?> clazz = object.getClass();
+			T newObject = (T) clazz.newInstance();
+
+			Field field1 = Field.class.getDeclaredField("modifiers");
+			field1.setAccessible(true);
+
+			while (clazz != null) {
+				for (Field field : clazz.getDeclaredFields()) {
+					field.setAccessible(true);
+
+					int modifiers = field.getModifiers();
+					if (!Modifier.isStatic(modifiers)) {
+						if (Modifier.isFinal(modifiers)) {
+							field1.set(field, modifiers & ~Modifier.FINAL);
+						}
+
+						field.set(newObject, field.get(object));
+					}
+				}
+
+				clazz = clazz.getSuperclass();
+			}
+
+			return newObject;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
 }

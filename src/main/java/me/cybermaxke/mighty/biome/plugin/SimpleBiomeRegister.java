@@ -359,7 +359,6 @@ public class SimpleBiomeRegister implements BiomeAPI {
 		return ((CraftWorld) world).getHandle().worldProvider.e;
 	}
 
-	@SuppressWarnings("unchecked")
 	public List<BiomeBase> getSpawnBiomeList(World world) {
 		return ReflectionUtils.getFieldObject(WorldChunkManager.class, List.class,
 				this.getChunkManager(world), "g");
@@ -379,7 +378,6 @@ public class SimpleBiomeRegister implements BiomeAPI {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	public <T extends GenLayer> T getLayer(GenLayer layer, Class<T> clazz) {
 		if (clazz.isInstance(layer)) {
 			return (T) layer;
