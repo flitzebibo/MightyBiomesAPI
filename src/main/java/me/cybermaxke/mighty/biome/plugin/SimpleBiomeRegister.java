@@ -48,6 +48,7 @@ import net.minecraft.server.v1_6_R3.WorldProvider;
 import net.minecraft.server.v1_6_R3.WorldServer;
 
 import me.cybermaxke.mighty.biome.api.BiomeAPI;
+import me.cybermaxke.mighty.biome.api.treasure.TreasureRegister;
 import me.cybermaxke.mighty.biome.plugin.gen.layer.SimpleGenLayer;
 import me.cybermaxke.mighty.biome.plugin.gen.layer.SimpleGenLayerBiome;
 import me.cybermaxke.mighty.biome.plugin.gen.layer.SimpleGenLayerZoom1;
@@ -135,6 +136,11 @@ public class SimpleBiomeRegister implements BiomeAPI {
 				this.remove(biome.getId());
 			}
 		}
+	}
+
+	@Override
+	public TreasureRegister getTreasureRegister() {
+		return SimpleBiomePlugin.get().getTreasureRegister();
 	}
 
 	@Override

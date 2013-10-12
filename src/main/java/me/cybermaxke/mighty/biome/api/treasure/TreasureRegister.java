@@ -18,52 +18,43 @@
  * along with MightyBiomesAPI. If not, see <http://www.gnu.org/licenses/>.
  * 
  */
-package me.cybermaxke.mighty.biome.api;
+package me.cybermaxke.mighty.biome.api.treasure;
 
+import java.util.Collection;
 import java.util.List;
 
-import me.cybermaxke.mighty.biome.api.treasure.TreasureRegister;
+import org.bukkit.inventory.ItemStack;
 
-import org.bukkit.World;
-
-public interface BiomeAPI {
+public interface TreasureRegister {
 
 	/**
-	 * Gets a new biome.
-	 * @return biome
+	 * Gets a new treasure item.
+	 * @param item
+	 * @param weight
+	 * @param minCount
+	 * @param maxCount
+	 * @return treasure
 	 */
-	public BiomeBase getNew(int id);
+	public TreasureItem getNew(ItemStack item, int weight, int minCount, int maxCount);
 
 	/**
-	 * Removes a biome.
-	 * @param biome
-	 * @return biome
+	 * Gets the treasures for the type.
+	 * @param type
+	 * @return treasures
 	 */
-	public BiomeBase remove(int id);
+	public List<TreasureItem> getTreasures(TreasureType type);
 
 	/**
-	 * Gets a biome using its id.
-	 * @param id
-	 * @return biome
+	 * Adds a treasure for the type.
+	 * @param type
+	 * @param item
 	 */
-	public BiomeBase get(int id);
+	public void addTreasure(TreasureType type, TreasureItem item);
 
 	/**
-	 * Gets all the available biomes.
-	 * @return biomes
+	 * Adds a collection of treasure for the type.
+	 * @param type
+	 * @param items
 	 */
-	public List<BiomeBase> getAll();
-
-	/**
-	 * Gets the biome world for the world.
-	 * @param world
-	 * @return biomeWorld
-	 */
-	public BiomeWorld getWorld(World world);
-
-	/**
-	 * Gets a register you can use to modify treasures in structures.
-	 * @return treasureManager
-	 */
-	public TreasureRegister getTreasureRegister();
+	public void addTreasures(TreasureType type, Collection<TreasureItem> items);
 }

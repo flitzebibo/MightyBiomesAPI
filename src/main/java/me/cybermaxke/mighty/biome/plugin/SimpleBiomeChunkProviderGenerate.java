@@ -81,7 +81,7 @@ public class SimpleBiomeChunkProviderGenerate extends ChunkProviderGenerate {
 			WorldGenCaves genCavesOld = (WorldGenCaves) field2.get(old);
 			WorldGenCanyon genCanyonOld = (WorldGenCanyon) field3.get(old);
 			WorldGenStronghold genStrongholdOld = (WorldGenStronghold) field4.get(old);
-			WorldGenMineshaft genMineshaftOld = (WorldGenMineshaft) field4.get(old);
+			WorldGenMineshaft genMineshaftOld = (WorldGenMineshaft) field5.get(old);
 
 			ReflectionUtils.copyFieldObjects(WorldGenVillage.class, genVillageOld,
 					this.genVillage, true);

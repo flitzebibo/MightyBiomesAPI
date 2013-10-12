@@ -22,6 +22,7 @@ package me.cybermaxke.mighty.biome.plugin;
 
 import me.cybermaxke.mighty.biome.api.Biomes;
 import me.cybermaxke.mighty.biome.plugin.entity.SimpleEntityRegister;
+import me.cybermaxke.mighty.biome.plugin.treasure.SimpleTreasureRegister;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -30,6 +31,7 @@ public class SimpleBiomePlugin extends JavaPlugin {
 
 	private SimpleBiomeRegister biomeRegister;
 	private SimpleEntityRegister entityRegister;
+	private SimpleTreasureRegister treasureRegister;
 
 	public SimpleBiomePlugin() {
 		SimpleBiomePlugin.instance = this;
@@ -43,6 +45,9 @@ public class SimpleBiomePlugin extends JavaPlugin {
 		this.entityRegister = new SimpleEntityRegister();
 		this.entityRegister.load();
 
+		this.treasureRegister = new SimpleTreasureRegister();
+		this.treasureRegister.load();
+
 		Biomes.set(this.biomeRegister);
 	}
 
@@ -53,6 +58,8 @@ public class SimpleBiomePlugin extends JavaPlugin {
 
 		this.entityRegister = null;
 
+		this.treasureRegister = null;
+
 		Biomes.set(null);
 	}
 
@@ -62,6 +69,10 @@ public class SimpleBiomePlugin extends JavaPlugin {
 
 	public SimpleEntityRegister getEntityRegister() {
 		return this.entityRegister;
+	}
+
+	public SimpleTreasureRegister getTreasureRegister() {
+		return this.treasureRegister;
 	}
 
 	public static SimpleBiomePlugin get() {
