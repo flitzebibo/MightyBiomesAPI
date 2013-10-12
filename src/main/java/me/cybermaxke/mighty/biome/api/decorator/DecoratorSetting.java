@@ -78,7 +78,7 @@ public class DecoratorSetting {
 	 * @param count
 	 */
 	public void setCount(int count) {
-		this.chance = count;
+		this.count = count;
 	}
 
 	@Override

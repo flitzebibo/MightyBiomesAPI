@@ -25,6 +25,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import me.cybermaxke.mighty.biome.api.BiomeBase;
+
 import net.minecraft.server.v1_6_R3.GenLayer;
 import net.minecraft.server.v1_6_R3.IntCache;
 
@@ -51,8 +52,6 @@ public class SimpleGenLayerBiome extends GenLayer {
 				BiomeBase.DESERT_HILLS,
 				BiomeBase.FOREST_HILLS,
 				BiomeBase.TAIGA_HILLS,
-				BiomeBase.TAIGA,
-				BiomeBase.ICE_PLAINS,
 				BiomeBase.ICE_MOUNTAINS,
 				BiomeBase.JUNGLE_HILLS,
 				BiomeBase.RIVER,
