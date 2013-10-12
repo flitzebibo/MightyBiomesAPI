@@ -68,8 +68,8 @@ public class SimpleTreasureRegister implements TreasureRegister {
 			this.lists.put(TreasureType.PYRAMID, new SimpleTreasureList(field5));
 			this.lists.put(TreasureType.STRONGHOLD_LIBRARY, new SimpleTreasureList(field6));
 			this.lists.put(TreasureType.STRONGHOLD_ROOM_CROSSING, new SimpleTreasureList(field7));
-			this.lists.put(TreasureType.JUGLE_TEMPLE, new SimpleTreasureList(field8));
-			this.lists.put(TreasureType.DUNGEON, new SimpleTreasureList(field9));
+			this.lists.put(TreasureType.JUNGLE_TEMPLE, new SimpleTreasureList(field8));
+			this.lists.put(TreasureType.DUNGEONS, new SimpleTreasureList(field9));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
