@@ -60,10 +60,28 @@ public class SimpleBiomeRegister implements BiomeAPI {
 	private final Map<World, SimpleBiomeWorld> worlds = new HashMap<World, SimpleBiomeWorld>();
 
 	public void load() {
+		List<BiomeBase> stronghold = Arrays.asList(
+				BiomeBase.DESERT,
+				BiomeBase.FOREST,
+				BiomeBase.EXTREME_HILLS,
+				BiomeBase.SWAMPLAND,
+				BiomeBase.TAIGA,
+				BiomeBase.ICE_PLAINS,
+				BiomeBase.ICE_MOUNTAINS,
+				BiomeBase.DESERT_HILLS,
+				BiomeBase.FOREST_HILLS,
+				BiomeBase.SMALL_MOUNTAINS,
+				BiomeBase.JUNGLE,
+				BiomeBase.JUNGLE_HILLS);
+
 		for (BiomeBase biome : BiomeBase.biomes) {
 			if (biome != null) {
 				this.biomes.put(biome.id, new SimpleBiomeBaseDefault(biome));
 			}
+		}
+
+		for (BiomeBase biome : stronghold) {
+			this.get(biome.id).setGeneratingStronghold(true);
 		}
 
 		this.get(BiomeBase.DESERT.id).setSandstoneVillages(true);
@@ -198,6 +216,11 @@ public class SimpleBiomeRegister implements BiomeAPI {
 	@Override
 	public SimpleBiomeBase get(int id) {
 		return this.biomes.get(id);
+	}
+
+	@Override
+	public List<me.cybermaxke.mighty.biome.api.BiomeBase> getAll() {
+		return new ArrayList<me.cybermaxke.mighty.biome.api.BiomeBase>(this.biomes.values());
 	}
 
 	public void update(World world) {

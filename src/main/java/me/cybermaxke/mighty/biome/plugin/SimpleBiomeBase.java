@@ -47,6 +47,8 @@ public class SimpleBiomeBase implements me.cybermaxke.mighty.biome.api.BiomeBase
 	private boolean sandstoneVillage = false;
 	private boolean canyons = true;
 	private boolean caves = true;
+	private boolean stronghold = false;
+	private boolean mineshaft = true;
 
 	public SimpleBiomeBase(BiomeBase biome) {
 		this.biome = biome;
@@ -225,6 +227,26 @@ public class SimpleBiomeBase implements me.cybermaxke.mighty.biome.api.BiomeBase
 	@Override
 	public void setGeneratingCaves(boolean caves) {
 		this.caves = caves;
+	}
+
+	@Override
+	public boolean isGeneratingStronghold() {
+		return this.stronghold;
+	}
+
+	@Override
+	public void setGeneratingStronghold(boolean stronghold) {
+		this.stronghold = stronghold;
+	}
+
+	@Override
+	public boolean isGeneratingMineshaft() {
+		return this.mineshaft;
+	}
+
+	@Override
+	public void setGeneratingMineshaft(boolean mineshaft) {
+		this.mineshaft = mineshaft;
 	}
 
 	@Override

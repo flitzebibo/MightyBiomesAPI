@@ -170,6 +170,26 @@ public class BiomeWrapper implements BiomeBase {
 	}
 
 	@Override
+	public boolean isGeneratingStronghold() {
+		return Biomes.get().get(this.id).isGeneratingStronghold();
+	}
+
+	@Override
+	public void setGeneratingStronghold(boolean stronghold) {
+		Biomes.get().get(this.id).setGeneratingStronghold(stronghold);
+	}
+
+	@Override
+	public boolean isGeneratingMineshaft() {
+		return Biomes.get().get(this.id).isGeneratingMineshaft();
+	}
+
+	@Override
+	public void setGeneratingMineshaft(boolean mineshaft) {
+		Biomes.get().get(this.id).setGeneratingMineshaft(mineshaft);
+	}
+
+	@Override
 	public boolean getSpawnable() {
 		return Biomes.get().get(this.id).getSpawnable();
 	}

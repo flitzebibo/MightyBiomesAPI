@@ -18,44 +18,27 @@
  * along with MightyBiomesAPI. If not, see <http://www.gnu.org/licenses/>.
  * 
  */
-package me.cybermaxke.mighty.biome.api;
+package me.cybermaxke.mighty.biome.plugin.structure;
 
-import java.util.List;
+import java.util.Map;
 
-import org.bukkit.World;
+import me.cybermaxke.mighty.biome.api.BiomeBase;
+import me.cybermaxke.mighty.biome.api.Biomes;
+import net.minecraft.server.v1_6_R3.WorldGenMineshaft;
 
-public interface BiomeAPI {
+public class SimpleWorldGenMineshaft extends WorldGenMineshaft {
 
-	/**
-	 * Gets a new biome.
-	 * @return biome
-	 */
-	public BiomeBase getNew(int id);
+	public SimpleWorldGenMineshaft() {
 
-	/**
-	 * Removes a biome.
-	 * @param biome
-	 * @return biome
-	 */
-	public BiomeBase remove(int id);
+	}
 
-	/**
-	 * Gets a biome using its id.
-	 * @param id
-	 * @return biome
-	 */
-	public BiomeBase get(int id);
+	public SimpleWorldGenMineshaft(Map<String, String> map) {
+		super(map);
+	}
 
-	/**
-	 * Gets all the available biomes.
-	 * @return biomes
-	 */
-	public List<BiomeBase> getAll();
-
-	/**
-	 * Gets the biome world for the world.
-	 * @param world
-	 * @return biomeWorld
-	 */
-	public BiomeWorld getWorld(World world);
+	@Override
+	public boolean a(int x, int z) {
+		BiomeBase biome = Biomes.get().getWorld(this.c.getWorld()).get(x, z);
+		return biome.isGeneratingMineshaft() && super.a(x, z);
+	}
 }

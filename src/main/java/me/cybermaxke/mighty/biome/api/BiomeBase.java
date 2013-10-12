@@ -216,6 +216,30 @@ public interface BiomeBase {
 	public void setGeneratingCaves(boolean caves);
 
 	/**
+	 * Gets if there can generate a stronghold.
+	 * @return stronghold
+	 */
+	public boolean isGeneratingStronghold();
+
+	/**
+	 * Sets if there can generate stronghold.
+	 * @param stronghold
+	 */
+	public void setGeneratingStronghold(boolean stronghold);
+
+	/**
+	 * Gets if there can generate a mineshaft.
+	 * @return stronghold
+	 */
+	public boolean isGeneratingMineshaft();
+
+	/**
+	 * Sets if there can generate mineshaft.
+	 * @param mineshaft
+	 */
+	public void setGeneratingMineshaft(boolean mineshaft);
+
+	/**
 	 * Gets if players are allowed to spawn in this biome.
 	 * @return spawnable
 	 */
