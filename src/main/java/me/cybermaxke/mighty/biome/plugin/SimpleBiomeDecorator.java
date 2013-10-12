@@ -211,7 +211,7 @@ public class SimpleBiomeDecorator extends BiomeDecorator {
 				int x = this.c + this.b.nextInt(16) + 8;
 				int z = this.d + this.b.nextInt(16) + 8;
 
-				this.h.a(this.a, this.b, x, this.a.i(x, z), z);
+				this.u.a(this.a, this.b, x, this.a.i(x, z), z);
 			}
 		}
 
