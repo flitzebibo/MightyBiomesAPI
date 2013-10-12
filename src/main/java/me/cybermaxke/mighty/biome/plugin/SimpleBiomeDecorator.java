@@ -385,52 +385,66 @@ public class SimpleBiomeDecorator extends BiomeDecorator {
 		for (DecoratorSettingType type : DecoratorSettingType.values()) {
 			switch (type) {
 				case BIG_MUSHROOMS:
-					this.decorator.getSetting(type).setCount(this.getInt("J", old));
+					this.decorator.setSetting(
+							new DecoratorSetting(type, 100.0D, this.getInt("J", old)));
 					break;
 				case RED_MUSHROOMS:
 				case BROWN_MUSHROOMS:
-					this.decorator.getSetting(type).setCount(this.getInt("D", old));
+					this.decorator.setSetting(
+							new DecoratorSetting(type, 100.0D, this.getInt("D", old)));
 					break;
 				case CACTI:
-					this.decorator.getSetting(type).setCount(this.getInt("F", old));
+					this.decorator.setSetting(
+							new DecoratorSetting(type, 100.0D, this.getInt("F", old)));
 					break;
 				case CLAY:
-					this.decorator.getSetting(type).setCount(this.getInt("I", old));
+					this.decorator.setSetting(
+							new DecoratorSetting(type, 100.0D, this.getInt("I", old)));
 					break;
 				case DEATH_BUSH:
-					this.decorator.getSetting(type).setCount(this.getInt("C", old));
+					this.decorator.setSetting(
+							new DecoratorSetting(type, 100.0D, this.getInt("C", old)));
 					break;
 				case GRASS:
-					this.decorator.getSetting(type).setCount(this.getInt("B", old));
+					this.decorator.setSetting(
+							new DecoratorSetting(type, 100.0D, this.getInt("B", old)));
 					break;
 				case WATER_LIQUIDS:
 					if (liquids) {
-						this.decorator.getSetting(type).setCount(50);
+						this.decorator.setSetting(
+								new DecoratorSetting(type, 100.0D, 50));
 					}
 					break;
 				case LAVA_LIQUIDS:
 					if (liquids) {
-						this.decorator.getSetting(type).setCount(20);
+						this.decorator.setSetting(
+								new DecoratorSetting(type, 100.0D, 20));
 					}
 					break;
 				case YELLOW_FLOWERS:
 				case RED_FLOWERS:
-					this.decorator.getSetting(type).setCount(this.getInt("A", old));
+					this.decorator.setSetting(
+							new DecoratorSetting(type, 100.0D, this.getInt("A", old)));
 					break;
 				case REEDS:
-					this.decorator.getSetting(type).setCount(this.getInt("F", old));
+					this.decorator.setSetting(
+							new DecoratorSetting(type, 100.0D, this.getInt("F", old)));
 					break;
 				case SAND:
-					this.decorator.getSetting(type).setCount(this.getInt("H", old));
+					this.decorator.setSetting(
+							new DecoratorSetting(type, 100.0D, this.getInt("H", old)));
 					break;
 				case SAND_2:
-					this.decorator.getSetting(type).setCount(this.getInt("G", old));
+					this.decorator.setSetting(
+							new DecoratorSetting(type, 100.0D, this.getInt("G", old)));
 					break;
 				case TREES:
-					this.decorator.getSetting(type).setCount(this.getInt("z", old));
+					this.decorator.setSetting(
+							new DecoratorSetting(type, 100.0D, this.getInt("z", old)));
 					break;
 				case WATERLILY:
-					this.decorator.getSetting(type).setCount(this.getInt("y", old));
+					this.decorator.setSetting(
+							new DecoratorSetting(type, 100.0D, this.getInt("y", old)));
 					break;
 				case PUMPKINS:
 				case WATER_LAKES:
