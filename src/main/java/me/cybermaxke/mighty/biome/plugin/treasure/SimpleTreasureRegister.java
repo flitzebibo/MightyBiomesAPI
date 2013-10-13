@@ -60,6 +60,7 @@ public class SimpleTreasureRegister implements TreasureRegister {
 			Field field7 = WorldGenStrongholdRoomCrossing.class.getDeclaredField("b");
 			Field field8 = WorldGenJungleTemple.class.getDeclaredField("l");
 			Field field9 = WorldGenDungeons.class.getDeclaredField("a");
+			Field field10 = WorldGenJungleTemple.class.getDeclaredField("m");
 
 			this.lists.put(TreasureType.NETHER_FORTRESS, new SimpleTreasureList(field1));
 			this.lists.put(TreasureType.MINESHAFT, new SimpleTreasureList(field2));
@@ -70,6 +71,7 @@ public class SimpleTreasureRegister implements TreasureRegister {
 			this.lists.put(TreasureType.STRONGHOLD_ROOM_CROSSING, new SimpleTreasureList(field7));
 			this.lists.put(TreasureType.JUNGLE_TEMPLE, new SimpleTreasureList(field8));
 			this.lists.put(TreasureType.DUNGEONS, new SimpleTreasureList(field9));
+			this.lists.put(TreasureType.JUNGLE_TEMPLE_DISPENSER, new SimpleTreasureList(field10));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
