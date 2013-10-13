@@ -252,7 +252,6 @@ public class SimpleBiomeBase implements me.cybermaxke.mighty.biome.api.BiomeBase
 		this.mineshaft = mineshaft;
 	}
 
-
 	@Override
 	public boolean isGeneratingWitchHouse() {
 		return this.witchHouse;
@@ -265,7 +264,7 @@ public class SimpleBiomeBase implements me.cybermaxke.mighty.biome.api.BiomeBase
 
 	@Override
 	public boolean isGeneratingJungleTemple() {
-		return this.witchHouse;
+		return this.jungleTemple;
 	}
 
 	@Override

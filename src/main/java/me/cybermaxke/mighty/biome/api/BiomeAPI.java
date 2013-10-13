@@ -35,6 +35,14 @@ public interface BiomeAPI {
 	public BiomeBase getNew(int id);
 
 	/**
+	 * Gets a new cloned biome with the id.
+	 * @param id
+	 * @param biome
+	 * @return clone
+	 */
+	public BiomeBase getDefaultClone(int id, BiomeBase biome);
+
+	/**
 	 * Removes a biome.
 	 * @param biome
 	 * @return biome

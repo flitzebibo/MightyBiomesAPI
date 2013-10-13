@@ -38,12 +38,14 @@ import org.bukkit.craftbukkit.v1_6_R3.block.CraftBlock;
 import org.bukkit.craftbukkit.v1_6_R3.generator.NormalChunkGenerator;
 
 import net.minecraft.server.v1_6_R3.BiomeBase;
+import net.minecraft.server.v1_6_R3.BiomeDecorator;
 import net.minecraft.server.v1_6_R3.Chunk;
 import net.minecraft.server.v1_6_R3.ChunkProviderGenerate;
 import net.minecraft.server.v1_6_R3.GenLayer;
 import net.minecraft.server.v1_6_R3.GenLayerRiverMix;
 import net.minecraft.server.v1_6_R3.WorldChunkManager;
 import net.minecraft.server.v1_6_R3.WorldGenFactory;
+import net.minecraft.server.v1_6_R3.WorldGenerator;
 import net.minecraft.server.v1_6_R3.WorldProvider;
 import net.minecraft.server.v1_6_R3.WorldServer;
 
@@ -53,13 +55,15 @@ import me.cybermaxke.mighty.biome.plugin.gen.layer.SimpleGenLayer;
 import me.cybermaxke.mighty.biome.plugin.gen.layer.SimpleGenLayerBiome;
 import me.cybermaxke.mighty.biome.plugin.gen.layer.SimpleGenLayerZoom1;
 import me.cybermaxke.mighty.biome.plugin.gen.layer.SimpleGenLayerZoom2;
-import me.cybermaxke.mighty.biome.plugin.structure.SimpleWorldGenLargeFeature;
+import me.cybermaxke.mighty.biome.plugin.structure.SimpleWorldGenLargeFeatureStart;
 import me.cybermaxke.mighty.biome.plugin.structure.SimpleWorldGenVillageStart;
 import me.cybermaxke.mighty.biome.plugin.utils.ReflectionUtils;
 
 public class SimpleBiomeRegister implements BiomeAPI {
 	private final Map<Integer, SimpleBiomeBase> biomes = new HashMap<Integer, SimpleBiomeBase>();
 	private final Map<World, SimpleBiomeWorld> worlds = new HashMap<World, SimpleBiomeWorld>();
+
+	private final Map<Integer, BiomeBase> backup = new HashMap<Integer, BiomeBase>();
 
 	public void load() {
 		List<BiomeBase> stronghold = Arrays.asList(
@@ -78,6 +82,7 @@ public class SimpleBiomeRegister implements BiomeAPI {
 
 		for (BiomeBase biome : BiomeBase.biomes) {
 			if (biome != null) {
+				this.backup.put(biome.id, this.getClone(biome, biome.id));
 				this.biomes.put(biome.id, new SimpleBiomeBaseDefault(biome));
 			}
 		}
@@ -129,7 +134,7 @@ public class SimpleBiomeRegister implements BiomeAPI {
 					.getDeclaredMethod("b", Class.class, String.class);
 			method.setAccessible(true);
 			method.invoke(null, SimpleWorldGenVillageStart.class, "Village");
-			method.invoke(null, SimpleWorldGenLargeFeature.class, "Temple");
+			method.invoke(null, SimpleWorldGenLargeFeatureStart.class, "Temple");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -175,27 +180,7 @@ public class SimpleBiomeRegister implements BiomeAPI {
 		}
 
 		BiomeBase biome1 = new BiomeBase(id) {};
-		SimpleBiomeBase biome2 = new SimpleBiomeBase(biome1);
-
-		try {
-			Field field = CraftBlock.class.getDeclaredField("BIOME_MAPPING");
-			field.setAccessible(true);
-
-			Field field1 = CraftBlock.class.getDeclaredField("BIOMEBASE_MAPPING");
-			field1.setAccessible(true);
-
-			Object[] array = ((Object[]) field.get(null));
-			BiomeBase[] array1 = ((BiomeBase[]) field1.get(null));
-
-			array[id] = CraftBlock.biomeBaseToBiome(BiomeBase.BEACH);
-			array1[id] = biome1;
-
-			this.biomes.put(id, biome2);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return biome2;
+		return this.setBiome(biome1);
 	}
 
 	@Override
@@ -234,6 +219,81 @@ public class SimpleBiomeRegister implements BiomeAPI {
 	@Override
 	public List<me.cybermaxke.mighty.biome.api.BiomeBase> getAll() {
 		return new ArrayList<me.cybermaxke.mighty.biome.api.BiomeBase>(this.biomes.values());
+	}
+
+	@Override
+	public me.cybermaxke.mighty.biome.api.BiomeBase getDefaultClone(int id,
+			me.cybermaxke.mighty.biome.api.BiomeBase biome) {
+		if (id >= BiomeBase.biomes.length) {
+			throw new IllegalArgumentException("The biome id has to be smaller then " +
+					BiomeBase.biomes.length + "");
+		}
+
+		if (BiomeBase.biomes[id] != null) {
+			throw new IllegalArgumentException("Duplicate id!");
+		}
+
+		return this.setBiome(this.getClone(this.backup.get(biome.getId()), id));
+	}
+
+	public SimpleBiomeBase setBiome(BiomeBase biome) {
+		SimpleBiomeBase biome2 = new SimpleBiomeBase(biome);
+
+		int id = biome.id;
+		try {
+			Field field = CraftBlock.class.getDeclaredField("BIOME_MAPPING");
+			field.setAccessible(true);
+
+			Field field1 = CraftBlock.class.getDeclaredField("BIOMEBASE_MAPPING");
+			field1.setAccessible(true);
+
+			Object[] array = ((Object[]) field.get(null));
+			BiomeBase[] array1 = ((BiomeBase[]) field1.get(null));
+
+			array[id] = CraftBlock.biomeBaseToBiome(BiomeBase.BEACH);
+			array1[id] = biome;
+
+			this.biomes.put(id, biome2);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return biome2;
+	}
+ 
+	public <T extends BiomeBase> T getClone(T biome, int id) {
+		try {
+			Class<?> clazz = biome.getClass();
+			T clone = (T) clazz.getConstructor(int.class).newInstance(id);
+
+			while (clazz != null) {
+				for (Field field : clazz.getDeclaredFields()) {
+					field.setAccessible(true);
+
+					if (WorldGenerator.class.isAssignableFrom(field.getType())) {
+						continue;
+					} else if (BiomeDecorator.class.isAssignableFrom(field.getType())) {
+						continue;
+					} else if (List.class.isAssignableFrom(field.getType())) {
+						continue;
+					} else {
+						if (Modifier.isFinal(field.getModifiers())) {
+							continue;
+						}
+
+						field.set(clone, field.get(biome));
+					}
+				}
+
+				clazz = clazz.getSuperclass();
+			}
+
+			return clone;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 
 	public void update(World world) {
