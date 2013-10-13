@@ -23,81 +23,80 @@ package me.cybermaxke.mighty.biome.plugin.treasure;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
 import me.cybermaxke.mighty.biome.api.treasure.TreasureItem;
+
 import net.minecraft.server.v1_6_R3.StructurePieceTreasure;
 
 public class SimpleTreasureList implements List<TreasureItem> {
 	private final Field field;
+	private final List<TreasureItem> treasures;
 
 	public SimpleTreasureList(Field field) {
 		this.field = field;
+		this.treasures = new ArrayList<TreasureItem>(this.getTreasuresList());
 	}
 
 	@Override
 	public boolean add(TreasureItem e) {
-		List<StructurePieceTreasure> list = this.getValuesList();
-		boolean succes = list.add(((SimpleTreasureItem) e).getHandle());
-		this.setValuesList(list);
+		boolean succes = this.treasures.add(e);
+		this.update();
 		return succes;
 	}
 
 	@Override
 	public void add(int index, TreasureItem e) {
-		List<StructurePieceTreasure> list = this.getValuesList();
-		list.add(index, ((SimpleTreasureItem) e).getHandle());
-		this.setValuesList(list);
+		this.treasures.add(index, e);
+		this.update();
 	}
 
 	@Override
 	public boolean addAll(Collection<? extends TreasureItem> c) {
-		List<StructurePieceTreasure> list = this.getValuesList();
-		list.addAll(this.getTreasurePiecesList(c));
-		this.setValuesList(list);
+		this.treasures.addAll(c);
+		this.update();
 		return c.size() != 0;
 	}
 
 	@Override
 	public boolean addAll(int index, Collection<? extends TreasureItem> c) {
-		List<StructurePieceTreasure> list = this.getValuesList();
-		list.addAll(index, this.getTreasurePiecesList(c));
-		this.setValuesList(list);
+		this.treasures.addAll(index, c);
+		this.update();
 		return c.size() != 0;
 	}
 
 	@Override
 	public void clear() {
-		this.setValuesArray(new StructurePieceTreasure[] {});
+		this.treasures.clear();
+		this.update();
 	}
 
 	@Override
 	public boolean contains(Object o) {
-		return this.indexOf(o) > 0;
+		return this.treasures.contains(o);
 	}
 
 	@Override
 	public boolean containsAll(Collection<?> c) {
-		return this.getTreasuresList(this.getValuesList()).containsAll(c);
+		return this.treasures.containsAll(c);
 	}
 
 	@Override
 	public TreasureItem get(int index) {
-		return this.getTreasuresList(this.getValuesList()).get(index);
+		return this.treasures.get(index);
 	}
 
 	@Override
 	public int indexOf(Object o) {
-		return this.getTreasuresList(this.getValuesList()).indexOf(o);
+		return this.treasures.indexOf(o);
     }
 
 	@Override
 	public boolean isEmpty() {
-		return this.size() == 0;
+		return this.treasures.isEmpty();
 	}
 
 	@Override
@@ -107,7 +106,7 @@ public class SimpleTreasureList implements List<TreasureItem> {
 
 	@Override
 	public int lastIndexOf(Object o) {
-		return this.getTreasuresList(this.getValuesList()).lastIndexOf(o);
+		return this.treasures.lastIndexOf(o);
 	}
 
 	@Override
@@ -118,9 +117,8 @@ public class SimpleTreasureList implements List<TreasureItem> {
 	@Override
 	public ListIterator<TreasureItem> listIterator(final int index) {
 		return new ListIterator<TreasureItem>() {
-			private List<TreasureItem> list = SimpleTreasureList.this
-					.getTreasuresList(SimpleTreasureList.this.getValuesList());
-			private ListIterator<TreasureItem> it = this.list.listIterator(index);
+			private final List<TreasureItem> list = SimpleTreasureList.this.treasures;
+			private final ListIterator<TreasureItem> it = this.list.listIterator(index);
 
 			@Override
 			public void add(TreasureItem item) {
@@ -171,8 +169,7 @@ public class SimpleTreasureList implements List<TreasureItem> {
 			}
 
 			public void update() {
-				SimpleTreasureList.this.setValuesList(
-						SimpleTreasureList.this.getTreasurePiecesList(this.list));
+				SimpleTreasureList.this.update();
 			}
 
 		};
@@ -180,89 +177,78 @@ public class SimpleTreasureList implements List<TreasureItem> {
 
 	@Override
 	public boolean remove(Object o) {
-		List<TreasureItem> list = this.getTreasuresList(this.getValuesList());
-		boolean succes = list.remove(o);
-		this.setValuesList(this.getTreasurePiecesList(list));
+		boolean succes = this.treasures.remove(o);
+		this.update();
 		return succes;
 	}
 
 	@Override
 	public TreasureItem remove(int index) {
-		List<TreasureItem> list = this.getTreasuresList(this.getValuesList());
-		TreasureItem old = list.remove(index);
-		this.setValuesList(this.getTreasurePiecesList(list));
+		TreasureItem old = this.treasures.remove(index);
+		this.update();
 		return old;
 	}
 
 	@Override
 	public boolean removeAll(Collection<?> c) {
-		List<TreasureItem> list = this.getTreasuresList(this.getValuesList());
-		boolean succes = list.removeAll(c);
-		this.setValuesList(this.getTreasurePiecesList(list));
+		boolean succes = this.treasures.removeAll(c);
+		this.update();
 		return succes;
 	}
 
 	@Override
 	public boolean retainAll(Collection<?> c) {
-		List<TreasureItem> list = this.getTreasuresList(this.getValuesList());
-		boolean succes = list.retainAll(c);
-		this.setValuesList(this.getTreasurePiecesList(list));
+		boolean succes = this.treasures.retainAll(c);
+		this.update();
 		return succes;
 	}
 
 	@Override
-	public SimpleTreasureItem set(int index, TreasureItem element) {
-		List<StructurePieceTreasure> list = this.getValuesList();
-		StructurePieceTreasure old = list.set(index, element == null ? null :
-			((SimpleTreasureItem) element).getHandle());
-		this.setValuesList(list);
-		return old == null ? null : new SimpleTreasureItem(old);
+	public TreasureItem set(int index, TreasureItem element) {
+		TreasureItem old = this.treasures.set(index, element);
+		this.update();
+		return old;
 	}
 
 	@Override
 	public int size() {
-		return this.getValuesArray().length;
+		return this.treasures.size();
 	}
 
 	@Override
 	public List<TreasureItem> subList(int fromIndex, int toIndex) {
-		return this.getTreasuresList(this.getValuesList().subList(fromIndex, toIndex));
+		return this.treasures.subList(fromIndex, toIndex);
 	}
 
 	@Override
 	public Object[] toArray() {
-		return this.getTreasuresList(this.getValuesList()).toArray();
+		return this.treasures.toArray();
 	}
 
 	@Override
 	public <T> T[] toArray(T[] a) {
-		return this.getTreasuresList(this.getValuesList()).toArray(a);
+		return this.treasures.toArray(a);
 	}
 
-	public List<TreasureItem> getTreasuresList(Collection<?> list) {
-		List<TreasureItem> list1 = new ArrayList<TreasureItem>();
+	public void update() {
+		List<StructurePieceTreasure> list = new ArrayList<StructurePieceTreasure>();
 
-		for (Object item : list) {
-			list1.add(item instanceof StructurePieceTreasure ?
-					new SimpleTreasureItem((StructurePieceTreasure) item) : null);
-		}
-
-		return list1;
-	}
-
-	public List<StructurePieceTreasure> getTreasurePiecesList(Collection<?> list) {
-		List<StructurePieceTreasure> list1 = new ArrayList<StructurePieceTreasure>();
-
-		for (Object item : list) {
-			list1.add(item instanceof SimpleTreasureItem ?
+		for (TreasureItem item : this.treasures) {
+			list.add(item instanceof SimpleTreasureItem ?
 					((SimpleTreasureItem) item).getHandle() : null);
 		}
 
-		return list1;
+		this.setValuesArray(list.toArray(new StructurePieceTreasure[] {}));
 	}
 
-	public void setValuesList(List<StructurePieceTreasure> list) {
-		this.setValuesArray(list.toArray(new StructurePieceTreasure[] {}));
+	public List<TreasureItem> getTreasuresList() {
+		List<TreasureItem> list = new ArrayList<TreasureItem>();
+
+		for (StructurePieceTreasure item : this.getValuesArray()) {
+			list.add(item instanceof StructurePieceTreasure ? new SimpleTreasureItem(item) : null);
+		}
+
+		return list;
 	}
 
 	public void setValuesArray(StructurePieceTreasure[] values) {
@@ -277,12 +263,6 @@ public class SimpleTreasureList implements List<TreasureItem> {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-
-	public List<StructurePieceTreasure> getValuesList() {
-		List<StructurePieceTreasure> list = new ArrayList<StructurePieceTreasure>();
-		list.addAll(Arrays.asList(this.getValuesArray()));
-		return list;
 	}
 
 	public StructurePieceTreasure[] getValuesArray() {
