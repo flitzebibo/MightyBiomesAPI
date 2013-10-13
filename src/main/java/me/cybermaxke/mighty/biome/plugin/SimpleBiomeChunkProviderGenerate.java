@@ -33,6 +33,7 @@ import me.cybermaxke.mighty.biome.api.Biomes;
 import me.cybermaxke.mighty.biome.api.event.PreCreatureSpawnEvent;
 import me.cybermaxke.mighty.biome.plugin.structure.SimpleWorldGenCanyon;
 import me.cybermaxke.mighty.biome.plugin.structure.SimpleWorldGenCaves;
+import me.cybermaxke.mighty.biome.plugin.structure.SimpleWorldGenLargeFeature;
 import me.cybermaxke.mighty.biome.plugin.structure.SimpleWorldGenMineshaft;
 import me.cybermaxke.mighty.biome.plugin.structure.SimpleWorldGenStronghold;
 import me.cybermaxke.mighty.biome.plugin.structure.SimpleWorldGenVillage;
@@ -43,6 +44,7 @@ import net.minecraft.server.v1_6_R3.EnumCreatureType;
 import net.minecraft.server.v1_6_R3.World;
 import net.minecraft.server.v1_6_R3.WorldGenCanyon;
 import net.minecraft.server.v1_6_R3.WorldGenCaves;
+import net.minecraft.server.v1_6_R3.WorldGenLargeFeature;
 import net.minecraft.server.v1_6_R3.WorldGenMineshaft;
 import net.minecraft.server.v1_6_R3.WorldGenStronghold;
 import net.minecraft.server.v1_6_R3.WorldGenVillage;
@@ -55,6 +57,7 @@ public class SimpleBiomeChunkProviderGenerate extends ChunkProviderGenerate {
 	private final SimpleWorldGenCanyon genCanyon = new SimpleWorldGenCanyon();
 	private final SimpleWorldGenStronghold genStronghold = new SimpleWorldGenStronghold();
 	private final SimpleWorldGenMineshaft genMinshaft = new SimpleWorldGenMineshaft();
+	private final SimpleWorldGenLargeFeature genLargeFeature = new SimpleWorldGenLargeFeature();
 
 	public SimpleBiomeChunkProviderGenerate(World world, ChunkProviderGenerate old) {
 		this(world, world.getSeed(), world.getWorldData().shouldGenerateMapFeatures());
@@ -77,11 +80,15 @@ public class SimpleBiomeChunkProviderGenerate extends ChunkProviderGenerate {
 			Field field5 = ChunkProviderGenerate.class.getDeclaredField("w");
 			field5.setAccessible(true);
 
+			Field field6 = ChunkProviderGenerate.class.getDeclaredField("x");
+			field6.setAccessible(true);
+
 			WorldGenVillage genVillageOld = (WorldGenVillage) field1.get(old);
 			WorldGenCaves genCavesOld = (WorldGenCaves) field2.get(old);
 			WorldGenCanyon genCanyonOld = (WorldGenCanyon) field3.get(old);
 			WorldGenStronghold genStrongholdOld = (WorldGenStronghold) field4.get(old);
 			WorldGenMineshaft genMineshaftOld = (WorldGenMineshaft) field5.get(old);
+			WorldGenLargeFeature genLargeFeatureOld = (WorldGenLargeFeature) field6.get(old);
 
 			ReflectionUtils.copyFieldObjects(WorldGenVillage.class, genVillageOld,
 					this.genVillage, true);
@@ -98,11 +105,15 @@ public class SimpleBiomeChunkProviderGenerate extends ChunkProviderGenerate {
 			ReflectionUtils.copyFieldObjects(WorldGenMineshaft.class, genMineshaftOld,
 					this.genMinshaft, true);
 
+			ReflectionUtils.copyFieldObjects(WorldGenLargeFeature.class, genLargeFeatureOld,
+					this.genLargeFeature, true);
+
 			field1.set(this, this.genVillage);
 			field2.set(this, this.genCaves);
 			field3.set(this, this.genCanyon);
 			field4.set(this, this.genStronghold);
 			field5.set(this, this.genMinshaft);
+			field6.set(this, this.genLargeFeature);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

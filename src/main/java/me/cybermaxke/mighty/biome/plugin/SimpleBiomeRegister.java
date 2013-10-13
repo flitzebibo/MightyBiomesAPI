@@ -53,6 +53,7 @@ import me.cybermaxke.mighty.biome.plugin.gen.layer.SimpleGenLayer;
 import me.cybermaxke.mighty.biome.plugin.gen.layer.SimpleGenLayerBiome;
 import me.cybermaxke.mighty.biome.plugin.gen.layer.SimpleGenLayerZoom1;
 import me.cybermaxke.mighty.biome.plugin.gen.layer.SimpleGenLayerZoom2;
+import me.cybermaxke.mighty.biome.plugin.structure.SimpleWorldGenLargeFeature;
 import me.cybermaxke.mighty.biome.plugin.structure.SimpleWorldGenVillageStart;
 import me.cybermaxke.mighty.biome.plugin.utils.ReflectionUtils;
 
@@ -123,6 +124,7 @@ public class SimpleBiomeRegister implements BiomeAPI {
 					.getDeclaredMethod("b", Class.class, String.class);
 			method.setAccessible(true);
 			method.invoke(null, SimpleWorldGenVillageStart.class, "Village");
+			method.invoke(null, SimpleWorldGenLargeFeature.class, "Temple");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -92,7 +92,7 @@ public class SimpleTreasureList implements List<TreasureItem> {
 	@Override
 	public int indexOf(Object o) {
 		return this.treasures.indexOf(o);
-    }
+	}
 
 	@Override
 	public boolean isEmpty() {

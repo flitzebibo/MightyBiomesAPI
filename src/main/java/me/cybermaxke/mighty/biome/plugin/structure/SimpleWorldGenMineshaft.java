@@ -20,25 +20,19 @@
  */
 package me.cybermaxke.mighty.biome.plugin.structure;
 
-import java.util.Map;
-
 import me.cybermaxke.mighty.biome.api.BiomeBase;
 import me.cybermaxke.mighty.biome.api.Biomes;
+
 import net.minecraft.server.v1_6_R3.WorldGenMineshaft;
 
 public class SimpleWorldGenMineshaft extends WorldGenMineshaft {
 
-	public SimpleWorldGenMineshaft() {
-
-	}
-
-	public SimpleWorldGenMineshaft(Map<String, String> map) {
-		super(map);
-	}
-
 	@Override
 	public boolean a(int x, int z) {
-		BiomeBase biome = Biomes.get().getWorld(this.c.getWorld()).get(x, z);
+		int xx = x * 16 + 8;
+		int zz = z * 16 + 8;
+
+		BiomeBase biome = Biomes.get().getWorld(this.c.getWorld()).get(xx, zz);
 		return biome.isGeneratingMineshaft() && super.a(x, z);
 	}
 }

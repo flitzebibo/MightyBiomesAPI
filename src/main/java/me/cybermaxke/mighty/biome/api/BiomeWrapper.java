@@ -190,6 +190,36 @@ public class BiomeWrapper implements BiomeBase {
 	}
 
 	@Override
+	public boolean isGeneratingWitchHouse() {
+		return Biomes.get().get(this.id).isGeneratingWitchHouse();
+	}
+
+	@Override
+	public void setGeneratingWitchHouse(boolean witchHouse) {
+		Biomes.get().get(this.id).setGeneratingWitchHouse(witchHouse);
+	}
+
+	@Override
+	public boolean isGeneratingJungleTemple() {
+		return Biomes.get().get(this.id).isGeneratingJungleTemple();
+	}
+
+	@Override
+	public void setGeneratingJungleTemple(boolean jungleTemple) {
+		Biomes.get().get(this.id).setGeneratingJungleTemple(jungleTemple);
+	}
+
+	@Override
+	public boolean isGeneratingPyramid() {
+		return Biomes.get().get(this.id).isGeneratingPyramid();
+	}
+
+	@Override
+	public void setGeneratingPyramid(boolean pyramid) {
+		Biomes.get().get(this.id).setGeneratingPyramid(pyramid);
+	}
+
+	@Override
 	public boolean getSpawnable() {
 		return Biomes.get().get(this.id).getSpawnable();
 	}

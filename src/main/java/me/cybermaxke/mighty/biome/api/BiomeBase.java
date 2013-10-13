@@ -240,6 +240,42 @@ public interface BiomeBase {
 	public void setGeneratingMineshaft(boolean mineshaft);
 
 	/**
+	 * Gets if there can generate witch house.
+	 * @return witchHouse
+	 */
+	public boolean isGeneratingWitchHouse();
+
+	/**
+	 * Sets if there can generate witch house.
+	 * @param witchHouse
+	 */
+	public void setGeneratingWitchHouse(boolean witchHouse);
+
+	/**
+	 * Gets if there can generate witch house.
+	 * @return witchHouse
+	 */
+	public boolean isGeneratingJungleTemple();
+
+	/**
+	 * Sets if there can generate jungle temple.
+	 * @param jungleTemple
+	 */
+	public void setGeneratingJungleTemple(boolean jungleTemple);
+
+	/**
+	 * Gets if there can generate pyramid.
+	 * @return pyramid
+	 */
+	public boolean isGeneratingPyramid();
+
+	/**
+	 * Sets if there can generate pyramid.
+	 * @param pyramid
+	 */
+	public void setGeneratingPyramid(boolean pyramid);
+
+	/**
 	 * Gets if players are allowed to spawn in this biome.
 	 * @return spawnable
 	 */

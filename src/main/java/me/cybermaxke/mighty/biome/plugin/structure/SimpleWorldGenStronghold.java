@@ -23,21 +23,13 @@ package me.cybermaxke.mighty.biome.plugin.structure;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import me.cybermaxke.mighty.biome.api.Biomes;
+
 import net.minecraft.server.v1_6_R3.BiomeBase;
 import net.minecraft.server.v1_6_R3.WorldGenStronghold;
 
 public class SimpleWorldGenStronghold extends WorldGenStronghold {
-
-	public SimpleWorldGenStronghold() {
-
-	}
-
-	public SimpleWorldGenStronghold(Map<String, String> map) {
-		super(map);
-	}
 
 	@Override
 	public boolean a(int x, int z) {
