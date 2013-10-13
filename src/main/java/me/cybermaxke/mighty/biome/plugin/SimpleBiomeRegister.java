@@ -87,7 +87,12 @@ public class SimpleBiomeRegister implements BiomeAPI {
 		}
 
 		this.get(BiomeBase.DESERT.id).setSandstoneVillages(true);
+		this.get(BiomeBase.DESERT.id).setGeneratingPyramid(true);
 		this.get(BiomeBase.DESERT_HILLS.id).setSandstoneVillages(true);
+		this.get(BiomeBase.DESERT_HILLS.id).setGeneratingPyramid(true);
+		this.get(BiomeBase.JUNGLE.id).setGeneratingJungleTemple(true);
+		this.get(BiomeBase.JUNGLE_HILLS.id).setGeneratingJungleTemple(true);
+		this.get(BiomeBase.SWAMPLAND.id).setGeneratingWitchHouse(true);
 
 		/**
 		 * Increase the maximum mapping size.
