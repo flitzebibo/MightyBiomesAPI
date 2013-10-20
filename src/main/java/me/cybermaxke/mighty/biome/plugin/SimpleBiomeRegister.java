@@ -20,6 +20,7 @@
  */
 package me.cybermaxke.mighty.biome.plugin;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -264,7 +265,11 @@ public class SimpleBiomeRegister implements BiomeAPI {
 	public <T extends BiomeBase> T getClone(T biome, int id) {
 		try {
 			Class<?> clazz = biome.getClass();
-			T clone = (T) clazz.getConstructor(int.class).newInstance(id);
+
+			Constructor<?> constructor = clazz.getDeclaredConstructor(int.class);
+			constructor.setAccessible(true);
+
+			T clone = (T) constructor.newInstance(id);
 
 			while (clazz != null) {
 				for (Field field : clazz.getDeclaredFields()) {

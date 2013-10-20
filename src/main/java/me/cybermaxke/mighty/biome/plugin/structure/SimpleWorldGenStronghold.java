@@ -23,10 +23,12 @@ package me.cybermaxke.mighty.biome.plugin.structure;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import me.cybermaxke.mighty.biome.api.Biomes;
 
 import net.minecraft.server.v1_6_R3.BiomeBase;
+import net.minecraft.server.v1_6_R3.World;
 import net.minecraft.server.v1_6_R3.WorldGenStronghold;
 
 public class SimpleWorldGenStronghold extends WorldGenStronghold {
@@ -50,5 +52,14 @@ public class SimpleWorldGenStronghold extends WorldGenStronghold {
 		}
 
 		return super.a(x, z);
+	}
+
+	@Override
+	public boolean a(World world, Random random, int x, int z) {
+		try {
+			return super.a(world, random, x, z);
+		} catch (Exception e) {
+			return false;
+		}
 	}
 }

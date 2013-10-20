@@ -21,15 +21,18 @@
 package me.cybermaxke.mighty.biome.plugin.structure;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import me.cybermaxke.mighty.biome.api.Biomes;
 
 import net.minecraft.server.v1_6_R3.BiomeBase;
 import net.minecraft.server.v1_6_R3.StructureStart;
+import net.minecraft.server.v1_6_R3.World;
 import net.minecraft.server.v1_6_R3.WorldGenLargeFeature;
 import net.minecraft.server.v1_6_R3.WorldGenLargeFeatureStart;
-import net.minecraft.server.v1_6_R3.WorldGenStronghold;
 import net.minecraft.server.v1_6_R3.WorldGenWitchHut;
 
 public class SimpleWorldGenLargeFeature extends WorldGenLargeFeature {
@@ -37,11 +40,14 @@ public class SimpleWorldGenLargeFeature extends WorldGenLargeFeature {
 	@Override
 	public boolean a(int x, int z) {
 		try {
-			Field field = WorldGenStronghold.class.getDeclaredField("e");
+			Field field = WorldGenLargeFeature.class.getDeclaredField("e");
 			field.setAccessible(true);
 
-			List<BiomeBase> list = (List<BiomeBase>) field.get(null);
-			list.clear();
+			Field mfield = Field.class.getDeclaredField("modifiers");
+			mfield.setAccessible(true);
+			mfield.set(field, field.getModifiers() & ~Modifier.FINAL);
+
+			List<BiomeBase> list = new ArrayList<BiomeBase>();
 
 			for (me.cybermaxke.mighty.biome.api.BiomeBase biome : Biomes.get().getAll()) {
 				if (biome.isGeneratingWitchHouse() ||
@@ -50,6 +56,8 @@ public class SimpleWorldGenLargeFeature extends WorldGenLargeFeature {
 					list.add(BiomeBase.biomes[biome.getId()]);
 				}
 			}
+
+			field.set(null, list);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -85,5 +93,14 @@ public class SimpleWorldGenLargeFeature extends WorldGenLargeFeature {
 		}
 
 		return false;
+	}
+
+	@Override
+	public boolean a(World world, Random random, int x, int z) {
+		try {
+			return super.a(world, random, x, z);
+		} catch (Exception e) {
+			return false;
+		}
 	}
 }

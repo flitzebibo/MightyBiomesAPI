@@ -20,9 +20,12 @@
  */
 package me.cybermaxke.mighty.biome.plugin.structure;
 
+import java.util.Random;
+
 import me.cybermaxke.mighty.biome.api.BiomeBase;
 import me.cybermaxke.mighty.biome.api.Biomes;
 
+import net.minecraft.server.v1_6_R3.World;
 import net.minecraft.server.v1_6_R3.WorldGenMineshaft;
 
 public class SimpleWorldGenMineshaft extends WorldGenMineshaft {
@@ -34,5 +37,14 @@ public class SimpleWorldGenMineshaft extends WorldGenMineshaft {
 
 		BiomeBase biome = Biomes.get().getWorld(this.c.getWorld()).get(xx, zz);
 		return biome.isGeneratingMineshaft() && super.a(x, z);
+	}
+
+	@Override
+	public boolean a(World world, Random random, int x, int z) {
+		try {
+			return super.a(world, random, x, z);
+		} catch (Exception e) {
+			return false;
+		}
 	}
 }
