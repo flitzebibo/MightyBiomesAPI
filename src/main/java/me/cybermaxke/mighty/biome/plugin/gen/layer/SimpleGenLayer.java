@@ -26,6 +26,7 @@ import me.cybermaxke.mighty.biome.api.BiomeBase;
 
 import net.minecraft.server.v1_6_R3.GenLayer;
 import net.minecraft.server.v1_6_R3.GenLayerIsland;
+import net.minecraft.server.v1_6_R3.GenLayerRiver;
 import net.minecraft.server.v1_6_R3.GenLayerRiverInit;
 import net.minecraft.server.v1_6_R3.GenLayerRiverMix;
 import net.minecraft.server.v1_6_R3.GenLayerSmooth;
@@ -59,7 +60,7 @@ public class SimpleGenLayer {
 		layer2 = GenLayerZoom.a(1000L, layer2, 0);
 		layer2 = new GenLayerRiverInit(100L, layer2);
 		layer2 = new SimpleGenLayerZoom1(1000L, layer2, size);
-		layer2 = new SimpleGenLayerRiver(1L, layer2, biomes);
+		layer2 = new GenLayerRiver(1L, layer2);
 		layer2 = new GenLayerSmooth(1000L, layer2);
 
 		GenLayer layer3 = layer1;

@@ -54,7 +54,6 @@ public class SimpleGenLayerBiome extends GenLayer {
 				BiomeBase.TAIGA_HILLS,
 				BiomeBase.ICE_MOUNTAINS,
 				BiomeBase.JUNGLE_HILLS,
-				BiomeBase.RIVER,
 				BiomeBase.MUSHROOM_ISLAND,
 				BiomeBase.MUSHROOM_SHORE,
 				BiomeBase.BEACH,
