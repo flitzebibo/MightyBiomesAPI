@@ -149,22 +149,22 @@ public class SimpleBiomeBase implements me.cybermaxke.mighty.biome.api.BiomeBase
 	}
 
 	@Override
-	public float getMinHeight() {
+	public float getHeight() {
 		return this.biome.D;
 	}
 
 	@Override
-	public void setMinHeight(float height) {
+	public void setHeight(float height) {
 		this.biome.D = height;
 	}
 
 	@Override
-	public float getMaxHeight() {
+	public float getVolatility() {
 		return this.biome.E;
 	}
 
 	@Override
-	public void setMaxHeight(float height) {
+	public void setVolatility(float height) {
 		this.biome.E = height;
 	}
 
@@ -341,8 +341,8 @@ public class SimpleBiomeBase implements me.cybermaxke.mighty.biome.api.BiomeBase
 
 		return new EqualsBuilder()
 				.append(this.getId(), other.getId())
-				.append(this.getMinHeight(), other.getMinHeight())
-				.append(this.getMaxHeight(), other.getMaxHeight())
+				.append(this.getHeight(), other.getHeight())
+				.append(this.getVolatility(), other.getVolatility())
 				.append(this.getTopBlock(), other.getTopBlock())
 				.append(this.getFillingBlock(), other.getFillingBlock())
 				.append(this.getTemperature(), other.getTemperature())
@@ -355,8 +355,8 @@ public class SimpleBiomeBase implements me.cybermaxke.mighty.biome.api.BiomeBase
 	public int hashCode() {
 		return new HashCodeBuilder()
 				.append(this.getId())
-				.append(this.getMinHeight())
-				.append(this.getMaxHeight())
+				.append(this.getHeight())
+				.append(this.getVolatility())
 				.append(this.getTopBlock())
 				.append(this.getFillingBlock())
 				.append(this.getTemperature())

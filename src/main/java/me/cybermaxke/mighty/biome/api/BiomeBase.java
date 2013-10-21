@@ -120,28 +120,28 @@ public interface BiomeBase {
 	public void setBiomeColor(int color);
 
 	/**
-	 * Gets the minimal height.
+	 * Gets the height.
 	 * @return height
 	 */
-	public float getMinHeight();
+	public float getHeight();
 
 	/**
-	 * Sets the minimal height.
+	 * Sets the height.
 	 * @param height
 	 */
-	public void setMinHeight(float height);
+	public void setHeight(float height);
 
 	/**
-	 * Gets the maximal height.
-	 * @return height
+	 * Gets the terrain volatility.
+	 * @return volatility
 	 */
-	public float getMaxHeight();
+	public float getVolatility();
 
 	/**
-	 * Sets the maximal height.
-	 * @param height
+	 * Sets the terrain volatility.
+	 * @param volatility
 	 */
-	public void setMaxHeight(float height);
+	public void setVolatility(float volatility);
 
 	/**
 	 * Gets the material of the top block.

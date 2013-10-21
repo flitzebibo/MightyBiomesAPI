@@ -90,23 +90,23 @@ public class BiomeWrapper implements BiomeBase {
 	}
 
 	@Override
-	public float getMinHeight() {
-		return Biomes.get().get(this.id).getMinHeight();
+	public float getHeight() {
+		return Biomes.get().get(this.id).getHeight();
 	}
 
 	@Override
-	public void setMinHeight(float height) {
-		Biomes.get().get(this.id).setMinHeight(height);
+	public void setHeight(float height) {
+		Biomes.get().get(this.id).setHeight(height);
 	}
 
 	@Override
-	public float getMaxHeight() {
-		return Biomes.get().get(this.id).getMaxHeight();
+	public float getVolatility() {
+		return Biomes.get().get(this.id).getVolatility();
 	}
 
 	@Override
-	public void setMaxHeight(float height) {
-		Biomes.get().get(this.id).setMaxHeight(height);
+	public void setVolatility(float height) {
+		Biomes.get().get(this.id).setVolatility(height);
 	}
 
 	@Override
