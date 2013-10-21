@@ -21,6 +21,7 @@
 package me.cybermaxke.mighty.biome.plugin;
 
 import java.lang.reflect.Field;
+import java.util.Random;
 
 import org.bukkit.generator.BlockPopulator;
 
@@ -36,6 +37,7 @@ import me.cybermaxke.mighty.biome.plugin.utils.ReflectionUtils;
 import net.minecraft.server.v1_6_R3.BiomeBase;
 import net.minecraft.server.v1_6_R3.BiomeDecorator;
 import net.minecraft.server.v1_6_R3.Block;
+import net.minecraft.server.v1_6_R3.World;
 import net.minecraft.server.v1_6_R3.WorldGenDeadBush;
 import net.minecraft.server.v1_6_R3.WorldGenLakes;
 import net.minecraft.server.v1_6_R3.WorldGenLiquids;
@@ -52,23 +54,25 @@ public class SimpleBiomeDecorator extends BiomeDecorator {
 	private final WorldGenPumpkin pumpkin = new WorldGenPumpkin();
 
 	private Decorator decorator;
+	private World world;
 
 	public SimpleBiomeDecorator(BiomeBase biome, Decorator decorator) {
 		super(biome);
 		this.decorator = decorator;
 	}
 
-	public boolean hasChance(double chance) {
-		return Math.min(100.0D, ((double) this.b.nextInt(100)) + this.b.nextDouble()) <= chance;
+	public boolean hasChance(Random random, double chance) {
+		return Math.min(100.0D, ((double) random.nextInt(100)) + random.nextDouble()) <= chance;
 	}
 
 	@Override
-	public void a() {
-		if (this.decorator == null) {
+	public void a(World world, Random random, int chunkX, int chunkZ) {
+		if (this.decorator == null || this.world != null) {
 			return;
 		}
 
-		this.decorator.onPreDecorate(this.a.getWorld(), this.b, this.c, this.d);
+		this.world = world;
+		this.decorator.onPreDecorate(world.getWorld(), random, chunkX, chunkZ);
 
 		/**
 		 * Generating ores.
@@ -79,12 +83,12 @@ public class SimpleBiomeDecorator extends BiomeDecorator {
 				int max = meta.getMaxHeight();
 				int size = meta.getGroupSize();
 
-				int x = this.c + this.b.nextInt(16);
-				int y = this.b.nextInt(max - min) + min;
-				int z = this.d + this.b.nextInt(16);
+				int x = chunkX + random.nextInt(16);
+				int y = random.nextInt(max - min) + min;
+				int z = chunkZ + random.nextInt(16);
 
 				WorldGenMinable gen = new WorldGenMinable(meta.getMaterial().getId(), size);
-				gen.a(this.a, this.b, x, y, z);
+				gen.a(world, random, x, y, z);
 			}
 		}
 
@@ -138,216 +142,217 @@ public class SimpleBiomeDecorator extends BiomeDecorator {
 		double chanceLavaLiquids = lavaLiquids.getChance();
 
 		for (int i = 0; i < waterLakes.getCount(); ++i) {
-			if (this.hasChance(chanceWaterLakes)) {
-				int x = this.c + this.b.nextInt(16) + 8;
-				int z = this.d + this.b.nextInt(16) + 8;
-				int y = this.b.nextInt(this.b.nextInt(128));
+			if (this.hasChance(random, chanceWaterLakes)) {
+				int x = chunkX + random.nextInt(16) + 8;
+				int z = chunkZ + random.nextInt(16) + 8;
+				int y = random.nextInt(random.nextInt(128));
 
-				if (this.canPlaceLake(x, z)) {
-					this.waterLakes.a(this.a, this.b, x, y, z);
+				if (this.canPlaceLake(world, random, x, z)) {
+					this.waterLakes.a(world, random, x, y, z);
 				}
 			}
 		}
 
 		for (int i = 0; i < lavaLakes.getCount(); ++i) {
-			if (this.hasChance(chanceLavaLakes)) {
-				int x = this.c + this.b.nextInt(16) + 8;
-				int z = this.d + this.b.nextInt(16) + 8;
-				int y = this.b.nextInt(this.b.nextInt(120) + 8);
+			if (this.hasChance(random, chanceLavaLakes)) {
+				int x = chunkX + random.nextInt(16) + 8;
+				int z = chunkZ + random.nextInt(16) + 8;
+				int y = random.nextInt(random.nextInt(120) + 8);
 
-				if (this.canPlaceLake(x, z)) {
-					this.lavaLakes.a(this.a, this.b, x, y, z);
+				if (this.canPlaceLake(world, random, x, z)) {
+					this.lavaLakes.a(world, random, x, y, z);
 				}
 			}
 		}
 
 		for (int i = 0; i < sand.getCount(); ++i) {
-			if (this.hasChance(chanceSand)) {
-				int x = this.c + this.b.nextInt(16) + 8;
-				int z = this.d + this.b.nextInt(16) + 8;
+			if (this.hasChance(random, chanceSand)) {
+				int x = chunkX + random.nextInt(16) + 8;
+				int z = chunkZ + random.nextInt(16) + 8;
 
-				this.g.a(this.a, this.b, x, this.a.i(x, z), z);
+				this.g.a(world, random, x, world.i(x, z), z);
 			}
 		}
 
 		for (int i = 0; i < clay.getCount(); ++i) {
-			if (this.hasChance(chanceClay)) {
-				int x = this.c + this.b.nextInt(16) + 8;
-				int z = this.d + this.b.nextInt(16) + 8;
+			if (this.hasChance(random, chanceClay)) {
+				int x = chunkX + random.nextInt(16) + 8;
+				int z = chunkZ + random.nextInt(16) + 8;
 
-				this.f.a(this.a, this.b, x, this.a.i(x, z), z);
+				this.f.a(world, random, x, world.i(x, z), z);
 			}
 		}
 
 		for (int i = 0; i < sand2.getCount(); ++i) {
-			if (this.hasChance(chanceSand2)) {
-				int x = this.c + this.b.nextInt(16) + 8;
-				int z = this.d + this.b.nextInt(16) + 8;
+			if (this.hasChance(random, chanceSand2)) {
+				int x = chunkX + random.nextInt(16) + 8;
+				int z = chunkZ + random.nextInt(16) + 8;
 
-				this.g.a(this.a, this.b, x, this.a.i(x, z), z);
+				this.g.a(world, random, x, world.i(x, z), z);
 			}
 		}
 
 		int treesCount = trees.getCount();
-		if (this.b.nextInt(10) == 0) {
+		if (random.nextInt(10) == 0) {
 			treesCount++;
 		}
 
 		for (int i = 0; i < treesCount; i++) {
-			if (this.hasChance(chanceTrees)) {
-				int x = this.c + this.b.nextInt(16) + 8;
-				int z = this.d + this.b.nextInt(16) + 8;
+			if (this.hasChance(random, chanceTrees)) {
+				int x = chunkX + random.nextInt(16) + 8;
+				int z = chunkZ + random.nextInt(16) + 8;
 	
-				WorldGen gen1 = this.decorator.getWorldGenTrees(this.b);
+				WorldGen gen1 = this.decorator.getWorldGenTrees(random);
 
-				WorldGenerator gen2 = gen1 == null ? this.e.a(this.b) : new SimpleWorldGen(gen1);
+				WorldGenerator gen2 = gen1 == null ? this.e.a(random) : new SimpleWorldGen(gen1);
 				gen2.a(1.0D, 1.0D, 1.0D);
-				gen2.a(this.a, this.b, x, this.a.getHighestBlockYAt(x, z), z);
+				gen2.a(world, random, x, world.getHighestBlockYAt(x, z), z);
 			}
 		}
 
 		for (int i = 0; i < bigMushrooms.getCount(); i++) {
-			if (this.hasChance(chanceBigMushrooms)) {
-				int x = this.c + this.b.nextInt(16) + 8;
-				int z = this.d + this.b.nextInt(16) + 8;
+			if (this.hasChance(random, chanceBigMushrooms)) {
+				int x = chunkX + random.nextInt(16) + 8;
+				int z = chunkZ + random.nextInt(16) + 8;
 
-				this.u.a(this.a, this.b, x, this.a.i(x, z), z);
+				this.u.a(world, random, x, world.i(x, z), z);
 			}
 		}
 
 		for (int i = 0; i < yellowFlowers.getCount(); i++) {
-			if (this.hasChance(chanceYellowFlowers)) {
-				int x = this.c + this.b.nextInt(16) + 8;
-				int y = this.b.nextInt(128);
-				int z = this.d + this.b.nextInt(16) + 8;
+			if (this.hasChance(random, chanceYellowFlowers)) {
+				int x = chunkX + random.nextInt(16) + 8;
+				int y = random.nextInt(128);
+				int z = chunkZ + random.nextInt(16) + 8;
 
-				this.q.a(this.a, this.b, x, y, z);
+				this.q.a(world, random, x, y, z);
 			}
 		}
 
 		for (int i = 0; i < redFlowers.getCount(); i++) {
-			if (this.hasChance(chanceRedFlowers)) {
-				int x = this.c + this.b.nextInt(16) + 8;
-				int y = this.b.nextInt(128);
-				int z = this.d + this.b.nextInt(16) + 8;
+			if (this.hasChance(random, chanceRedFlowers)) {
+				int x = chunkX + random.nextInt(16) + 8;
+				int y = random.nextInt(128);
+				int z = chunkZ + random.nextInt(16) + 8;
 
-				this.r.a(this.a, this.b, x, y, z);
+				this.r.a(world, random, x, y, z);
 			}
 		}
 
 		for (int i = 0; i < grass.getCount(); i++) {
-			if (this.hasChance(chanceGrass)) {
-				int x = this.c + this.b.nextInt(16) + 8;
-				int y = this.b.nextInt(128);
-				int z = this.d + this.b.nextInt(16) + 8;
+			if (this.hasChance(random, chanceGrass)) {
+				int x = chunkX + random.nextInt(16) + 8;
+				int y = random.nextInt(128);
+				int z = chunkZ + random.nextInt(16) + 8;
 
-				WorldGen gen1 = this.decorator.getWorldGenGrass(this.b);
+				WorldGen gen1 = this.decorator.getWorldGenGrass(random);
 
-				WorldGenerator gen2 = gen1 == null ? this.e.b(this.b) : new SimpleWorldGen(gen1);
-				gen2.a(this.a, this.b, x, y, z);
+				WorldGenerator gen2 = gen1 == null ? this.e.b(random) : new SimpleWorldGen(gen1);
+				gen2.a(world, random, x, y, z);
 			}
 		}
 
 		for (int i = 0; i < deathBush.getCount(); i++) {
-			if (this.hasChance(chanceDeathBush)) {
-				int x = this.c + this.b.nextInt(16) + 8;
-				int y = this.b.nextInt(128);
-				int z = this.d + this.b.nextInt(16) + 8;
+			if (this.hasChance(random, chanceDeathBush)) {
+				int x = chunkX + random.nextInt(16) + 8;
+				int y = random.nextInt(128);
+				int z = chunkZ + random.nextInt(16) + 8;
 
-				this.deathBush.a(this.a, this.b, x, y, z);
+				this.deathBush.a(world, random, x, y, z);
 			}
 		}
 
 		for (int i = 0; i < waterlilly.getCount(); i++) {
-			if (this.hasChance(chanceWaterlilly)) {
-				int x = this.c + this.b.nextInt(16) + 8;
-				int y = this.b.nextInt(128);
-				int z = this.d + this.b.nextInt(16) + 8;
+			if (this.hasChance(random, chanceWaterlilly)) {
+				int x = chunkX + random.nextInt(16) + 8;
+				int y = random.nextInt(128);
+				int z = chunkZ + random.nextInt(16) + 8;
 
-				while (y > 0 && this.a.getTypeId(x, y - 1, z) == 0) {
+				while (y > 0 && world.getTypeId(x, y - 1, z) == 0) {
 					y--;
 				}
 
-				this.x.a(this.a, this.b, x, y, z);
+				this.x.a(world, random, x, y, z);
 			}
 		}
 
 		for (int i = 0; i < brownMushrooms.getCount(); i++) {
-			if (this.hasChance(chanceBrownMushrooms)) {
-				int x = this.c + this.b.nextInt(16) + 8;
-				int z = this.d + this.b.nextInt(16) + 8;
-				int y = this.a.getHighestBlockYAt(x, z);
+			if (this.hasChance(random, chanceBrownMushrooms)) {
+				int x = chunkX + random.nextInt(16) + 8;
+				int z = chunkZ + random.nextInt(16) + 8;
+				int y = world.getHighestBlockYAt(x, z);
 
-				this.s.a(this.a, this.b, x, y, z);
+				this.s.a(world, random, x, y, z);
 			}
 		}
 
 		for (int i = 0; i < redMushrooms.getCount(); i++) {
-			if (this.hasChance(chanceRedMushrooms)) {
-				int x = this.c + this.b.nextInt(16) + 8;
-				int z = this.d + this.b.nextInt(16) + 8;
-				int y = this.a.getHighestBlockYAt(x, z);
+			if (this.hasChance(random, chanceRedMushrooms)) {
+				int x = chunkX + random.nextInt(16) + 8;
+				int z = chunkZ + random.nextInt(16) + 8;
+				int y = world.getHighestBlockYAt(x, z);
 
-				this.t.a(this.a, this.b, x, y, z);
+				this.t.a(world, random, x, y, z);
 			}
 		}
 
 		for (int i = 0; i < reeds.getCount(); i++) {
-			if (this.hasChance(chanceReeds)) {
-				int x = this.c + this.b.nextInt(16) + 8;
-				int y = this.b.nextInt(128);
-				int z = this.d + this.b.nextInt(16) + 8;
+			if (this.hasChance(random, chanceReeds)) {
+				int x = chunkX + random.nextInt(16) + 8;
+				int y = random.nextInt(128);
+				int z = chunkZ + random.nextInt(16) + 8;
 
-				this.v.a(this.a, this.b, x, y, z);
+				this.v.a(world, random, x, y, z);
 			}
 		}
 
 		for (int i = 0; i < pumpkins.getCount(); i++) {
-			if (this.hasChance(chancePumpkins)) {
-				int x = this.c + this.b.nextInt(16) + 8;
-				int y = this.b.nextInt(128);
-				int z = this.d + this.b.nextInt(16) + 8;
+			if (this.hasChance(random, chancePumpkins)) {
+				int x = chunkX + random.nextInt(16) + 8;
+				int y = random.nextInt(128);
+				int z = chunkZ + random.nextInt(16) + 8;
 
-				this.pumpkin.a(this.a, this.b, x, y, z);
+				this.pumpkin.a(world, random, x, y, z);
 			}
 		}
 
 		for (int i = 0; i < cacti.getCount(); i++) {
-			if (this.hasChance(chanceCacti)) {
-				int x = this.c + this.b.nextInt(16) + 8;
-				int y = this.b.nextInt(128);
-				int z = this.d + this.b.nextInt(16) + 8;
+			if (this.hasChance(random, chanceCacti)) {
+				int x = chunkX + random.nextInt(16) + 8;
+				int y = random.nextInt(128);
+				int z = chunkZ + random.nextInt(16) + 8;
 
-				this.w.a(this.a, this.b, x, y, z);
+				this.w.a(world, random, x, y, z);
 			}
 		}
 
 		for (int i = 0; i < waterLiquids.getCount(); i++) {
-			if (this.hasChance(chanceWaterLiquids)) {
-				int x = this.c + this.b.nextInt(16) + 8;
-				int y = this.b.nextInt(this.b.nextInt(120) + 8);
-				int z = this.d + this.b.nextInt(16) + 8;
+			if (this.hasChance(random, chanceWaterLiquids)) {
+				int x = chunkX + random.nextInt(16) + 8;
+				int y = random.nextInt(random.nextInt(120) + 8);
+				int z = chunkZ + random.nextInt(16) + 8;
 
-				this.waterLiquids.a(this.a, this.b, x, y, z);
+				this.waterLiquids.a(world, random, x, y, z);
 			}
 		}
 
 		for (int i = 0; i < lavaLiquids.getCount(); i++) {
-			if (this.hasChance(chanceLavaLiquids)) {
-				int x = this.c + this.b.nextInt(16) + 8;
-				int y = this.b.nextInt(this.b.nextInt(this.b.nextInt(112) + 8) + 8);
-				int z = this.d + this.b.nextInt(16) + 8;
+			if (this.hasChance(random, chanceLavaLiquids)) {
+				int x = chunkX + random.nextInt(16) + 8;
+				int y = random.nextInt(random.nextInt(random.nextInt(112) + 8) + 8);
+				int z = chunkZ + random.nextInt(16) + 8;
 
-				this.lavaLiquids.a(this.a, this.b, x, y, z);
+				this.lavaLiquids.a(world, random, x, y, z);
 			}
 		}
 
 		for (BlockPopulator populator : this.decorator.getPopulators()) {
-			populator.populate(this.a.getWorld(), this.b,
-					this.a.getChunkAt(this.c, this.d).bukkitChunk);
+			populator.populate(world.getWorld(), random,
+					world.getChunkAt(chunkX, chunkZ).bukkitChunk);
 		}
 
-		this.decorator.onDecorate(this.a.getWorld(), this.b, this.c, this.d);
+		this.decorator.onDecorate(world.getWorld(), random, chunkX, chunkZ);
+		this.world = null;
 	}
 
 	public Decorator getHandle() {
@@ -358,12 +363,12 @@ public class SimpleBiomeDecorator extends BiomeDecorator {
 		this.decorator = decorator;
 	}
 
-	public boolean canPlaceLake(int x, int z) {
+	public boolean canPlaceLake(World world, Random random, int x, int z) {
 		SimpleWorldGenVillage gen = SimpleBiomePlugin.get().getBiomeRegister()
-				.getChunkProviderGenerate(this.a.getWorld())
+				.getChunkProviderGenerate(world.getWorld())
 				.getVillageGen();
 
-		return gen.a(this.a, this.b, x, z);
+		return gen.a(world, random, x, z);
 	}
 
 	/**
