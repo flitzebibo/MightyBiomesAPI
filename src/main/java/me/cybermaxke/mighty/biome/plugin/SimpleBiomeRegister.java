@@ -46,6 +46,7 @@ import net.minecraft.server.v1_6_R3.GenLayer;
 import net.minecraft.server.v1_6_R3.GenLayerRiverMix;
 import net.minecraft.server.v1_6_R3.WorldChunkManager;
 import net.minecraft.server.v1_6_R3.WorldGenFactory;
+import net.minecraft.server.v1_6_R3.WorldGenVillage;
 import net.minecraft.server.v1_6_R3.WorldGenerator;
 import net.minecraft.server.v1_6_R3.WorldProvider;
 import net.minecraft.server.v1_6_R3.WorldServer;
@@ -90,6 +91,10 @@ public class SimpleBiomeRegister implements BiomeAPI {
 
 		for (BiomeBase biome : stronghold) {
 			this.get(biome.id).setGeneratingStronghold(true);
+		}
+
+		for (Object biome : WorldGenVillage.e) {
+			this.get(((BiomeBase) biome).id).setGeneratingVillages(true);
 		}
 
 		this.get(BiomeBase.DESERT.id).setSandstoneVillages(true);

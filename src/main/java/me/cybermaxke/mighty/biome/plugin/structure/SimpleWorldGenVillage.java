@@ -21,11 +21,14 @@
 package me.cybermaxke.mighty.biome.plugin.structure;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
-import me.cybermaxke.mighty.biome.api.BiomeBase;
 import me.cybermaxke.mighty.biome.api.Biomes;
 
+import net.minecraft.server.v1_6_R3.BiomeBase;
 import net.minecraft.server.v1_6_R3.World;
 import net.minecraft.server.v1_6_R3.WorldGenVillage;
 
@@ -46,10 +49,37 @@ public class SimpleWorldGenVillage extends WorldGenVillage {
 
 	@Override
 	public SimpleWorldGenVillageStart b(int x, int z) {
-		BiomeBase biome = Biomes.get().get(this.c.getBiome(x, z).id);
+		me.cybermaxke.mighty.biome.api.BiomeBase biome =
+				Biomes.get().get(this.c.getBiome(x, z).id);
 
 		return new SimpleWorldGenVillageStart(this.c, this.b, x, z, this.getSize(),
 				biome.getSandstoneVillages());
+	}
+
+	@Override
+	public boolean a(int x, int z) {
+		try {
+			Field field = WorldGenVillage.class.getDeclaredField("e");
+			field.setAccessible(true);
+
+			Field mfield = Field.class.getDeclaredField("modifiers");
+			mfield.setAccessible(true);
+			mfield.set(field, field.getModifiers() & ~Modifier.FINAL);
+
+			List<BiomeBase> list = new ArrayList<BiomeBase>();
+
+			for (me.cybermaxke.mighty.biome.api.BiomeBase biome : Biomes.get().getAll()) {
+				if (biome.isGeneratingVillages()) {
+					list.add(BiomeBase.biomes[biome.getId()]);
+				}
+			}
+
+			field.set(null, list);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return super.a(x, z);
 	}
 
 	/**

@@ -52,6 +52,7 @@ public class SimpleBiomeBase implements me.cybermaxke.mighty.biome.api.BiomeBase
 	private boolean witchHouse = false;
 	private boolean jungleTemple = false;
 	private boolean pyramid = false;
+	private boolean village = false;
 
 	public SimpleBiomeBase(BiomeBase biome) {
 		this.biome = biome;
@@ -190,16 +191,12 @@ public class SimpleBiomeBase implements me.cybermaxke.mighty.biome.api.BiomeBase
 
 	@Override
 	public boolean isGeneratingVillages() {
-		return WorldGenVillage.e.contains(this.biome);
+		return this.village;
 	}
 
 	@Override
 	public void setGeneratingVillages(boolean generate) {
-		if (!this.isGeneratingVillages() && generate) {
-			WorldGenVillage.e.add(this.biome);
-		} else if (this.isGeneratingVillages() && !generate) {
-			WorldGenVillage.e.remove(this.biome);
-		}
+		this.village = generate;
 	}
 
 	@Override
