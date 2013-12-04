@@ -28,12 +28,12 @@ import java.util.Random;
 
 import me.cybermaxke.mighty.biome.api.Biomes;
 
-import net.minecraft.server.v1_6_R3.BiomeBase;
-import net.minecraft.server.v1_6_R3.StructureStart;
-import net.minecraft.server.v1_6_R3.World;
-import net.minecraft.server.v1_6_R3.WorldGenLargeFeature;
-import net.minecraft.server.v1_6_R3.WorldGenLargeFeatureStart;
-import net.minecraft.server.v1_6_R3.WorldGenWitchHut;
+import net.minecraft.server.v1_7_R1.BiomeBase;
+import net.minecraft.server.v1_7_R1.StructureStart;
+import net.minecraft.server.v1_7_R1.World;
+import net.minecraft.server.v1_7_R1.WorldGenLargeFeature;
+import net.minecraft.server.v1_7_R1.WorldGenLargeFeatureStart;
+import net.minecraft.server.v1_7_R1.WorldGenWitchHut;
 
 public class SimpleWorldGenLargeFeature extends WorldGenLargeFeature {
 
@@ -53,7 +53,7 @@ public class SimpleWorldGenLargeFeature extends WorldGenLargeFeature {
 				if (biome.isGeneratingWitchHouse() ||
 						biome.isGeneratingJungleTemple() ||
 						biome.isGeneratingPyramid()) {
-					list.add(BiomeBase.biomes[biome.getId()]);
+					list.add(BiomeBase.n()[biome.getId()]);
 				}
 			}
 

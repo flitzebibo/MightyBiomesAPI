@@ -27,11 +27,11 @@ import java.util.Random;
 import me.cybermaxke.mighty.biome.api.BiomeBase;
 import me.cybermaxke.mighty.biome.api.Biomes;
 
-import net.minecraft.server.v1_6_R3.StructureStart;
-import net.minecraft.server.v1_6_R3.World;
-import net.minecraft.server.v1_6_R3.WorldGenJungleTemple;
-import net.minecraft.server.v1_6_R3.WorldGenPyramidPiece;
-import net.minecraft.server.v1_6_R3.WorldGenWitchHut;
+import net.minecraft.server.v1_7_R1.StructureStart;
+import net.minecraft.server.v1_7_R1.World;
+import net.minecraft.server.v1_7_R1.WorldGenJungleTemple;
+import net.minecraft.server.v1_7_R1.WorldGenPyramidPiece;
+import net.minecraft.server.v1_7_R1.WorldGenWitchHut;
 
 public class SimpleWorldGenLargeFeatureStart extends StructureStart {
 

@@ -27,8 +27,8 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import org.bukkit.entity.LivingEntity;
 
-import net.minecraft.server.v1_6_R3.BiomeMeta;
-import net.minecraft.server.v1_6_R3.WeightedRandomChoice;
+import net.minecraft.server.v1_7_R1.BiomeMeta;
+import net.minecraft.server.v1_7_R1.WeightedRandomChoice;
 
 public class SimpleBiomeMeta extends me.cybermaxke.mighty.biome.api.BiomeMeta {
 	private final BiomeMeta meta;

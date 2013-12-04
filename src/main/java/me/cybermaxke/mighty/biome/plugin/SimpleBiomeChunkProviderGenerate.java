@@ -39,15 +39,15 @@ import me.cybermaxke.mighty.biome.plugin.structure.SimpleWorldGenStronghold;
 import me.cybermaxke.mighty.biome.plugin.structure.SimpleWorldGenVillage;
 import me.cybermaxke.mighty.biome.plugin.utils.ReflectionUtils;
 
-import net.minecraft.server.v1_6_R3.ChunkProviderGenerate;
-import net.minecraft.server.v1_6_R3.EnumCreatureType;
-import net.minecraft.server.v1_6_R3.World;
-import net.minecraft.server.v1_6_R3.WorldGenCanyon;
-import net.minecraft.server.v1_6_R3.WorldGenCaves;
-import net.minecraft.server.v1_6_R3.WorldGenLargeFeature;
-import net.minecraft.server.v1_6_R3.WorldGenMineshaft;
-import net.minecraft.server.v1_6_R3.WorldGenStronghold;
-import net.minecraft.server.v1_6_R3.WorldGenVillage;
+import net.minecraft.server.v1_7_R1.ChunkProviderGenerate;
+import net.minecraft.server.v1_7_R1.EnumCreatureType;
+import net.minecraft.server.v1_7_R1.World;
+import net.minecraft.server.v1_7_R1.WorldGenCanyon;
+import net.minecraft.server.v1_7_R1.WorldGenCaves;
+import net.minecraft.server.v1_7_R1.WorldGenLargeFeature;
+import net.minecraft.server.v1_7_R1.WorldGenMineshaft;
+import net.minecraft.server.v1_7_R1.WorldGenStronghold;
+import net.minecraft.server.v1_7_R1.WorldGenVillage;
 
 public class SimpleBiomeChunkProviderGenerate extends ChunkProviderGenerate {
 	private final World world;

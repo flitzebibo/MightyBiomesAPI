@@ -23,14 +23,15 @@ package me.cybermaxke.mighty.biome.plugin.structure;
 import me.cybermaxke.mighty.biome.api.BiomeBase;
 import me.cybermaxke.mighty.biome.api.Biomes;
 
-import net.minecraft.server.v1_6_R3.IChunkProvider;
-import net.minecraft.server.v1_6_R3.World;
-import net.minecraft.server.v1_6_R3.WorldGenCaves;
+import net.minecraft.server.v1_7_R1.Block;
+import net.minecraft.server.v1_7_R1.IChunkProvider;
+import net.minecraft.server.v1_7_R1.World;
+import net.minecraft.server.v1_7_R1.WorldGenCaves;
 
 public class SimpleWorldGenCaves extends WorldGenCaves {
 
 	@Override
-	public void a(IChunkProvider provider, World world, int x, int z, byte[] data) {
+	public void a(IChunkProvider provider, World world, int x, int z, Block[] data) {
 		BiomeBase biome = Biomes.get().get(world.getBiome(x, z).id);
 
 		if (biome.isGeneratingCaves()) {

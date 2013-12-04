@@ -26,8 +26,8 @@ import java.util.Map;
 
 import me.cybermaxke.mighty.biome.api.BiomeBase;
 
-import net.minecraft.server.v1_6_R3.GenLayer;
-import net.minecraft.server.v1_6_R3.IntCache;
+import net.minecraft.server.v1_7_R1.GenLayer;
+import net.minecraft.server.v1_7_R1.IntCache;
 
 public class SimpleGenLayerHills extends GenLayer {
 	private final Map<Integer, Integer> hillBiomes = new HashMap<Integer, Integer>();
@@ -57,7 +57,7 @@ public class SimpleGenLayerHills extends GenLayer {
 
 		for (int i = 0; i < width; i++) {
 			for (int j = 0; j < height; j++) {
-				this.a(j + x, i + z);
+				GenLayer.a(j + x, i + z);
 				int k = array1[j + 1 + (i + 1) * (height + 2)];
 
 				if (this.a(3) == 0 && this.biomes.contains(k)) {

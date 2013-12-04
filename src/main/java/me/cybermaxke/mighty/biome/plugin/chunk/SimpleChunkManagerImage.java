@@ -30,11 +30,11 @@ import java.util.Random;
 
 import org.bukkit.Color;
 
-import net.minecraft.server.v1_6_R3.BiomeBase;
-import net.minecraft.server.v1_6_R3.BiomeCache;
-import net.minecraft.server.v1_6_R3.ChunkPosition;
-import net.minecraft.server.v1_6_R3.IntCache;
-import net.minecraft.server.v1_6_R3.WorldChunkManager;
+import net.minecraft.server.v1_7_R1.BiomeBase;
+import net.minecraft.server.v1_7_R1.BiomeCache;
+import net.minecraft.server.v1_7_R1.ChunkPosition;
+import net.minecraft.server.v1_7_R1.IntCache;
+import net.minecraft.server.v1_7_R1.WorldChunkManager;
 
 public class SimpleChunkManagerImage extends WorldChunkManager {
 	private Map<Color, BiomeBase> biomes = new HashMap<Color, BiomeBase>();
@@ -176,29 +176,6 @@ public class SimpleChunkManagerImage extends WorldChunkManager {
 	}
 
 	@Override
-	public float[] getTemperatures(float[] temperatures, int x, int z, int width, int length) {
-		IntCache.a();
-
-		if (temperatures == null || temperatures.length < width * length) {
-			temperatures = new float[width * length];
-		}
-
-		for (int x1 = 0; x1 < width; x1++) {
-			for (int z1 = 0; z1 < length; z1++) {
-				float temperature = this.getBiome(x + x1, z + z1).h() / 65536.0F;
-
-				if (temperature > 1.0F) {
-					temperature = 1.0F;
-				}
-
-				temperatures[z1 + x1 * width] = temperature;
-			}
-		}
-
-		return temperatures;
-	}
-
-	@Override
 	public BiomeBase[] a(BiomeBase[] biomes, int x, int z, int width, int length, boolean cacheFlag) {
 		IntCache.a();
 
@@ -207,7 +184,7 @@ public class SimpleChunkManagerImage extends WorldChunkManager {
 		}
 
 		if (cacheFlag && width == 16 && length == 16 && (x & 0xF) == 0 && (z & 0xF) == 0) {
-			System.arraycopy(this.getCache().e(x, z), 0, biomes, 0, width * length);
+			System.arraycopy(this.getCache().d(x, z), 0, biomes, 0, width * length);
 		} else {
 			this.getBiomes(biomes, x, z, width, length);
 		}

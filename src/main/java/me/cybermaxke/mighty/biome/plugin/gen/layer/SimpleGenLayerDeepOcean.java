@@ -18,33 +18,27 @@
  * along with MightyBiomesAPI. If not, see <http://www.gnu.org/licenses/>.
  * 
  */
-package me.cybermaxke.mighty.biome.api.decorator;
+package me.cybermaxke.mighty.biome.plugin.gen.layer;
 
-public enum DecoratorSettingType {
-	WATERLILY,
-	TREES,
-	YELLOW_FLOWERS,
-	RED_FLOWERS,
-	GRASS,
-	DEATH_BUSH,
-	BROWN_MUSHROOMS,
-	RED_MUSHROOMS,
-	REEDS,
-	CACTI,
-	/**
-	 * The sand that will be generated before the clay.
-	 */
-	SAND,
-	/**
-	 * The sand that will be generated after the clay.
-	 */
-	SAND_2,
-	CLAY,
-	BIG_MUSHROOMS,
-	WATER_LAKES,
-	LAVA_LAKES,
-	PUMPKINS,
-	WATER_LIQUIDS,
-	LAVA_LIQUIDS,
-	GRAVEL
+import me.cybermaxke.mighty.biome.api.BiomeBase;
+
+import net.minecraft.server.v1_7_R1.GenLayer;
+import net.minecraft.server.v1_7_R1.GenLayerMushroomIsland;
+
+public class SimpleGenLayerDeepOcean extends GenLayerMushroomIsland {
+	private final SimpleGenData data;
+
+	public SimpleGenLayerDeepOcean(long baseSeed, GenLayer layer, SimpleGenData data) {
+		super(baseSeed, layer);
+		this.data = data;
+	}
+
+	@Override
+	public int[] a(int x, int z, int height, int width) {
+		if (this.data.getBiomes().contains(BiomeBase.DEEP_OCEAN)) {
+			return super.a(x, z, height, width);
+		}
+
+		return this.a.a(x, z, height, width);
+	}
 }

@@ -23,6 +23,7 @@ package me.cybermaxke.mighty.biome.plugin;
 import java.lang.reflect.Field;
 import java.util.Random;
 
+import org.bukkit.craftbukkit.v1_7_R1.util.CraftMagicNumbers;
 import org.bukkit.generator.BlockPopulator;
 
 import me.cybermaxke.mighty.biome.api.BiomeMinableMeta;
@@ -34,30 +35,48 @@ import me.cybermaxke.mighty.biome.plugin.gen.SimpleWorldGen;
 import me.cybermaxke.mighty.biome.plugin.structure.SimpleWorldGenVillage;
 import me.cybermaxke.mighty.biome.plugin.utils.ReflectionUtils;
 
-import net.minecraft.server.v1_6_R3.BiomeBase;
-import net.minecraft.server.v1_6_R3.BiomeDecorator;
-import net.minecraft.server.v1_6_R3.Block;
-import net.minecraft.server.v1_6_R3.World;
-import net.minecraft.server.v1_6_R3.WorldGenDeadBush;
-import net.minecraft.server.v1_6_R3.WorldGenLakes;
-import net.minecraft.server.v1_6_R3.WorldGenLiquids;
-import net.minecraft.server.v1_6_R3.WorldGenMinable;
-import net.minecraft.server.v1_6_R3.WorldGenPumpkin;
-import net.minecraft.server.v1_6_R3.WorldGenerator;
+import net.minecraft.server.v1_7_R1.BiomeBase;
+import net.minecraft.server.v1_7_R1.BiomeDecorator;
+import net.minecraft.server.v1_7_R1.Block;
+import net.minecraft.server.v1_7_R1.Blocks;
+import net.minecraft.server.v1_7_R1.World;
+import net.minecraft.server.v1_7_R1.WorldGenCactus;
+import net.minecraft.server.v1_7_R1.WorldGenClay;
+import net.minecraft.server.v1_7_R1.WorldGenDeadBush;
+import net.minecraft.server.v1_7_R1.WorldGenFlowers;
+import net.minecraft.server.v1_7_R1.WorldGenHugeMushroom;
+import net.minecraft.server.v1_7_R1.WorldGenLakes;
+import net.minecraft.server.v1_7_R1.WorldGenLiquids;
+import net.minecraft.server.v1_7_R1.WorldGenMinable;
+import net.minecraft.server.v1_7_R1.WorldGenPumpkin;
+import net.minecraft.server.v1_7_R1.WorldGenReed;
+import net.minecraft.server.v1_7_R1.WorldGenSand;
+import net.minecraft.server.v1_7_R1.WorldGenWaterLily;
+import net.minecraft.server.v1_7_R1.WorldGenerator;
 
 public class SimpleBiomeDecorator extends BiomeDecorator {
-	private final WorldGenDeadBush deathBush = new WorldGenDeadBush(Block.DEAD_BUSH.id);
-	private final WorldGenLiquids waterLiquids = new WorldGenLiquids(Block.WATER.id);
-	private final WorldGenLiquids lavaLiquids = new WorldGenLiquids(Block.LAVA.id);
-	private final WorldGenLakes waterLakes = new WorldGenLakes(Block.WATER.id);
-	private final WorldGenLakes lavaLakes = new WorldGenLakes(Block.LAVA.id);
+	private final WorldGenDeadBush deathBush = new WorldGenDeadBush(Blocks.DEAD_BUSH);
+	private final WorldGenLiquids waterLiquids = new WorldGenLiquids(Blocks.WATER);
+	private final WorldGenLiquids lavaLiquids = new WorldGenLiquids(Blocks.LAVA);
+	private final WorldGenLakes waterLakes = new WorldGenLakes(Blocks.WATER);
+	private final WorldGenLakes lavaLakes = new WorldGenLakes(Blocks.LAVA);
 	private final WorldGenPumpkin pumpkin = new WorldGenPumpkin();
+	private final WorldGenerator clay = new WorldGenClay(4);
+	private final WorldGenerator sand = new WorldGenSand(Blocks.SAND, 7);
+	private final WorldGenerator gravel = new WorldGenSand(Blocks.GRAVEL, 6);
+	private final WorldGenFlowers yellowFlowers = new WorldGenFlowers(Blocks.YELLOW_FLOWER);
+	private final WorldGenFlowers redFlowers = new WorldGenFlowers(Blocks.RED_ROSE);
+	private final WorldGenerator brownMuschrooms = new WorldGenFlowers(Blocks.BROWN_MUSHROOM);
+	private final WorldGenerator redMuschrooms = new WorldGenFlowers(Blocks.RED_MUSHROOM);
+	private final WorldGenerator hugeMushrooms = new WorldGenHugeMushroom();
+	private final WorldGenerator reeds = new WorldGenReed();
+	private final WorldGenerator cactus = new WorldGenCactus();
+	private final WorldGenerator waterLily = new WorldGenWaterLily();
 
 	private Decorator decorator;
 	private World world;
 
-	public SimpleBiomeDecorator(BiomeBase biome, Decorator decorator) {
-		super(biome);
+	public SimpleBiomeDecorator(Decorator decorator) {
 		this.decorator = decorator;
 	}
 
@@ -66,7 +85,7 @@ public class SimpleBiomeDecorator extends BiomeDecorator {
 	}
 
 	@Override
-	public void a(World world, Random random, int chunkX, int chunkZ) {
+	public void a(World world, Random random, BiomeBase biome, int chunkX, int chunkZ) {
 		if (this.decorator == null || this.world != null) {
 			return;
 		}
@@ -87,7 +106,8 @@ public class SimpleBiomeDecorator extends BiomeDecorator {
 				int y = random.nextInt(max - min) + min;
 				int z = chunkZ + random.nextInt(16);
 
-				WorldGenMinable gen = new WorldGenMinable(meta.getMaterial().getId(), size);
+				Block block = CraftMagicNumbers.getBlock(meta.getMaterial());
+				WorldGenMinable gen = new WorldGenMinable(block, size);
 				gen.a(world, random, x, y, z);
 			}
 		}
@@ -95,6 +115,7 @@ public class SimpleBiomeDecorator extends BiomeDecorator {
 		/**
 		 * Generating flowers, sand, lakes, etc.
 		 */
+		DecoratorSetting gravel = this.decorator.getSetting(DecoratorSettingType.GRAVEL);
 		DecoratorSetting waterLakes = this.decorator.getSetting(DecoratorSettingType.WATER_LAKES);
 		DecoratorSetting lavaLakes = this.decorator.getSetting(DecoratorSettingType.LAVA_LAKES);
 		DecoratorSetting sand = this.decorator.getSetting(DecoratorSettingType.SAND);
@@ -108,7 +129,7 @@ public class SimpleBiomeDecorator extends BiomeDecorator {
 		DecoratorSetting redFlowers = this.decorator.getSetting(DecoratorSettingType.RED_FLOWERS);
 		DecoratorSetting grass = this.decorator.getSetting(DecoratorSettingType.GRASS);
 		DecoratorSetting deathBush = this.decorator.getSetting(DecoratorSettingType.DEATH_BUSH);
-		DecoratorSetting waterlilly = this.decorator.getSetting(DecoratorSettingType.WATERLILY);
+		DecoratorSetting waterlily = this.decorator.getSetting(DecoratorSettingType.WATERLILY);
 		DecoratorSetting brownMushrooms =
 				this.decorator.getSetting(DecoratorSettingType.BROWN_MUSHROOMS);
 		DecoratorSetting redMushrooms =
@@ -121,6 +142,7 @@ public class SimpleBiomeDecorator extends BiomeDecorator {
 		DecoratorSetting lavaLiquids =
 				this.decorator.getSetting(DecoratorSettingType.LAVA_LIQUIDS);
 
+		double chanceGravel = waterLakes.getChance();
 		double chanceWaterLakes = waterLakes.getChance();
 		double chanceLavaLakes = lavaLakes.getChance();
 		double chanceSand = sand.getChance();
@@ -132,7 +154,7 @@ public class SimpleBiomeDecorator extends BiomeDecorator {
 		double chanceRedFlowers = redFlowers.getChance();
 		double chanceGrass = grass.getChance();
 		double chanceDeathBush = deathBush.getChance();
-		double chanceWaterlilly = waterlilly.getChance();
+		double chanceWaterlily = waterlily.getChance();
 		double chanceBrownMushrooms = brownMushrooms.getChance();
 		double chanceRedMushrooms = redMushrooms.getChance();
 		double chanceReeds = reeds.getChance();
@@ -170,7 +192,7 @@ public class SimpleBiomeDecorator extends BiomeDecorator {
 				int x = chunkX + random.nextInt(16) + 8;
 				int z = chunkZ + random.nextInt(16) + 8;
 
-				this.g.a(world, random, x, world.i(x, z), z);
+				this.sand.a(world, random, x, world.i(x, z), z);
 			}
 		}
 
@@ -179,7 +201,7 @@ public class SimpleBiomeDecorator extends BiomeDecorator {
 				int x = chunkX + random.nextInt(16) + 8;
 				int z = chunkZ + random.nextInt(16) + 8;
 
-				this.f.a(world, random, x, world.i(x, z), z);
+				this.clay.a(world, random, x, world.i(x, z), z);
 			}
 		}
 
@@ -188,7 +210,16 @@ public class SimpleBiomeDecorator extends BiomeDecorator {
 				int x = chunkX + random.nextInt(16) + 8;
 				int z = chunkZ + random.nextInt(16) + 8;
 
-				this.g.a(world, random, x, world.i(x, z), z);
+				this.sand.a(world, random, x, world.i(x, z), z);
+			}
+		}
+
+		for (int i = 0; i < gravel.getCount(); ++i) {
+			if (this.hasChance(random, chanceGravel)) {
+				int x = chunkX + random.nextInt(16) + 8;
+				int z = chunkZ + random.nextInt(16) + 8;
+
+				this.gravel.a(world, random, x, world.i(x, z), z);
 			}
 		}
 
@@ -204,7 +235,7 @@ public class SimpleBiomeDecorator extends BiomeDecorator {
 	
 				WorldGen gen1 = this.decorator.getWorldGenTrees(random);
 
-				WorldGenerator gen2 = gen1 == null ? this.e.a(random) : new SimpleWorldGen(gen1);
+				WorldGenerator gen2 = gen1 == null ? biome.a(random) : new SimpleWorldGen(gen1);
 				gen2.a(1.0D, 1.0D, 1.0D);
 				gen2.a(world, random, x, world.getHighestBlockYAt(x, z), z);
 			}
@@ -215,7 +246,7 @@ public class SimpleBiomeDecorator extends BiomeDecorator {
 				int x = chunkX + random.nextInt(16) + 8;
 				int z = chunkZ + random.nextInt(16) + 8;
 
-				this.u.a(world, random, x, world.i(x, z), z);
+				this.hugeMushrooms.a(world, random, x, world.i(x, z), z);
 			}
 		}
 
@@ -225,7 +256,7 @@ public class SimpleBiomeDecorator extends BiomeDecorator {
 				int y = random.nextInt(128);
 				int z = chunkZ + random.nextInt(16) + 8;
 
-				this.q.a(world, random, x, y, z);
+				this.yellowFlowers.a(world, random, x, y, z);
 			}
 		}
 
@@ -235,7 +266,7 @@ public class SimpleBiomeDecorator extends BiomeDecorator {
 				int y = random.nextInt(128);
 				int z = chunkZ + random.nextInt(16) + 8;
 
-				this.r.a(world, random, x, y, z);
+				this.redFlowers.a(world, random, x, y, z);
 			}
 		}
 
@@ -247,7 +278,7 @@ public class SimpleBiomeDecorator extends BiomeDecorator {
 
 				WorldGen gen1 = this.decorator.getWorldGenGrass(random);
 
-				WorldGenerator gen2 = gen1 == null ? this.e.b(random) : new SimpleWorldGen(gen1);
+				WorldGenerator gen2 = gen1 == null ? biome.b(random) : new SimpleWorldGen(gen1);
 				gen2.a(world, random, x, y, z);
 			}
 		}
@@ -262,17 +293,17 @@ public class SimpleBiomeDecorator extends BiomeDecorator {
 			}
 		}
 
-		for (int i = 0; i < waterlilly.getCount(); i++) {
-			if (this.hasChance(random, chanceWaterlilly)) {
+		for (int i = 0; i < waterlily.getCount(); i++) {
+			if (this.hasChance(random, chanceWaterlily)) {
 				int x = chunkX + random.nextInt(16) + 8;
 				int y = random.nextInt(128);
 				int z = chunkZ + random.nextInt(16) + 8;
 
-				while (y > 0 && world.getTypeId(x, y - 1, z) == 0) {
+				while (y > 0 && world.getType(x, y - 1, z) == null) {
 					y--;
 				}
 
-				this.x.a(world, random, x, y, z);
+				this.waterLily.a(world, random, x, y, z);
 			}
 		}
 
@@ -282,7 +313,7 @@ public class SimpleBiomeDecorator extends BiomeDecorator {
 				int z = chunkZ + random.nextInt(16) + 8;
 				int y = world.getHighestBlockYAt(x, z);
 
-				this.s.a(world, random, x, y, z);
+				this.brownMuschrooms.a(world, random, x, y, z);
 			}
 		}
 
@@ -292,7 +323,7 @@ public class SimpleBiomeDecorator extends BiomeDecorator {
 				int z = chunkZ + random.nextInt(16) + 8;
 				int y = world.getHighestBlockYAt(x, z);
 
-				this.t.a(world, random, x, y, z);
+				this.redMuschrooms.a(world, random, x, y, z);
 			}
 		}
 
@@ -302,7 +333,7 @@ public class SimpleBiomeDecorator extends BiomeDecorator {
 				int y = random.nextInt(128);
 				int z = chunkZ + random.nextInt(16) + 8;
 
-				this.v.a(world, random, x, y, z);
+				this.reeds.a(world, random, x, y, z);
 			}
 		}
 
@@ -322,7 +353,7 @@ public class SimpleBiomeDecorator extends BiomeDecorator {
 				int y = random.nextInt(128);
 				int z = chunkZ + random.nextInt(16) + 8;
 
-				this.w.a(world, random, x, y, z);
+				this.cactus.a(world, random, x, y, z);
 			}
 		}
 
@@ -390,70 +421,72 @@ public class SimpleBiomeDecorator extends BiomeDecorator {
 		for (DecoratorSettingType type : DecoratorSettingType.values()) {
 			switch (type) {
 				case BIG_MUSHROOMS:
-					this.decorator.setSetting(
-							new DecoratorSetting(type, 100.0D, this.getInt("J", old)));
+					this.decorator.setSetting(new DecoratorSetting(
+							type, 100.0D, this.getInt("H", old)));
+					break;
+				case BROWN_MUSHROOMS:
+					this.decorator.setSetting(new DecoratorSetting(
+							type, 25.0D, this.getInt("q", old)));
 					break;
 				case RED_MUSHROOMS:
-				case BROWN_MUSHROOMS:
-					this.decorator.setSetting(
-							new DecoratorSetting(type, 100.0D, this.getInt("D", old)));
-					break;
+					this.decorator.setSetting(new DecoratorSetting(
+							type, 12.5D, this.getInt("r", old)));
 				case CACTI:
-					this.decorator.setSetting(
-							new DecoratorSetting(type, 100.0D, this.getInt("F", old)));
+					this.decorator.setSetting(new DecoratorSetting(
+							type, 100.0D, this.getInt("D", old)));
 					break;
 				case CLAY:
-					this.decorator.setSetting(
-							new DecoratorSetting(type, 100.0D, this.getInt("I", old)));
+					this.decorator.setSetting(new DecoratorSetting(
+							type, 100.0D, this.getInt("G", old)));
 					break;
 				case DEATH_BUSH:
-					this.decorator.setSetting(
-							new DecoratorSetting(type, 100.0D, this.getInt("C", old)));
+					this.decorator.setSetting(new DecoratorSetting(
+							type, 100.0D, this.getInt("A", old)));
 					break;
 				case GRASS:
-					this.decorator.setSetting(
-							new DecoratorSetting(type, 100.0D, this.getInt("B", old)));
+					this.decorator.setSetting(new DecoratorSetting(
+							type, 100.0D, this.getInt("z", old)));
 					break;
 				case WATER_LIQUIDS:
 					if (liquids) {
-						this.decorator.setSetting(
-								new DecoratorSetting(type, 100.0D, 50));
+						this.decorator.setSetting(new DecoratorSetting(type, 100.0D, 50));
 					}
 					break;
 				case LAVA_LIQUIDS:
 					if (liquids) {
-						this.decorator.setSetting(
-								new DecoratorSetting(type, 100.0D, 20));
+						this.decorator.setSetting(new DecoratorSetting(type, 100.0D, 20));
 					}
 					break;
 				case YELLOW_FLOWERS:
 				case RED_FLOWERS:
-					this.decorator.setSetting(
-							new DecoratorSetting(type, 100.0D, this.getInt("A", old)));
+					this.decorator.setSetting(new DecoratorSetting(
+							type, 100.0D, this.getInt("y", old)));
 					break;
 				case REEDS:
-					this.decorator.setSetting(
-							new DecoratorSetting(type, 100.0D, this.getInt("F", old)));
+					this.decorator.setSetting(new DecoratorSetting(
+							type, 100.0D, this.getInt("C", old) + 10));
 					break;
 				case SAND:
-					this.decorator.setSetting(
-							new DecoratorSetting(type, 100.0D, this.getInt("H", old)));
+					this.decorator.setSetting(new DecoratorSetting(
+							type, 100.0D, this.getInt("F", old)));
 					break;
-				case SAND_2:
-					this.decorator.setSetting(
-							new DecoratorSetting(type, 100.0D, this.getInt("G", old)));
+				case GRAVEL:
+					this.decorator.setSetting(new DecoratorSetting(
+							type, 100.0D, this.getInt("E", old)));
 					break;
 				case TREES:
-					this.decorator.setSetting(
-							new DecoratorSetting(type, 100.0D, this.getInt("z", old)));
+					this.decorator.setSetting(new DecoratorSetting(
+							type, 100.0D, this.getInt("z", old)));
 					break;
 				case WATERLILY:
-					this.decorator.setSetting(
-							new DecoratorSetting(type, 100.0D, this.getInt("y", old)));
+					this.decorator.setSetting(new DecoratorSetting(
+							type, 100.0D, this.getInt("v", old)));
 					break;
 				case PUMPKINS:
+					this.decorator.setSetting(new DecoratorSetting(type, 3.125D, 1));
 				case WATER_LAKES:
 				case LAVA_LAKES:
+				case SAND_2:
 					break;
 				default:
 					throw new IllegalStateException("The old values of '" + type.toString() +

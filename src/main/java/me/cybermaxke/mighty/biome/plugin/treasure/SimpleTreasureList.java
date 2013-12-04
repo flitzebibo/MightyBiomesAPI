@@ -30,7 +30,7 @@ import java.util.ListIterator;
 
 import me.cybermaxke.mighty.biome.api.treasure.TreasureItem;
 
-import net.minecraft.server.v1_6_R3.StructurePieceTreasure;
+import net.minecraft.server.v1_7_R1.StructurePieceTreasure;
 
 public class SimpleTreasureList implements List<TreasureItem> {
 	private final Field field;

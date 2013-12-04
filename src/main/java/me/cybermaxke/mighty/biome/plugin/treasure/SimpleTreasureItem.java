@@ -23,11 +23,11 @@ package me.cybermaxke.mighty.biome.plugin.treasure;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
-import org.bukkit.craftbukkit.v1_6_R3.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_7_R1.inventory.CraftItemStack;
 
-import net.minecraft.server.v1_6_R3.ItemStack;
-import net.minecraft.server.v1_6_R3.StructurePieceTreasure;
-import net.minecraft.server.v1_6_R3.WeightedRandomChoice;
+import net.minecraft.server.v1_7_R1.ItemStack;
+import net.minecraft.server.v1_7_R1.StructurePieceTreasure;
+import net.minecraft.server.v1_7_R1.WeightedRandomChoice;
 
 import me.cybermaxke.mighty.biome.api.treasure.TreasureItem;
 import me.cybermaxke.mighty.biome.plugin.utils.ReflectionUtils;

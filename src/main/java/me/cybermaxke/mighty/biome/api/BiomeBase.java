@@ -51,6 +51,23 @@ public interface BiomeBase {
 	public static final BiomeBase SMALL_MOUNTAINS = new BiomeWrapper(20);
 	public static final BiomeBase JUNGLE = new BiomeWrapper(21);
 	public static final BiomeBase JUNGLE_HILLS = new BiomeWrapper(22);
+	public static final BiomeBase JUNGLE_EDGE = new BiomeWrapper(23);
+	public static final BiomeBase DEEP_OCEAN = new BiomeWrapper(24);
+	public static final BiomeBase STONE_BEACH = new BiomeWrapper(25);
+	public static final BiomeBase COLD_BEACH = new BiomeWrapper(26);
+	public static final BiomeBase BIRCH_FOREST = new BiomeWrapper(27);
+	public static final BiomeBase BIRCH_FOREST_HILLS = new BiomeWrapper(28);
+	public static final BiomeBase ROOFED_FOREST = new BiomeWrapper(29);
+	public static final BiomeBase COLD_TAIGA = new BiomeWrapper(30);
+	public static final BiomeBase COLD_TAIGA_HILLS = new BiomeWrapper(31);
+	public static final BiomeBase MEGA_TAIGA = new BiomeWrapper(32);
+	public static final BiomeBase MEGA_TAIGA_HILLS = new BiomeWrapper(33);
+	public static final BiomeBase EXTREME_HILLS_PLUS = new BiomeWrapper(34);
+	public static final BiomeBase SAVANNA = new BiomeWrapper(35);
+	public static final BiomeBase SAVANNA_PLATEAU = new BiomeWrapper(36);
+	public static final BiomeBase MESA = new BiomeWrapper(37);
+	public static final BiomeBase MESA_PLATEAU_F = new BiomeWrapper(38);
+	public static final BiomeBase MESA_PLATEAU = new BiomeWrapper(39);
 
 	/**
 	 * Gets the id.
@@ -298,4 +315,10 @@ public interface BiomeBase {
 	 * @param decorator
 	 */
 	public void setDecorator(Decorator decorator);
+
+	/**
+	 * Gets whether this biome is a ocean.
+	 * @return ocean
+	 */
+	public boolean isOcean();
 }

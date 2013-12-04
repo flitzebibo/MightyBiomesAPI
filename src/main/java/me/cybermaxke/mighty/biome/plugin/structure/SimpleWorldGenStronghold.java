@@ -27,9 +27,9 @@ import java.util.Random;
 
 import me.cybermaxke.mighty.biome.api.Biomes;
 
-import net.minecraft.server.v1_6_R3.BiomeBase;
-import net.minecraft.server.v1_6_R3.World;
-import net.minecraft.server.v1_6_R3.WorldGenStronghold;
+import net.minecraft.server.v1_7_R1.BiomeBase;
+import net.minecraft.server.v1_7_R1.World;
+import net.minecraft.server.v1_7_R1.WorldGenStronghold;
 
 public class SimpleWorldGenStronghold extends WorldGenStronghold {
 
@@ -39,7 +39,7 @@ public class SimpleWorldGenStronghold extends WorldGenStronghold {
 
 		for (me.cybermaxke.mighty.biome.api.BiomeBase biome : Biomes.get().getAll()) {
 			if (biome.isGeneratingStronghold()) {
-				biomes.add(BiomeBase.biomes[biome.getId()]);
+				biomes.add(BiomeBase.n()[biome.getId()]);
 			}
 		}
 

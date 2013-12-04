@@ -28,9 +28,9 @@ import java.util.Random;
 
 import me.cybermaxke.mighty.biome.api.Biomes;
 
-import net.minecraft.server.v1_6_R3.BiomeBase;
-import net.minecraft.server.v1_6_R3.World;
-import net.minecraft.server.v1_6_R3.WorldGenVillage;
+import net.minecraft.server.v1_7_R1.BiomeBase;
+import net.minecraft.server.v1_7_R1.World;
+import net.minecraft.server.v1_7_R1.WorldGenVillage;
 
 public class SimpleWorldGenVillage extends WorldGenVillage {
 
@@ -70,7 +70,7 @@ public class SimpleWorldGenVillage extends WorldGenVillage {
 
 			for (me.cybermaxke.mighty.biome.api.BiomeBase biome : Biomes.get().getAll()) {
 				if (biome.isGeneratingVillages()) {
-					list.add(BiomeBase.biomes[biome.getId()]);
+					list.add(BiomeBase.n()[biome.getId()]);
 				}
 			}
 

@@ -23,9 +23,9 @@ package me.cybermaxke.mighty.biome.plugin.structure;
 import java.lang.reflect.Field;
 import java.util.Random;
 
-import net.minecraft.server.v1_6_R3.World;
-import net.minecraft.server.v1_6_R3.WorldGenVillageStart;
-import net.minecraft.server.v1_6_R3.WorldGenVillageStartPiece;
+import net.minecraft.server.v1_7_R1.World;
+import net.minecraft.server.v1_7_R1.WorldGenVillageStart;
+import net.minecraft.server.v1_7_R1.WorldGenVillageStartPiece;
 
 public class SimpleWorldGenVillageStart extends WorldGenVillageStart {
 

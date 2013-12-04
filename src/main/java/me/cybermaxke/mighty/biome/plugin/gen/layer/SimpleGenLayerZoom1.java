@@ -20,31 +20,23 @@
  */
 package me.cybermaxke.mighty.biome.plugin.gen.layer;
 
-import net.minecraft.server.v1_6_R3.GenLayer;
-import net.minecraft.server.v1_6_R3.GenLayerZoom;
+import net.minecraft.server.v1_7_R1.GenLayer;
+import net.minecraft.server.v1_7_R1.GenLayerZoom;
 
 public class SimpleGenLayerZoom1 extends GenLayer {
-	private int amount;
+	private final SimpleGenData data;
 
-	public SimpleGenLayerZoom1(long baseSeed, GenLayer parent, int amount) {
+	public SimpleGenLayerZoom1(long baseSeed, GenLayer parent, SimpleGenData data) {
 		super(baseSeed);
 		this.a = parent;
-		this.amount = amount;
-	}
-
-	public void setAmount(int amount) {
-		this.amount = amount;
-	}
-
-	public int getAmount() {
-		return this.amount;
+		this.data = data;
 	}
 
 	@Override
 	public int[] a(int x, int z, int height, int width) {
 		GenLayer layer = this.a;
 
-		for (int i = 0; i < (this.amount + 2); i++) {
+		for (int i = 0; i < this.data.getSize(); i++) {
 			layer = new GenLayerZoom(1000L + i, layer);
 		}
 

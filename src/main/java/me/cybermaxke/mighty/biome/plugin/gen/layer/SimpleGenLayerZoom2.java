@@ -20,34 +20,25 @@
  */
 package me.cybermaxke.mighty.biome.plugin.gen.layer;
 
-import net.minecraft.server.v1_6_R3.GenLayer;
-import net.minecraft.server.v1_6_R3.GenLayerIsland;
-import net.minecraft.server.v1_6_R3.GenLayerMushroomShore;
-import net.minecraft.server.v1_6_R3.GenLayerSwampRivers;
-import net.minecraft.server.v1_6_R3.GenLayerZoom;
+import net.minecraft.server.v1_7_R1.GenLayer;
+import net.minecraft.server.v1_7_R1.GenLayerIsland;
+import net.minecraft.server.v1_7_R1.GenLayerMushroomShore;
+import net.minecraft.server.v1_7_R1.GenLayerZoom;
 
 public class SimpleGenLayerZoom2 extends GenLayer {
-	private int amount;
+	private final SimpleGenData data;
 
-	public SimpleGenLayerZoom2(long baseSeed, GenLayer parent, int amount) {
+	public SimpleGenLayerZoom2(long baseSeed, GenLayer parent, SimpleGenData data) {
 		super(baseSeed);
 		this.a = parent;
-		this.amount = amount;
-	}
-
-	public void setAmount(int amount) {
-		this.amount = amount;
-	}
-
-	public int getAmount() {
-		return this.amount;
+		this.data = data;
 	}
 
 	@Override
 	public int[] a(int x, int z, int height, int width) {
 		GenLayer layer = this.a;
 
-		for (int i = 0; i < this.amount; i++) {
+		for (int i = 0; i < this.data.getSize(); i++) {
 			layer = new GenLayerZoom(1000L + i, layer);
 
 			if (i == 0) {
@@ -56,10 +47,6 @@ public class SimpleGenLayerZoom2 extends GenLayer {
 
 			if (i == 1) {
 				layer = new GenLayerMushroomShore(1000L, layer);
-			}
-
-			if (i == 1) {
-				layer = new GenLayerSwampRivers(1000L, layer);
 			}
 		}
 

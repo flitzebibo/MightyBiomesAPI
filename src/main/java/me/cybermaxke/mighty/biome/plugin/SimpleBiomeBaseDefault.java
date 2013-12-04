@@ -20,7 +20,7 @@
  */
 package me.cybermaxke.mighty.biome.plugin;
 
-import net.minecraft.server.v1_6_R3.BiomeBase;
+import net.minecraft.server.v1_7_R1.BiomeBase;
 
 public class SimpleBiomeBaseDefault extends SimpleBiomeBase {
 

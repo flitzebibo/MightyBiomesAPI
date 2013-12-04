@@ -240,6 +240,11 @@ public class BiomeWrapper implements BiomeBase {
 	}
 
 	@Override
+	public boolean isOcean() {
+		return Biomes.get().get(this.id).isOcean();
+	}
+
+	@Override
 	public boolean equals(Object o) {
 		return Biomes.get().get(this.id).equals(o);
 	}

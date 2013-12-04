@@ -30,13 +30,13 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import org.bukkit.Material;
+import org.bukkit.craftbukkit.v1_7_R1.util.CraftMagicNumbers;
 
 import me.cybermaxke.mighty.biome.api.data.EnumCreatureType;
 import me.cybermaxke.mighty.biome.api.decorator.Decorator;
 
-import net.minecraft.server.v1_6_R3.BiomeBase;
-import net.minecraft.server.v1_6_R3.BiomeMeta;
-import net.minecraft.server.v1_6_R3.WorldGenVillage;
+import net.minecraft.server.v1_7_R1.BiomeBase;
+import net.minecraft.server.v1_7_R1.BiomeMeta;
 
 public class SimpleBiomeBase implements me.cybermaxke.mighty.biome.api.BiomeBase {
 	private final Map<EnumCreatureType, List<me.cybermaxke.mighty.biome.api.BiomeMeta>> meta =
@@ -79,15 +79,15 @@ public class SimpleBiomeBase implements me.cybermaxke.mighty.biome.api.BiomeBase
 	}
 
 	public SimpleBiomeDecorator getDecor() {
-		if (this.biome.I instanceof SimpleBiomeDecorator) {
-			return (SimpleBiomeDecorator) this.biome.I;
+		if (this.biome.ar instanceof SimpleBiomeDecorator) {
+			return (SimpleBiomeDecorator) this.biome.ar;
 		}
 
 		Decorator decorator1 = new Decorator();
-		SimpleBiomeDecorator decorator2 = new SimpleBiomeDecorator(this.biome, decorator1);
-		decorator2.init(this.biome.I);
+		SimpleBiomeDecorator decorator2 = new SimpleBiomeDecorator(decorator1);
+		decorator2.init(this.biome.ar);
 
-		this.biome.I = decorator2;
+		this.biome.ar = decorator2;
 
 		return decorator2;
 	}
@@ -151,42 +151,42 @@ public class SimpleBiomeBase implements me.cybermaxke.mighty.biome.api.BiomeBase
 
 	@Override
 	public float getHeight() {
-		return this.biome.D;
+		return this.biome.am;
 	}
 
 	@Override
 	public void setHeight(float height) {
-		this.biome.D = height;
+		this.biome.am = height;
 	}
 
 	@Override
 	public float getVolatility() {
-		return this.biome.E;
+		return this.biome.an;
 	}
 
 	@Override
 	public void setVolatility(float height) {
-		this.biome.E = height;
+		this.biome.an = height;
 	}
 
 	@Override
 	public Material getTopBlock() {
-		return Material.getMaterial(this.biome.A);
+		return CraftMagicNumbers.getMaterial(this.biome.ai);
 	}
 
 	@Override
 	public void setTopBlock(Material material) {
-		this.biome.A = (byte) material.getId();
+		this.biome.ai = CraftMagicNumbers.getBlock(material);
 	}
 
 	@Override
 	public Material getFillingBlock() {
-		return Material.getMaterial(this.biome.B);
+		return CraftMagicNumbers.getMaterial(this.biome.ak);
 	}
 
 	@Override
 	public void setFillingBlock(Material material) {
-		this.biome.B = (byte) material.getId();
+		this.biome.ak = CraftMagicNumbers.getBlock(material);
 	}
 
 	@Override
@@ -304,17 +304,17 @@ public class SimpleBiomeBase implements me.cybermaxke.mighty.biome.api.BiomeBase
 
 		switch (type) {
 			case AMBIENT:
-				fieldName = "M";
+				fieldName = "av";
 				break;
 			case MONSTER:
-				fieldName = "J";
+				fieldName = "as";
 				break;
 			case WATER_CREATURE:
-				fieldName = "L";
+				fieldName = "au";
 				break;
 			case CREATURE:
 			default:
-				fieldName = "K";
+				fieldName = "at";
 				break;
 		}
 
@@ -325,6 +325,13 @@ public class SimpleBiomeBase implements me.cybermaxke.mighty.biome.api.BiomeBase
 		}
 
 		return null;
+	}
+
+	@Override
+	public boolean isOcean() {
+		return this.biome.id == BiomeBase.OCEAN.id ||
+				this.biome.id == BiomeBase.FROZEN_OCEAN.id ||
+				this.biome.id == BiomeBase.DEEP_OCEAN.id;
 	}
 
 	@Override

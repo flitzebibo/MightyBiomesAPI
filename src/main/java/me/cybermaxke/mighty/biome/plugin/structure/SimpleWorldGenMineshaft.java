@@ -25,8 +25,8 @@ import java.util.Random;
 import me.cybermaxke.mighty.biome.api.BiomeBase;
 import me.cybermaxke.mighty.biome.api.Biomes;
 
-import net.minecraft.server.v1_6_R3.World;
-import net.minecraft.server.v1_6_R3.WorldGenMineshaft;
+import net.minecraft.server.v1_7_R1.World;
+import net.minecraft.server.v1_7_R1.WorldGenMineshaft;
 
 public class SimpleWorldGenMineshaft extends WorldGenMineshaft {
 

@@ -27,7 +27,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
-import net.minecraft.server.v1_6_R3.BiomeMeta;
+import net.minecraft.server.v1_7_R1.BiomeMeta;
 
 /**
  * Make the meta list depending on the list added by the biome wrapper.

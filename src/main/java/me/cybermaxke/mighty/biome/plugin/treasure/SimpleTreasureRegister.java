@@ -26,15 +26,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.minecraft.server.v1_6_R3.WorldGenDungeons;
-import net.minecraft.server.v1_6_R3.WorldGenJungleTemple;
-import net.minecraft.server.v1_6_R3.WorldGenMineshaftPieces;
-import net.minecraft.server.v1_6_R3.WorldGenNetherPiece1;
-import net.minecraft.server.v1_6_R3.WorldGenPyramidPiece;
-import net.minecraft.server.v1_6_R3.WorldGenStrongholdChestCorridor;
-import net.minecraft.server.v1_6_R3.WorldGenStrongholdLibrary;
-import net.minecraft.server.v1_6_R3.WorldGenStrongholdRoomCrossing;
-import net.minecraft.server.v1_6_R3.WorldGenVillageBlacksmith;
+import net.minecraft.server.v1_7_R1.WorldGenDungeons;
+import net.minecraft.server.v1_7_R1.WorldGenJungleTemple;
+import net.minecraft.server.v1_7_R1.WorldGenMineshaftPieces;
+import net.minecraft.server.v1_7_R1.WorldGenNetherPiece1;
+import net.minecraft.server.v1_7_R1.WorldGenPyramidPiece;
+import net.minecraft.server.v1_7_R1.WorldGenStrongholdChestCorridor;
+import net.minecraft.server.v1_7_R1.WorldGenStrongholdLibrary;
+import net.minecraft.server.v1_7_R1.WorldGenStrongholdRoomCrossing;
+import net.minecraft.server.v1_7_R1.WorldGenVillageBlacksmith;
 
 import org.bukkit.inventory.ItemStack;
 

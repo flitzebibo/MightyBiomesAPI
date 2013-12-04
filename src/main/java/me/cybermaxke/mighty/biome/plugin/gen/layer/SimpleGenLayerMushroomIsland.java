@@ -24,8 +24,8 @@ import java.util.List;
 
 import me.cybermaxke.mighty.biome.api.BiomeBase;
 
-import net.minecraft.server.v1_6_R3.GenLayer;
-import net.minecraft.server.v1_6_R3.GenLayerMushroomIsland;
+import net.minecraft.server.v1_7_R1.GenLayer;
+import net.minecraft.server.v1_7_R1.GenLayerMushroomIsland;
 
 public class SimpleGenLayerMushroomIsland extends GenLayerMushroomIsland {
 	private final List<BiomeBase> biomes;
